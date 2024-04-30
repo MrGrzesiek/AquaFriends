@@ -7,9 +7,9 @@ RUN python -m pip install --upgrade pip &&\
 
 EXPOSE 5000
 
-COPY app.py app.py
-COPY aquarium.py aquarium.py
-COPY log_in.py log_in.py
-COPY config.json config.json
+COPY . .
 
-ENTRYPOINT [ "flask", "run" ]
+SHELL ["/bin/bash", "-c"]
+
+ENV FLASK_APP=app.py
+CMD ["python3" "app.py"]
