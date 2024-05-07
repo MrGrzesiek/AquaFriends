@@ -170,7 +170,7 @@
   .overlay {
     background: #ff416c;
     background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background: linear-gradient(to right, #229EA6, #229EA6 0%, #2C2125 0%, #2C2125 50%,#229EA6 50%);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
