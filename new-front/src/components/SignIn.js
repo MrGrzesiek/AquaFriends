@@ -34,7 +34,7 @@ function SignInForm({ onLogin }) {
     // Symulacja weryfikacji danych logowania z danymi w bazie danych
     const validCredentials = {
       email: "example@example.com",
-      password: "password123"
+      password: "1"
     };
 
     if (email !== validCredentials.email || password !== validCredentials.password) {
