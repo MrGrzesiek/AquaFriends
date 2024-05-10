@@ -7,10 +7,13 @@ import { faUser, faHome, faPlus, faFish, faPalette, faBinoculars, faClockRotateL
 library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRotateLeft, faArrowRightFromBracket);
 
 function CustomSideNav({ onLogout }) {
+  const styles = {
+    background: "#D92B2B"
+  };
   return (
-    <div>
+    <div> 
       {/* SideNav */}
-      <SideNav
+      <SideNav style={styles}
         onSelect={(selected) => {
           console.log(selected);
           if(selected === 'Logout') {
