@@ -16,13 +16,23 @@ class User(fl.UserMixin):
         self.id = name
 
 
+# @login_manager.user_loader
+# def load_user(id):
+#     id = ObjectId(str(id))
+#     for user in logged_users:
+#         if user.id == id:
+#             return user
+#     return None
+
 @login_manager.user_loader
-def load_user(id):
-    id = ObjectId(str(id))
-    for user in logged_users:
-        if user.id == id:
-            return user
-    return None
+def load_user(user_id):
+    return User.get(user_id)
+
+# Ensure cookies are set properly for session management
+@app.after_request
+def apply_cors(response):
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 @app.route("/login", methods=["POST"])
@@ -30,6 +40,8 @@ def login():
     name = request.form["name"]
     password = request.form["password"]
     x = users_db.find_one({"name": name})
+    if not x:
+        return jsonify({"message": "Incorrect password or login", "code": 401}) # User does not exist
     if password == x["password"]:
         user = User(x["_id"])
         fl.login_user(user)

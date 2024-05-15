@@ -1,0 +1,41 @@
+services:
+  database:
+  # mongodb
+    image: mongo:latest
+    container_name: database
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - backend
+
+  backend:
+    build: ./backend
+    image: awesome-flask
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    networks:
+      - backend
+    depends_on:
+      - database
+
+  frontend:
+    image: node:latest
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    networks:
+      - backend
+    command: npm run serve
+
+networks:
+  backend:
+    driver: bridge
+
