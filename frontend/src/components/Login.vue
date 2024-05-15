@@ -14,7 +14,9 @@ function login(event) {
         name: username.value,
         password: password.value
     }).then( (res) => {
-        if (res.data.code !== 200) {
+        if (res.status !== 200) {
+            // print entire response
+            console.log(res);
             error_message.value = res.data.message;
             show_error.value = true;
         } else {
