@@ -1,3 +1,5 @@
-fastapi
-uvicorn
+fastapi~=0.103.2
+uvicorn~=0.22.0
 fastapi-login
+pydantic~=2.5.3
+python-multipart

@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
 from .models import UserInDB, User
 
-manager = LoginManager("SecretWowWow", token_url='/dependencies/token')
+manager = LoginManager(bytes(123), token_url='/dependencies/token')
 
 fake_db = {
     'user1@example.com': {'password': 'password123', 'scopes': ['user']},

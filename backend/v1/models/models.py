@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 import datetime
 
+
 class User(BaseModel):
     username: str
     password: str
+
 
 class ActiveSession(BaseModel):
     username: str
