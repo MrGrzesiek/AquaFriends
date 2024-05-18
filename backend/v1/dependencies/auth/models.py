@@ -5,3 +5,7 @@ class User(BaseModel):
 
 class UserInDB(User):
     hashed_password: str
+
+class User(BaseModel):
+    email: str
+    scopes: list[str]

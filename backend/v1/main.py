@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_login import LoginManager
 
 from dependencies.auth.routes import router as auth_router
+from components.aquariums.routes import router as aquariums_router
 
 manager = LoginManager("secret", "/login", use_cookie=True)
 
