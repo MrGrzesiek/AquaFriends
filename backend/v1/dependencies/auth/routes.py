@@ -5,6 +5,6 @@ from .dependencies import login, manager
 
 router = APIRouter()
 
-@router.post('/token', response_model=Token)
+@router.post('/login', response_model=Token)
 def login_route(data: OAuth2PasswordRequestForm = Depends()):
     return login(data)

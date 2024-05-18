@@ -1,5 +1,5 @@
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2AuthorizationCodeBearer
 from fastapi_login import LoginManager
 from .models import UserInDB, User
 
@@ -34,13 +34,21 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
     access_token = manager.create_access_token(data=dict(sub=email))
     return {'access_token': access_token, 'token_type': 'bearer'}
 
+def verify_token(token: OAuth2AuthorizationCodeBearer):
+
+
+
+
+
 def get_current_user(user: User = Depends(manager)):
     return user
+
 
 def get_current_active_user(user: User = Depends(get_current_user)):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
     return user
+
 
 def get_admin_user(user: User = Depends(get_current_active_user)):
     if 'admin' not in user.scopes:
