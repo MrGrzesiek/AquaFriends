@@ -1,27 +1,30 @@
 from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi_login import LoginManager
 from .models import UserInDB, User
 
-manager = LoginManager(bytes(123), token_url='/dependencies/token')
+# Secret key for JWT
+SECRET_KEY = "your_secret_key"
+
+manager = LoginManager(SECRET_KEY, token_url='/auth/login')
 
 fake_db = {
     'user1@example.com': {'password': 'password123', 'scopes': ['user']},
     'admin@example.com': {'password': 'adminpassword', 'scopes': ['admin']}
 }
 
+def get_session():
+    yield fake_db
 
 def get_user(email: str):
     user = fake_db.get(email)
     if user:
-        return UserInDB(email=email, hashed_password=user['password'])
+        return UserInDB(email=email, hashed_password=user['password'], scopes=user['scopes'])
     return None
 
-
-@manager.user_loader
-def load_user(email: str):
-    user = get_user(email)
-    return user
+@manager.user_loader(session_provider = get_session)
+def load_user(email: str, session_provider):
+    return get_user(email)
 
 
 def login(data: OAuth2PasswordRequestForm = Depends()):
@@ -34,13 +37,8 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
     access_token = manager.create_access_token(data=dict(sub=email))
     return {'access_token': access_token, 'token_type': 'bearer'}
 
-def verify_token(token: OAuth2AuthorizationCodeBearer):
 
-
-
-
-
-def get_current_user(user: User = Depends(manager)):
+def get_current_user(user: User = Depends(manager.get_current_user)):
     return user
 
 

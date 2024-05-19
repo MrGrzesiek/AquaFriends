@@ -11,12 +11,14 @@ router = APIRouter()
 def public():
     return "Public text"
 
-@router.get('secret-user')
+@router.get('/secret-user')
 def secret(user: User = Depends(get_current_active_user)):
     if not any(scope in user.scopes for scope in ['user', 'admin']):
         raise HTTPException(status_code=401, detail="User or Admin not in scope")
+    return "Secret text for users or admins"
 
-@router.get('secret-admin')
+@router.get('/secret-admin')
 def secret(user: User = Depends(get_admin_user)):
-    if 'Admin' not in user.scopes:
+    if 'admin' not in user.scopes:
         raise HTTPException(status_code=401, detail="User or Admin not in scope")
+    return "Secret text for admins"
