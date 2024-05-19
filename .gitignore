@@ -1,2 +1,5 @@
 #mac related shit
 .DS_Store
+
+#config files
+*.json
