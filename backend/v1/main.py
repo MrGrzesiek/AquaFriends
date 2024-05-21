@@ -20,8 +20,8 @@ app.add_middleware(
 )
 
 # Routers
-app.include_router(auth_router, prefix="/auth")
-app.include_router(aquariums_router, prefix='/aquariums')
+app.include_router(auth_router)
+app.include_router(aquariums_router)
 
 # DB connection
 config = json.load(open("config.json"))

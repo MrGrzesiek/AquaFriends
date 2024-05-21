@@ -7,7 +7,13 @@ class User(BaseModel):
     scopes: List[str]
 
 class UserInDB(User):
+    username: str
     email: str
-    hashed_password: str
+    password_hash: str
+
+class UserCreate(BaseModel):
+    username: str
+    password_hash: str
+    email: str
 
 
