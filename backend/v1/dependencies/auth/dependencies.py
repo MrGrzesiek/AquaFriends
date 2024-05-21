@@ -20,10 +20,7 @@ def get_session():
     yield fake_db
 
 def get_user(username: str):
-    users = db_connector.get_users_collection()
-    user = users.find_one()
-    print()
-    print(f'username: {user["username"]}, email: {user["email"]}, password: {user["password"]}, scopes: {user["scopes"]}')
+    user = db_connector.get_users_collection().find_one()
     if user:
         return UserInDB(username=user['username'], email=user['email'], password_hash=user['password'], scopes=user['scopes'])
     return None
