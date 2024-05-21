@@ -1,2 +1,9 @@
 #mac related shit
 .DS_Store
+
+#config files
+*.json
+
+# IDE files
+*.idea/
+*__pycache__*

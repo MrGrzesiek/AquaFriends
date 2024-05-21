@@ -1,0 +1,5 @@
+fastapi==0.110.1
+uvicorn
+fastapi-login
+pydantic
+python-multipart
