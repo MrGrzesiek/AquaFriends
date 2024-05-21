@@ -3,3 +3,7 @@
 
 #config files
 *.json
+
+# IDE files
+*.idea/
+*__pycache__*

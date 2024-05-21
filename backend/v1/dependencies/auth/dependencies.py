@@ -42,12 +42,21 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
 
 
 def register(user: UserCreate):
-    with db_connector.get_collection("users") as users:
-        if get_user(user.email):
-            raise HTTPException(status_code=400, detail="User already registered")
+    scopes = None
+    if '@aquafriends.com' in user.email:
+        scopes = ['admin']
+    else:
+        scopes = ['user']
 
-        users.insert_one(user.dict())
-        return {"msg": "User registered successfully"}
+    new_user = {
+        'username': user.username,
+        'email': user.email,
+        'password': user.password_hash,
+        'aquariums': [],
+        'scopes': scopes
+    }
+    db_connector.get_users_collection().insert_one(new_user)
+    return {'code': 200, 'message': 'User created successfully'}
 
 def get_current_user(user: User = Depends(manager.get_current_user)):
     return user
