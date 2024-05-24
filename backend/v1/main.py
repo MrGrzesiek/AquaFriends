@@ -25,7 +25,7 @@ app.include_router(aquariums_router)
 
 # DB connection
 config = json.load(open("config.json"))
-db_connector = Connector(config['MONGO_API'])
+db_connector = Connector(config['MONGO_API_KEY'])
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
