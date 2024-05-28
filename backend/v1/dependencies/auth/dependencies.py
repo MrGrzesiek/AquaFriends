@@ -1,8 +1,11 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi_login import LoginManager
-from .models import UserInDB, UserCreate, User
 
+import sys
+from os import path
+sys.path.append(path.join(path.dirname(__file__), '...'))
+from models import User, UserCreate, UserInDB
 from ..database import Connector
 
 # Secret key for JWT
