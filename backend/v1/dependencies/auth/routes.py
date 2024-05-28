@@ -2,7 +2,11 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from .schemas import Token
 from .dependencies import login, manager, register
-from .models import UserCreate
+
+import sys
+from os import path
+sys.path.append(path.join(path.dirname(__file__), '...'))
+from models import UserCreate
 
 router = APIRouter(prefix="/auth")
 

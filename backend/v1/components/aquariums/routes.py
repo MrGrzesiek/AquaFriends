@@ -2,8 +2,11 @@ from fastapi import APIRouter
 from fastapi import Depends, HTTPException
 from fastapi_login import LoginManager
 
+import sys
+from os import path
+sys.path.append(path.join(path.dirname(__file__), '...'))
+from models import User
 from dependencies.auth.dependencies import get_current_active_user, get_admin_user
-from dependencies.auth.models import User
 
 router = APIRouter(prefix='/aquariums')
 
