@@ -51,7 +51,7 @@ class UserCreate(BaseModel):
 
 class NewFishSpecies(BaseModel):
     """
-    Class used to represent a fish species in the database
+    Class used to represent a fish species in the database without an ID
     """
     name: str
     description: str
@@ -65,18 +65,8 @@ class NewFishSpecies(BaseModel):
     disliked_species: List[int] # List of fish species IDs that this species does not get along with
 
 
-class FishSpecies(BaseModel):
+class FishSpecies(NewFishSpecies):
     """
     Class used to represent a fish species in the database
     """
     id: int
-    name: str
-    description: str
-    image: str
-    min_temp: float
-    max_temp: float
-    min_ph: float
-    max_ph: float
-    min_salinity: float
-    max_salinity: float
-    disliked_species: List[int] # List of fish species IDs that this species does not get along with
