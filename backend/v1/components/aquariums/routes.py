@@ -23,7 +23,8 @@ def secret(user: User = Depends(get_current_active_user)):
 @admin_required
 @router.get('/secret-admin')
 def secret(user: User = Depends(get_admin_user)):
-    if 'admin' not in user.scopes:
-        raise HTTPException(status_code=401, detail="User or Admin not in scope")
     return "Secret text for admins"
+
+
+
 
