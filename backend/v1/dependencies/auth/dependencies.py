@@ -14,19 +14,21 @@ SECRET_KEY = "your_secret_key"
 manager = LoginManager(SECRET_KEY, token_url='/auth/login')
 db_connector = Connector()
 
-fake_db = {
-    'user1@example.com': {'password': 'password123', 'scopes': ['user']},
-    'admin@example.com': {'password': 'adminpassword', 'scopes': ['admin']}
-}
-
-def get_session():
-    yield fake_db
 
 def get_user(username: str):
     user = db_connector.get_users_collection().find_one()
     if user:
         return UserInDB(username=user['username'], email=user['email'], password_hash=user['password'], scopes=user['scopes'])
     return None
+
+
+def get_session():
+    """
+    fake function to simulate a session
+    It's here because fastapi login manager requires session_provider, but doesn't use it
+    """
+    pass
+
 
 @manager.user_loader(session_provider = get_session)
 def load_user(email: str, session_provider):

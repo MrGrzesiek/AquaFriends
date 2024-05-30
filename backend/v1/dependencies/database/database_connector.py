@@ -3,12 +3,18 @@ from pymongo.collection import Collection
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from threading import Lock
+
+
 # Used to obtain mongoDB connection
 class Connector:
     DB_NAME = 'database'
     USERS_COLLECTION = 'users'
     _instance = None
     _lock: Lock = Lock()
+
+    """
+    Connector's util functions, do not push to master/main change without code review.
+    """
 
     def __new__(cls, mongo_uri=None):
         with cls._lock:
@@ -41,7 +47,6 @@ class Connector:
             print(e)
             print("Failed to connect to MongoDB")
 
-
     def __get_db_session(self):
         self.client = MongoClient(self.mongo_uri)
         return self.client
@@ -54,7 +59,7 @@ class Connector:
             print(e)
             print("Failed to connect to MongoDB")
 
-    def get_collection(self, collection_name: str):
+    def __get_collection(self, collection_name: str):
         if self.client is None:
             raise Exception("MongoDB client is not initialized. Please provide a valid MongoDB URI.")
         try:
@@ -65,5 +70,11 @@ class Connector:
             print(f'Failed to get database named {collection_name}')
             return None
 
+    """
+    If you need more collection getters, you can add them here.
+    """
     def get_users_collection(self) -> Collection:
-        return self.get_collection("users")
+        return self.__get_collection("users")
+
+    def get_species_collection(self) -> Collection:
+        return self.__get_collection("species")

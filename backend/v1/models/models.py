@@ -11,9 +11,9 @@ class ActiveSession(BaseModel):
 
 
 class Aquarium(BaseModel):
-    '''
+    """
     Class used to represent an aquarium in the database
-    '''
+    """
     id: int
     name: str
     dimensions: List[Dict[str, int]]
@@ -21,17 +21,17 @@ class Aquarium(BaseModel):
 
 
 class User(BaseModel):
-    '''
+    """
     Class used for authentication purposes with login manager
-    '''
+    """
     email: str
     scopes: List[str]
 
 
 class UserInDB(User):
-    '''
+    """
     Class used to represent a user in the database
-    '''
+    """
     username: str
     email: str
     password_hash: str
@@ -39,21 +39,20 @@ class UserInDB(User):
 
 
 class UserCreate(BaseModel):
-    '''
+    """
     Class usages:
     - User registration
     - Registration request body validation
-    '''
+    """
     username: str
     password_hash: str
     email: str
 
 
-class FishSpecies(BaseModel):
-    '''
-    Class used to represent a fish species in the database
-    '''
-    id: int
+class NewFishSpecies(BaseModel):
+    """
+    Class used to represent a fish species in the database without an ID
+    """
     name: str
     description: str
     image: str
@@ -64,3 +63,10 @@ class FishSpecies(BaseModel):
     min_salinity: float
     max_salinity: float
     disliked_species: List[int] # List of fish species IDs that this species does not get along with
+
+
+class FishSpecies(NewFishSpecies):
+    """
+    Class used to represent a fish species in the database
+    """
+    id: int
