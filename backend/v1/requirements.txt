@@ -3,5 +3,6 @@ uvicorn~=0.22.0
 fastapi-login
 pydantic~=2.5.3
 python-multipart
-pymongo~=4.3.2
-pillow~=10.2.0
+pillow
+pymongo
+favicon
