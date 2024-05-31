@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from .dependencies import manager
+from .utils import manager
 
 
 def login_required(func):

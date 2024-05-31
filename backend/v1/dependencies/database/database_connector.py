@@ -1,8 +1,11 @@
 import pymongo
+from fastapi import UploadFile, File
 from pymongo.collection import Collection
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from threading import Lock
+
+from dependencies.database.file_handler import FileHandler
 
 
 # Used to obtain mongoDB connection
@@ -47,6 +50,8 @@ class Connector:
             print(e)
             print("Failed to connect to MongoDB")
 
+        self.file_handler = FileHandler(self.get_file_collection())
+
     def __get_db_session(self):
         self.client = MongoClient(self.mongo_uri)
         return self.client
@@ -70,6 +75,10 @@ class Connector:
             print(f'Failed to get database named {collection_name}')
             return None
 
+
+    def upload_bson(self, file: UploadFile = File(...)):
+        return self.file_handler.upload_bson(file)
+
     """
     If you need more collection getters, you can add them here.
     """
@@ -78,3 +87,6 @@ class Connector:
 
     def get_species_collection(self) -> Collection:
         return self.__get_collection("species")
+
+    def get_file_collection(self) -> Collection:
+        return self.__get_collection("file")

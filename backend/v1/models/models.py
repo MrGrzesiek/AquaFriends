@@ -1,6 +1,8 @@
-from typing import List, Dict
+from typing import List, Dict, Annotated
 
-from pydantic import BaseModel
+from bson import ObjectId
+from fastapi import UploadFile
+from pydantic import BaseModel, Field
 import datetime
 
 
@@ -51,22 +53,21 @@ class UserCreate(BaseModel):
 
 class NewFishSpecies(BaseModel):
     """
-    Class used to represent a fish species in the database without an ID
+    Class used to represent a fish species model during creation
     """
     name: str
     description: str
-    image: str
     min_temp: float
     max_temp: float
     min_ph: float
     max_ph: float
     min_salinity: float
     max_salinity: float
-    disliked_species: List[int] # List of fish species IDs that this species does not get along with
 
 
 class FishSpecies(NewFishSpecies):
     """
     Class used to represent a fish species in the database
+    Photos need to be uploaded to the database separately
     """
-    id: int
+    disliked_species: List[int] # List of fish species IDs that this species does not get along with
