@@ -11,7 +11,7 @@ from .utils import create_species, get_species, update_species, delete_species
 router = APIRouter(prefix='/fishes')
 
 
-# @admin_required
+@admin_required
 @router.post('/species')
 async def species(species: NewFishSpecies): #, user: User = Depends(get_admin_user)):
     return create_species(species)
