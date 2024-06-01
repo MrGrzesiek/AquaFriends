@@ -1,6 +1,5 @@
-// SignInForm.js
-
 import React, { useState } from "react";
+import CryptoJS from 'crypto-js';
 
 function SignInForm({ onLogin }) {
   const [state, setState] = useState({
@@ -17,13 +16,12 @@ function SignInForm({ onLogin }) {
     }));
   };
 
-  const handleOnSubmit = evt => {
+  const handleOnSubmit = async evt => {
     evt.preventDefault();
 
-    const { email, password } = state;
+    const { username, password } = state;
 
-    // Sprawdź, czy pola e-mail i hasło są uzupełnione
-    if (!email || !password) {
+    if (!username || !password) {
       setState(prevState => ({
         ...prevState,
         error: "Proszę wprowadzić adres e-mail i hasło."
@@ -31,29 +29,39 @@ function SignInForm({ onLogin }) {
       return;
     }
 
-    // Symulacja weryfikacji danych logowania z danymi w bazie danych
-    const validCredentials = {
-      email: "example@example.com",
-      password: "1"
-    };
+    try {
+      const formData = new FormData();
+      const hashedPassword = CryptoJS.SHA256(password).toString();
+      formData.append("username", username);
+      formData.append("password", hashedPassword);
 
-    if (email !== validCredentials.email || password !== validCredentials.password) {
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Nieprawidłowy adres e-mail lub hasło.");
+      }
+
+      const token = await response.json();
+      console.log("Token", token);
+      localStorage.setItem("authToken", JSON.stringify(token));
+
+      onLogin(true);
+
+      setState({
+        username: "",
+        password: "",
+        error: ""
+      });
+
+    } catch (err) {
       setState(prevState => ({
         ...prevState,
-        error: "Nieprawidłowy adres e-mail lub hasło."
+        error: err.message
       }));
-      return;
     }
-
-    // Jeśli dane logowania są poprawne, wywołaj funkcję przekazaną jako props
-    onLogin(true); // Wywołanie funkcji przekazanej jako props
-
-    // Wyczyszczenie formularza
-    setState({
-      email: "",
-      password: "",
-      error: ""
-    });
   };
 
   return (
@@ -61,10 +69,10 @@ function SignInForm({ onLogin }) {
       <form onSubmit={handleOnSubmit}>
         <h1>Logowanie</h1>
         <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          value={state.email}
+          type="text"
+          placeholder="Nazwa użytkownika"
+          name="username"
+          value={state.username}
           onChange={handleChange}
         />
         <input

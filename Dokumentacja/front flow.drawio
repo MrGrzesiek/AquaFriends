@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2024-05-31T18:44:23.678Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 OPR/109.0.0.0" etag="W7s36CZ68uYeO_Fin8Yj" version="24.4.13" type="device">
+<mxfile host="app.diagrams.net" modified="2024-06-01T14:09:59.449Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="dbrKRLSupq02-o2XECz4" version="24.4.13" type="device">
   <diagram name="Strona-1" id="lYA9xT5RgmgEk0NPdWA2">
-    <mxGraphModel dx="2860" dy="1126" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2261" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="O7UDizKWBBg_09-T7Ho4-1" value="Strona logowania rejestracji" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="O7UDizKWBBg_09-T7Ho4-1" value="Strona logowania rejestracji" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="360" y="80" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="O7UDizKWBBg_09-T7Ho4-2" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="O7UDizKWBBg_09-T7Ho4-1" target="O7UDizKWBBg_09-T7Ho4-1" edge="1">
@@ -89,16 +89,16 @@
             <mxPoint x="550" y="340" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="O7UDizKWBBg_09-T7Ho4-16" value="Konfigurator gatunków" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="O7UDizKWBBg_09-T7Ho4-16" value="Konfigurator gatunków" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="510" y="360" width="140" height="120" as="geometry" />
         </mxCell>
         <mxCell id="O7UDizKWBBg_09-T7Ho4-17" value="Nazwa gatunku foto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="O7UDizKWBBg_09-T7Ho4-16" vertex="1">
           <mxGeometry y="30" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="O7UDizKWBBg_09-T7Ho4-18" value="potrzeby (wymagania środowiskowe)" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="O7UDizKWBBg_09-T7Ho4-16" vertex="1">
+        <mxCell id="O7UDizKWBBg_09-T7Ho4-18" value="potrzeby (wymagania środowiskowe)" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="O7UDizKWBBg_09-T7Ho4-16" vertex="1">
           <mxGeometry y="60" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="O7UDizKWBBg_09-T7Ho4-19" value="Konflikty (jakich ryb nie lubi)" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="O7UDizKWBBg_09-T7Ho4-16" vertex="1">
+        <mxCell id="O7UDizKWBBg_09-T7Ho4-19" value="Konflikty (jakich ryb nie lubi)" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="O7UDizKWBBg_09-T7Ho4-16" vertex="1">
           <mxGeometry y="90" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="O7UDizKWBBg_09-T7Ho4-20" value="Kreator podpowiedzi" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -227,16 +227,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="DEfrLelVzNfgMSH4W8rT-2" value="Legenda" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="140" y="40" width="140" height="120" as="geometry" />
+          <mxGeometry x="140" y="20" width="140" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="DEfrLelVzNfgMSH4W8rT-4" value="Niebieski - wyglad gotowy" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
+        <mxCell id="DEfrLelVzNfgMSH4W8rT-4" value="Niebieski - wyglad gotowy" style="text;strokeColor=#6c8ebf;fillColor=#dae8fc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
           <mxGeometry y="30" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="DEfrLelVzNfgMSH4W8rT-5" value="Fioletowy - backend gotowy" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
+        <mxCell id="DEfrLelVzNfgMSH4W8rT-5" value="Fioletowy - backend gotowy" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
           <mxGeometry y="60" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="DEfrLelVzNfgMSH4W8rT-6" value="Zielony - moduł zrobiony" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
+        <mxCell id="DEfrLelVzNfgMSH4W8rT-6" value="Zielony - moduł zrobiony" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="DEfrLelVzNfgMSH4W8rT-2" vertex="1">
           <mxGeometry y="90" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="FO-lzvLR-_04RQjkp_rY-1" value="Żółty- zrobic integracje back z front" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="DEfrLelVzNfgMSH4W8rT-2">
+          <mxGeometry y="120" width="140" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
