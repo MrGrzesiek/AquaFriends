@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import CustomSideNav from "../components/SideNav";
 import Header from "../components/Header";
 import "../CSS/styles.css";
-import CryptoJS from 'crypto-js';
 
 const HomePage = ({ onLogout }) => {
   useEffect(() => {
@@ -26,13 +25,6 @@ const HomePage = ({ onLogout }) => {
   const handleClick = async () => {
     console.log("siema");
 
-    // Przykładowe dane logowania i rejestracji
-    const username = 'dupa';
-    const password = 'test';
-    const email = 'new_user@example.com';
-
-    // Haszowanie hasła za pomocą CryptoJS
-    const hashedPassword = CryptoJS.SHA256(password).toString();
 
     try {
       // Przykładowe wywołanie testowego endpointu
@@ -56,6 +48,16 @@ const HomePage = ({ onLogout }) => {
       });
       const meData = await meResponse.json();
       console.log('Me response:', meData);
+
+      // Wywołanie nowego endpointu species
+      const speciesResponse = await fetch('http://localhost:8000/species', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenObj.access_token}`
+        }
+      });
+      const speciesData = await speciesResponse.json();
+      console.log('Species response:', speciesData);
     } catch (error) {
       console.error('Error:', error);
       if (error.message.includes('Unexpected token')) {
@@ -65,7 +67,7 @@ const HomePage = ({ onLogout }) => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '20vh' }}>
+    <div>
       <CustomSideNav onLogout={onLogout} />
       <Header />
       <h1>Home Page</h1>

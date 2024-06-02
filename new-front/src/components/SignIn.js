@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CryptoJS from 'crypto-js';
+import {handleResponse} from './SessionManager';
 
 function SignInForm({ onLogin }) {
   const [state, setState] = useState({
@@ -44,9 +45,7 @@ function SignInForm({ onLogin }) {
         throw new Error("Nieprawidłowy adres e-mail lub hasło.");
       }
 
-      const token = await response.json();
-      console.log("Token", token);
-      localStorage.setItem("authToken", JSON.stringify(token));
+      await handleResponse(response);
 
       onLogin(true);
 
