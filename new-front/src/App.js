@@ -3,32 +3,43 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
+import {checkBackend} from "./components/SessionManager"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [backendAvailable, setBackendAvailable] = useState(false);
 
   useEffect(() => {
+    const checkConnection = async () => {
+      const isAvailable = await checkBackend();
+      setBackendAvailable(isAvailable);
+    };
+
+    checkConnection();
+    const intervalId = setInterval(checkConnection, 10000);
     // Sprawdź, czy token jest w localStorage podczas ładowania komponentu
     const token = localStorage.getItem("authToken");
     if (token) {
       setLoggedIn(true);
     }
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleLogin = async () => {
-    
-    console.log("zalogowany")
+    console.log("zalogowany");
     setLoggedIn(true);
-    console.log("biore token")
+    console.log("biore token");
     const tokenString = localStorage.getItem("authToken");
     const tokenObj = JSON.parse(tokenString);
-    console.log("pokazuje token")
-    console.log(tokenObj)
+    console.log("pokazuje token");
+    console.log(tokenObj);
     const admin = localStorage.getItem("admin");
-    console.log(admin)
+    console.log(admin);
     if (admin) {
-      console.log("ustawiam admina")
+      console.log("ustawiam admina");
       setIsAdmin(true);
     }
   };
@@ -42,37 +53,52 @@ function App() {
 
   console.log("loggedIn:", loggedIn);
   console.log("isAdmin:", isAdmin);
-  
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              loggedIn ? (
-                isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
-              ) : (
-                <LoginPage onLogin={handleLogin} />
-              )
-            } 
-          />
-          <Route 
-            path="/home" 
-            element={
-              loggedIn ? <HomePage onLogout={handleLogout} /> : <Navigate to="/" />
-            } 
-          />
-          <Route 
-            path="/admin" 
-            element={
-              loggedIn ? <AdminPage onLogout={handleLogout} /> : <Navigate to="/" />
-            } 
-          />
-        </Routes>
+
+  if (!backendAvailable) {
+    return (
+      <div style={{ textAlign: 'center',
+                    fontSize: 30,backgroundColor: '#84A9BF',
+                    border: '10px outset #ed9731',
+                    padding:"10px"}}>
+        <FontAwesomeIcon icon={faSatelliteDish} size="2x" color="#ed9731" />
+        <br />
+        Brak połączenia z backendem
       </div>
-    </Router>
-  );
+    );
+  }
+  else{
+    return (
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                loggedIn ? (
+                  isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
+                ) : (
+                  <LoginPage onLogin={handleLogin} />
+                )
+              } 
+            />
+            <Route 
+              path="/home" 
+              element={
+                loggedIn ? <HomePage onLogout={handleLogout} /> : <Navigate to="/" />
+              } 
+            />
+            <Route 
+              path="/admin" 
+              element={
+                loggedIn ? <AdminPage onLogout={handleLogout} /> : <Navigate to="/" />
+              } 
+            />
+          </Routes>
+        </div>
+      </Router>
+    );
+  }
+  
 }
 
 export default App;

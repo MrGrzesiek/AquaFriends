@@ -50,4 +50,20 @@ const checkIdentity = async (tokenObj) =>{
     }
   return meResponse;
 }
-export { handleResponse, checkTokenInLocalStorage, checkIdentity };
+const checkBackend = async () =>{
+  try {
+    const testRes = await fetch('http://localhost:8000/', {
+      method: 'GET'
+    });
+    if (!testRes.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const testData = await testRes.json();
+    console.log('test response:', testData);
+    return true;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return false;
+  };
+}
+export { checkBackend, handleResponse, checkTokenInLocalStorage, checkIdentity };
