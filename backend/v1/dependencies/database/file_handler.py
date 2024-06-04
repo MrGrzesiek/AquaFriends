@@ -52,18 +52,27 @@ class FileHandler:
 #        img_url = self.__get_img_url(file, fileName)
 #        return self.__upload_img_to_db(file_collection, img_url)
 
-    async def upload_bson(self, file: UploadFile = File(...)):
+    async def upload_photo(self, file: UploadFile = File(...)):
+        file_contents = None
+        documents = None
+
         try:
             # Read the contents of the uploaded BSON file
             file_contents = await file.read()
+        except Exception as e:
+            return JSONResponse(content={"error reading file:": str(e)})
 
+        try:
             # Decode BSON to a list of documents
             documents = decode_all(file_contents)
+        except Exception as e:
+            return JSONResponse(content={"error decoding BSON file:": str(e)})
 
+        try:
             # Insert the documents into MongoDB collection
             result = self.file_collection.insert_many(documents)
-
-            # Return the inserted IDs
-            return JSONResponse(content={"inserted_ids": result.inserted_ids})
         except Exception as e:
-            return JSONResponse(content={"error": str(e)}, status_code=500)
+            return JSONResponse(content={"error inserting documents:": str(e)})
+
+        # Return the inserted IDs
+        return JSONResponse(content={"inserted_ids": result.inserted_ids})

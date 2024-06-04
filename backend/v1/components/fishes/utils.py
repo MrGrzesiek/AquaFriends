@@ -10,7 +10,7 @@ db_connector = Connector()
 
 
 @validate_species
-def create_species(fish_species: NewFishSpecies):
+async def create_species(fish_species: NewFishSpecies):
     try:
         # Check if fish species with this name already exists
         if db_connector.get_species_collection().find_one({'name': fish_species.name.lower()}):
@@ -37,7 +37,7 @@ def convert_mongo_id(document):
     return document
 
 
-def get_species():
+async def get_species():
     species = db_connector.get_species_collection().find()
     species_list = []
     for s in species:
@@ -49,7 +49,7 @@ def get_species():
 
 
 @validate_species
-def update_species(species_data: FishSpecies):
+async def update_species(species_data: FishSpecies):
     species_data.name = species_data.name.lower()
     # Check if fish species with this name exists
     species = db_connector.get_species_collection().find_one({'name': species_data.name})
@@ -61,7 +61,7 @@ def update_species(species_data: FishSpecies):
     return {'code': 200, 'message': f'{species_data.name} species updated successfully'}#, 'species': updated_species}
 
 
-def delete_species(species_name: str):
+async def delete_species(species_name: str):
     # Check if fish species with this name exists
     species = db_connector.get_species_collection().find_one({'name': species_name.lower()})
     if not species:
@@ -71,3 +71,7 @@ def delete_species(species_name: str):
     db_connector.get_species_collection().delete_one({'name': species_name.lower()})
     return {'code': 200, 'message': f'{species_name.lower()} species deleted successfully'}
 
+
+
+def upload_species_photo(species_name: str, photo):
+    return db_connector.upload_species_photo(species_name, photo)

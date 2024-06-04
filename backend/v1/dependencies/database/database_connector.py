@@ -76,8 +76,14 @@ class Connector:
             return None
 
 
-    def upload_bson(self, file: UploadFile = File(...)):
-        return self.file_handler.upload_bson(file)
+    async def upload_species_photo(self, species_name: str, file: UploadFile = File(...)):
+        # Check if fish species with this name exists
+        species = self.get_species_collection().find_one({'name': species_name.lower()})
+        if not species:
+            return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+
+        result = await self.file_handler.upload_photo(file)
+        return result
 
     """
     If you need more collection getters, you can add them here.

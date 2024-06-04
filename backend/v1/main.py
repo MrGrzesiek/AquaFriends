@@ -14,15 +14,15 @@ from dependencies.database import Connector
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": False})
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-	exc_str = f'{exc}'.replace('\n', ' ').replace('   ', ' ')
-	#logging.error(f"{request}: {exc_str}")
-	print(f"{request}: {exc_str}")
-	content = {'status_code': 10422, 'message': exc_str, 'data': None}
-	return JSONResponse(content=content, status_code=422)
+    exc_str = f'{exc}'.replace('\n', ' ').replace('   ', ' ')
+    #logging.error(f"{request}: {exc_str}")
+    print(f"{request}: {exc_str}")
+    content = {'status_code': 10422, 'message': exc_str, 'data': None}
+    return JSONResponse(content=content, status_code=422)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5137", "http://localhost:3000"],  # Ustaw domenę Twojej aplikacji klienta
+    allow_origins=["http://localhost:5137", "http://localhost:3000", "http://localhost:3001"],  # Ustaw domenę Twojej aplikacji klienta
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],  # Dodaj metody HTTP, które chcesz obsługiwać
     allow_headers=["*"],  # Ustaw nagłówki, które chcesz zezwolić
