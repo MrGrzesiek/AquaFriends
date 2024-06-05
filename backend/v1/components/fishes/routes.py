@@ -22,7 +22,10 @@ async def species(species: NewFishSpecies): #, user: User = Depends(get_admin_us
 #@admin_required
 @router.post('/species_photo/{species_name}')
 async def species_photo(species_name, photo: UploadFile = File(...), user: User = Depends(get_admin_user)):
-    return upload_species_photo(species_name, photo)
+    photo.filename = f'{species_name}.{photo.filename.split(".")[-1]}'  # Rename photo to species_name.extension
+    photo = await photo.read()
+    result = await upload_species_photo(species_name, photo)
+    return result
 
 
 @login_required

@@ -13,7 +13,7 @@ from ..database import Connector
 # Secret key for JWT
 SECRET_KEY = "your_secret_key"
 
-manager = LoginManager(SECRET_KEY, token_url='/auth/login', default_expiry=timedelta(minutes=45))
+manager = LoginManager(SECRET_KEY, token_url='/auth/login', default_expiry=timedelta(minutes=120))
 db_connector = Connector()
 
 

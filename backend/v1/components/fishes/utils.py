@@ -1,5 +1,5 @@
 from bson import ObjectId
-from fastapi import HTTPException
+from fastapi import HTTPException, File
 from pymongo import collection
 
 from models import FishSpecies, NewFishSpecies
@@ -73,5 +73,6 @@ async def delete_species(species_name: str):
 
 
 
-def upload_species_photo(species_name: str, photo):
-    return db_connector.upload_species_photo(species_name, photo)
+async def upload_species_photo(species_name: str, photo: bytes):
+    result = await db_connector.upload_species_photo(species_name, photo)
+    return result
