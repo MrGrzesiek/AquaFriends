@@ -20,7 +20,6 @@ function App() {
 
     checkConnection();
     const intervalId = setInterval(checkConnection, 10000);
-    // Sprawdź, czy token jest w localStorage podczas ładowania komponentu
     const token = localStorage.getItem("authToken");
     if (token) {
       setLoggedIn(true);
@@ -57,10 +56,9 @@ function App() {
   if (!backendAvailable) {
     return (
       <div style={{ textAlign: 'center',
-                    fontSize: 30,backgroundColor: '#84A9BF',
-                    border: '10px outset #ed9731',
-                    padding:"10px"}}>
-        <FontAwesomeIcon icon={faSatelliteDish} size="2x" color="#ed9731" />
+                    fontSize: "2vw",
+                    color: "white"}}>
+        <FontAwesomeIcon icon={faSatelliteDish} size="2x" color="white" />
         <br />
         Brak połączenia z backendem
       </div>

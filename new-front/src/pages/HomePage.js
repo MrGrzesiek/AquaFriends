@@ -8,7 +8,7 @@ const HomePage = ({ onLogout }) => {
     console.log("Użytkownik przekierowany do strony domowej.");
 
     // Zmiana koloru tła dla całej strony po załadowaniu komponentu HomePage
-    document.body.style.backgroundColor = "#84A9BF";
+    document.body.style.backgroundColor = "white";
     document.body.style.backgroundImage = "url('nowe_tło.jpg')";
     document.body.style.height = "auto";
     document.body.style.alignItems = "normal";

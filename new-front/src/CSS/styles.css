@@ -10,7 +10,7 @@
   }
   
   body {
-    background-image: url('../RES/fish1.jpg');
+    background-image: url('../RES/newfish3.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -52,8 +52,8 @@
   
   button {
     border-radius: 20px;
-    border: 1px solid #D92B2B;
-    background-color: #D92B2B;
+    border: 1px solid #2469A6;
+    background-color: #2469A6;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;

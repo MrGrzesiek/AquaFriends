@@ -59,7 +59,6 @@ const checkBackend = async () =>{
       throw new Error('Network response was not ok');
     }
     const testData = await testRes.json();
-    console.log('test response:', testData);
     return true;
   } catch (error) {
     console.error('Fetch error:', error);

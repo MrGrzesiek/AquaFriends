@@ -11,7 +11,7 @@ function Header({ onLogout }) {
 
 const styles = {
   header: {
-    backgroundColor: "#D92B2B",
+    backgroundColor: "#2469A6",
     padding: "2px",
     color: "#fff",
     marginLeft: "64px",

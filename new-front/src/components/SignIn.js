@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import CryptoJS from 'crypto-js';
-import {handleResponse} from './SessionManager';
+import { handleResponse } from './SessionManager';
 
 function SignInForm({ onLogin }) {
   const [state, setState] = useState({
-    email: "",
+    username: "",
     password: "",
     error: ""
   });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -15,6 +17,10 @@ function SignInForm({ onLogin }) {
       ...prevState,
       [name]: value
     }));
+    setErrors({
+      ...errors,
+      [name]: ""
+    });
   };
 
   const handleOnSubmit = async evt => {
@@ -22,11 +28,20 @@ function SignInForm({ onLogin }) {
 
     const { username, password } = state;
 
-    if (!username || !password) {
+    const newErrors = {};
+    if (!username.trim()) {
+      newErrors.username = "Pole nazwa jest wymagane";
+    }
+    if (!password.trim()) {
+      newErrors.password = "Pole hasło jest wymagane";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
       setState(prevState => ({
         ...prevState,
-        error: "Proszę wprowadzić adres e-mail i hasło."
+        error: "Proszę wprowadzić nazwę użytkownika i hasło."
       }));
+      setErrors(newErrors);
       return;
     }
 
@@ -42,7 +57,7 @@ function SignInForm({ onLogin }) {
       });
 
       if (!response.ok) {
-        throw new Error("Nieprawidłowy adres e-mail lub hasło.");
+        throw new Error("Nieprawidłowa nazwa użytkownika lub hasło.");
       }
 
       await handleResponse(response);
@@ -73,6 +88,7 @@ function SignInForm({ onLogin }) {
           name="username"
           value={state.username}
           onChange={handleChange}
+          style={{ border: errors.username ? "2px solid red" : "" }}
         />
         <input
           type="password"
@@ -80,6 +96,7 @@ function SignInForm({ onLogin }) {
           placeholder="Hasło"
           value={state.password}
           onChange={handleChange}
+          style={{ border: errors.password ? "2px solid red" : "" }}
         />
         <button type="submit">Zaloguj</button>
         {state.error && <p className="error-message">{state.error}</p>}

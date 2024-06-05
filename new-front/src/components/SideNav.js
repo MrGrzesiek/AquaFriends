@@ -8,7 +8,7 @@ library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRot
 
 function CustomSideNav({ onLogout }) {
   const styles = {
-    background: "#D92B2B"
+    background: "#2469A6"
   };
   return (
     <div> 
