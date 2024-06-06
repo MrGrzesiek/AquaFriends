@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import CustomSideNav from "../components/SideNav";
-import Header from "../components/Header";
-import "../CSS/styles.css";
+import CustomSideNav from "../../components/nav/SideNav";
+import Header from "../../components/nav/Header";
+import "../../CSS/styles.css";
 
 const HomePage = ({ onLogout }) => {
   useEffect(() => {
@@ -50,7 +50,7 @@ const HomePage = ({ onLogout }) => {
       console.log('Me response:', meData);
 
       // Wywołanie nowego endpointu species
-      const speciesResponse = await fetch('http://localhost:8000/species', {
+      const speciesResponse = await fetch('http://localhost:8000/fishes/species', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenObj.access_token}`

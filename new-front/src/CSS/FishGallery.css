@@ -1,0 +1,92 @@
+.fish-gallery {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-left: 72px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.fish-list, .fish-details {
+    flex-basis: 45%;
+}
+
+.fish-list {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.fish-list h2 {
+    text-align: center;
+    color: #333;
+}
+
+.fish-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.fish-list li {
+    cursor: pointer;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fish-list li:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fish-list li.selected {
+    background-color: #cce7ff;
+    font-weight: bold;
+    border-left: 5px solid rgb(36, 105, 166);
+    padding-left: 10px;
+}
+
+.fish-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fish-card h2 {
+    margin-top: 0;
+    color: rgb(36, 105, 166);
+}
+
+.fish-photo {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.no-selection {
+    font-style: italic;
+    color: #999;
+}
+
+.loading, .error {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+    padding: 20px;
+}
+.species-list {
+    overflow-y: auto; /* Umożliwia pionowe przewijanie */
+    max-height: 47vh; /* Maksymalna wysokość listy */
+}

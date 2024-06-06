@@ -36,7 +36,7 @@
     font-weight: 100;
     line-height: 20px;
     letter-spacing: 0.5px;
-    margin: 20px 0 30px;
+    margin: 10px 0 10px;
   }
   
   span {
@@ -88,12 +88,11 @@
   }
   
   input {
-    background-color: #eee;
-    border: none;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
     transition: background-color 0.3s;
+    border: 1px solid #ccc;
   }
   
   #signup-form input {

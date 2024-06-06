@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../CSS/styles.css";
-import SignInForm from "../components/SignIn";
-import SignUpForm from "../components/SignUp";
-import Logo from "../components/Logo";
+import SignInForm from "../components/auth/SignIn";
+import SignUpForm from "../components/auth/SignUp";
+import Logo from "../components/nav/Logo";
 
 export default function LoginPage({onLogin}) {
   const [loggedIn, setLoggedIn] = useState(false);

@@ -1,5 +1,5 @@
 import React from "react";
-import logoImage from '../RES/logo.png';
+import logoImage from '../../RES/logo.png';
 
 function Header({ onLogout }) {
   return (
@@ -16,6 +16,12 @@ const styles = {
     color: "#fff",
     marginLeft: "64px",
     height: "64px",
+    position: "sticky",
+    top: 0,
+    zIndex: 1000,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "Center",
   },
   logo: {
     height: "60px",

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
-import AdminPage from "./pages/AdminPage";
-import {checkBackend} from "./components/SessionManager"
+import HomePage from "./pages/user/HomePage";
+import AdminPage from "./pages/admin/AdminPage";
+import {checkBackend} from "./components/auth/SessionManager"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 

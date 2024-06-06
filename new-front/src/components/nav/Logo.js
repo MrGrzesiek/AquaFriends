@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '../RES/logo.png'; // Import obrazu logo
+import logoImage from '../../RES/logo.png';
 
 const Logo = () => {
   return (

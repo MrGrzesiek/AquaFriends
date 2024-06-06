@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../CSS/DataForm.css"; // Importing the CSS file
 import "./ApiConnector"
 import { submitSpeciesData, uploadSpeciesImage } from "./ApiConnector";
+import FishGallery from "./SpeciesGallery"; // Import FishGallery component
 
 const NewFishSpecies = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -52,6 +53,18 @@ const NewFishSpecies = ({ onSubmit }) => {
       newErrors.min_salinity = "Zasolenie minimalne nie może być większe niż zasolenie maksymalne.";
       newErrors.max_salinity = "Zasolenie maksymalne nie może być mniejsze niż zasolenie minimalne.";
     }
+    if (parseFloat(formData.min_ph) < 0 || parseFloat(formData.max_ph) < 0) {
+      newErrors.min_ph = "Minimalne pH nie może być ujemne.";
+      newErrors.max_ph = "Maksymalne pH nie może być ujemne.";
+    }
+    if (parseFloat(formData.min_salinity) < 0 || parseFloat(formData.max_salinity) < 0) {
+      newErrors.min_salinity = "Zasolenie minimalne nie może być ujemne.";
+      newErrors.max_salinity = "Zasolenie maksymalne nie może być ujemne.";
+    }
+    if (parseFloat(formData.min_temp) < 0 || 0 > parseFloat(formData.max_temp)) {
+      newErrors.min_temp = "Temperatura minimalna nie może być ujemna.";
+      newErrors.max_temp = "Temperatura maksymalna nie może być ujmena";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -60,13 +73,27 @@ const NewFishSpecies = ({ onSubmit }) => {
     e.preventDefault();
     if (validateForm()) {
       console.log(formData);
-      await submitSpeciesData(formData);
-      if(formData.image)
-        {
-            await uploadSpeciesImage(formData.name,formData.image);
+      const res = await submitSpeciesData(formData);
+      console.log(res.code);
+  
+      if (res.code === 200) {
+        let successMessage = "Pomyślnie dodano gatunek";
+        if (formData.image) {
+          const res2 = await uploadSpeciesImage(formData.name, formData.image);
+          console.log(res2.code);
+          if (res2.code === 200) {
+            successMessage += " z obrazkiem";
+          }
         }
+        alert(successMessage);
+        FishGallery.fetchData();
+      } else if (res.code === 400) {
+        alert("Taki gatunek już istnieje.");
+      }
     }
   };
+  
+  
 
   return (
     <form className="data-form" onSubmit={handleSubmit}>
