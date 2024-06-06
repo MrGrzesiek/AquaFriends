@@ -1,13 +1,13 @@
-from fastapi import APIRouter
-from fastapi import Depends, HTTPException
+from bson import ObjectId
+from fastapi import APIRouter, Depends, HTTPException
 
-import sys
-from os import path
-sys.path.append(path.join(path.dirname(__file__), '...'))
-from models import User
-from dependencies.auth import get_current_active_user, get_admin_user, login_required, admin_required
+from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_aquarium, get_aquarium_by_id
+from ...dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
+    get_current_active_user
+from ...models import User, Aquarium
 
 router = APIRouter(prefix='/aquariums')
+
 
 @router.get('/public')
 def public():
@@ -26,5 +26,47 @@ def secret(user: User = Depends(get_admin_user)):
     return "Secret text for admins"
 
 
+router = APIRouter(prefix='/aquariums')
 
 
+@admin_required
+@router.post('/')
+async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
+    aquarium_id = create_aquarium(aquarium)
+    if not aquarium_id:
+        raise HTTPException(status_code=500, detail="Failed to create aquarium")
+    return {"aquarium_id": str(aquarium_id)}
+
+
+@login_required
+@router.get('/')
+async def list_aquariums(user: User = Depends(get_current_user)):
+    aquariums = get_all_aquariums()
+    return aquariums
+
+
+@login_required
+@router.get('/{aquarium_id}')
+async def read_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
+    aquarium = get_aquarium_by_id(ObjectId(aquarium_id))
+    if not aquarium:
+        raise HTTPException(status_code=404, detail="Aquarium not found")
+    return aquarium
+
+
+@admin_required
+@router.put('/')
+async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
+    success = update_aquarium(aquarium)
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to update aquarium")
+    return {"message": "Aquarium updated successfully"}
+
+
+@admin_required
+@router.delete('/')
+async def delete_existing_aquarium(aquarium_id: str, user: User = Depends(get_admin_user)):
+    success = delete_aquarium(ObjectId(aquarium_id))
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to delete aquarium")
+    return {"message": "Aquarium deleted successfully"}

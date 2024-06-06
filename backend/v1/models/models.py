@@ -18,8 +18,9 @@ class Aquarium(BaseModel):
     """
     id: int
     name: str
-    dimensions: List[Dict[str, int]]
-    components: List[Dict[str, int]]
+    dimensions: Dict[str, int]  # {'length': int, 'width': int, 'height': int}
+    components: List[Dict[str, str]]  # [{'component_type': str, 'details': str}]
+    fish_species: List[int]  # List of fish species IDs
 
 
 class User(BaseModel):

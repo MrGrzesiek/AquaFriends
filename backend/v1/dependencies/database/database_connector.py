@@ -1,5 +1,8 @@
+import pymongo
+from fastapi import UploadFile, File
 from pymongo.collection import Collection
 from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 from threading import Lock
 
 from dependencies.database.file_handler import FileHandler
@@ -9,9 +12,6 @@ from dependencies.database.file_handler import FileHandler
 class Connector:
     DB_NAME = 'database'
     USERS_COLLECTION = 'users'
-
-    FISH_SPECIES_IDENTIFIER_FIELD_NAME = 'species_name'
-
     _instance = None
     _lock: Lock = Lock()
 
@@ -75,24 +75,13 @@ class Connector:
             print(f'Failed to get database named {collection_name}')
             return None
 
-    def upload_photo(self, photo: bytes, identifier_field_name: str = None, identifier: str = None):
-        if not photo:
-            return {'error': 'No file provided', 'code': 400}
-        elif not identifier_field_name or not identifier:
-            return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
 
-        return self.file_handler.upload_photo(photo, identifier_field_name, identifier)
-
-    def get_photo(self, identifier_field_name: str = None, identifier: str = None):
-        if not identifier_field_name or not identifier:
-            return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
-
-        return self.file_handler.get_file(identifier_field_name, identifier)
+    def upload_bson(self, file: UploadFile = File(...)):
+        return self.file_handler.upload_bson(file)
 
     """
-    Collection getters
+    If you need more collection getters, you can add them here.
     """
-
     def get_users_collection(self) -> Collection:
         return self.__get_collection("users")
 
@@ -101,29 +90,3 @@ class Connector:
 
     def get_file_collection(self) -> Collection:
         return self.__get_collection("file")
-
-    """
-    Files functions
-    """
-
-    async def upload_species_photo(self, species_name: str, file: bytes):
-        """
-        Uploads photo of fish species to the database.
-        :param species_name:
-        :param file:
-        :return:
-        """
-        # Check if fish species with this name exists
-        species = self.get_species_collection().find_one({'name': species_name.lower()})
-        if not species:
-            return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
-
-        return self.upload_photo(file, self.FISH_SPECIES_IDENTIFIER_FIELD_NAME, species_name.lower())
-
-    async def get_species_photo(self, species_name: str):
-        """
-        Retrieves photo of fish species from the database.
-        :param species_name:
-        :return:
-        """
-        return self.get_photo(self.FISH_SPECIES_IDENTIFIER_FIELD_NAME, species_name.lower())
