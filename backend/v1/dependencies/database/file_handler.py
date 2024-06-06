@@ -1,11 +1,3 @@
-import os
-from uuid import uuid4
-from PIL import Image
-import random
-
-from bson import decode_all
-from fastapi import UploadFile, File
-from fastapi.responses import JSONResponse
 from pymongo.collection import Collection
 
 
@@ -46,9 +38,12 @@ class FileHandler:
 
         return {'message': 'photo uploaded successfully', 'code': 200}
 
+    def get_file(self, identifier_field_name: str = None, identifier: str = None):
+        if not identifier_field_name or not identifier:
+            return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
 
-def get_file(identifier_field_name: str = None, identifier: str = None):
-    if not identifier_field_name or not identifier:
-        return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
+        file = self.file_collection.find_one({f'{identifier_field_name}': identifier})
+        if not file:
+            return {'error': 'File not found', 'code': 404}
 
-    pass
+        return file

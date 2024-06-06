@@ -9,7 +9,7 @@ from fastapi.params import File
 sys.path.append(path.join(path.dirname(__file__), '...'))
 from models import User, FishSpecies, NewFishSpecies
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required
-from .utils import create_species, get_species, update_species, delete_species, upload_species_photo
+from .utils import create_species, get_species, update_species, delete_species, upload_species_photo, get_species_photo
 
 router = APIRouter(prefix='/fishes')
 
@@ -20,6 +20,7 @@ async def species(species: NewFishSpecies, user: User = Depends(get_admin_user))
     result = await create_species(species)
     return result
 
+
 @admin_required
 @router.post('/species_photo/{species_name}')
 async def species_photo(species_name, photo: UploadFile = File(...), user: User = Depends(get_admin_user)):
@@ -28,11 +29,12 @@ async def species_photo(species_name, photo: UploadFile = File(...), user: User 
     result = await upload_species_photo(species_name, photo)
     return result
 
+
 @login_required
 @router.get('/species_photo/{species_name}')
-async def species_photo(species_name: str, user: User = Depends(get_current_user)):# -> FileResponse | dict:
-    # return get_species_photo(species_name)
-    return {'message': 'Not implemented', 'code': 501}
+async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse:
+    result = await get_species_photo(species_name)
+    return result
 
 
 @login_required
@@ -54,4 +56,3 @@ async def species(species: FishSpecies, user: User = Depends(get_admin_user)):
 async def species(species_name: str, user: User = Depends(get_admin_user)):
     result = await delete_species(species_name)
     return result
-
