@@ -1,11 +1,12 @@
 from bson import ObjectId
-from fastapi import HTTPException
+from fastapi import HTTPException, File
 from pymongo import collection
 
 from models import FishSpecies, NewFishSpecies
 from dependencies.database import Connector
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from .wrappers import validate_species
+
 db_connector = Connector()
 
 
@@ -57,8 +58,10 @@ async def update_species(species_data: FishSpecies):
         return {'code': 404, 'message': f'Fish species {species_data.name} not found'}
 
     # Update the fish species
-    db_connector.get_species_collection().find_one_and_update({'name': species_data.name}, {'$set': species_data.dict()})
-    return {'code': 200, 'message': f'{species_data.name} species updated successfully'}#, 'species': updated_species}
+    db_connector.get_species_collection().find_one_and_update({'name': species_data.name},
+                                                              {'$set': species_data.dict()})
+    return {'code': 200,
+            'message': f'{species_data.name} species updated successfully'}  # , 'species': updated_species}
 
 
 async def delete_species(species_name: str):
@@ -72,6 +75,14 @@ async def delete_species(species_name: str):
     return {'code': 200, 'message': f'{species_name.lower()} species deleted successfully'}
 
 
+async def upload_species_photo(species_name: str, photo: bytes):
+    result = await db_connector.upload_species_photo(species_name, photo)
+    return result
 
-def upload_species_photo(species_name: str, photo):
-    return db_connector.upload_species_photo(species_name, photo)
+
+def get_species_photo(species_name: str) -> FileResponse | dict:
+    species = db_connector.get_species_collection().find_one({'name': species_name.lower()})
+    if not species:
+        return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+
+    photo = db_connector.get_file_collection().find_one({'species': species_name.lower()})
