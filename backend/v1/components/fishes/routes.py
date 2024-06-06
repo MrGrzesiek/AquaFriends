@@ -19,7 +19,7 @@ router = APIRouter(prefix='/fishes')
 async def species(species: NewFishSpecies): #, user: User = Depends(get_admin_user)):
     return create_species(species)
 
-#@admin_required
+@admin_required
 @router.post('/species_photo/{species_name}')
 async def species_photo(species_name, photo: UploadFile = File(...), user: User = Depends(get_admin_user)):
     photo.filename = f'{species_name}.{photo.filename.split(".")[-1]}'  # Rename photo to species_name.extension
@@ -29,8 +29,9 @@ async def species_photo(species_name, photo: UploadFile = File(...), user: User 
 
 @login_required
 @router.get('/species_photo/{species_name}')
-async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse:
-    return get_species_photo(species_name)
+async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse | dict:
+    # return get_species_photo(species_name)
+    return {'message': 'Not implemented', 'code': 501}
 
 
 @login_required
