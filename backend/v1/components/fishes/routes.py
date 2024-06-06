@@ -16,8 +16,9 @@ router = APIRouter(prefix='/fishes')
 
 @admin_required
 @router.post('/species')
-async def species(species: NewFishSpecies): #, user: User = Depends(get_admin_user)):
-    return create_species(species)
+async def species(species: NewFishSpecies, user: User = Depends(get_admin_user)):
+    result = await create_species(species)
+    return result
 
 @admin_required
 @router.post('/species_photo/{species_name}')
@@ -37,18 +38,20 @@ async def species_photo(species_name: str, user: User = Depends(get_current_user
 @login_required
 @router.get('/species')
 async def species(user: User = Depends(get_current_user)):
-    return get_species()
+    result = await get_species()
+    return result
 
 
 @admin_required
 @router.put('/species')
 async def species(species: FishSpecies, user: User = Depends(get_admin_user)):
-    return update_species(species)
+    result = await update_species(species)
+    return result
 
 
 @admin_required
 @router.delete('/species')
 async def species(species_name: str, user: User = Depends(get_admin_user)):
-    return delete_species(species_name)
-
+    result = await delete_species(species_name)
+    return result
 
