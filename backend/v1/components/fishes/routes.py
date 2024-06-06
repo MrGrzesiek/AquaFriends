@@ -29,7 +29,7 @@ async def species_photo(species_name, photo: UploadFile = File(...), user: User 
 
 @login_required
 @router.get('/species_photo/{species_name}')
-async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse | dict:
+async def species_photo(species_name: str, user: User = Depends(get_current_user)):# -> FileResponse | dict:
     # return get_species_photo(species_name)
     return {'message': 'Not implemented', 'code': 501}
 

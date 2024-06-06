@@ -51,7 +51,4 @@ def get_file(identifier_field_name: str = None, identifier: str = None):
     if not identifier_field_name or not identifier:
         return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
 
-    try:
-
-    except Exception as e:
-        return {'message': 'Error obtaining file'}
+    pass
