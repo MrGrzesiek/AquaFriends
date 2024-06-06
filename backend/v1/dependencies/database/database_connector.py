@@ -75,19 +75,22 @@ class Connector:
             print(f'Failed to get database named {collection_name}')
             return None
 
+    def upload_photo(self, photo: bytes, identifier_field_name: str = None, identifier: str = None):
+        if not photo:
+            return {'error': 'No file provided', 'code': 400}
+        elif not identifier_field_name or not identifier:
+            return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
 
-    async def upload_species_photo(self, species_name: str, file: bytes):
-        # Check if fish species with this name exists
-        species = self.get_species_collection().find_one({'name': species_name.lower()})
-        if not species:
-            return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+        return self.file_handler.upload_photo(photo, identifier_field_name, identifier)
 
-        result = self.file_handler.upload_photo(file)
-        return result
+    def get_photo(self, identifier_field_name: str = None, identifier: str = None):
+        if not identifier_field_name or not identifier:
+            return {'error': 'Identifier or it\'s field name not provided', 'code': 400}
 
     """
-    If you need more collection getters, you can add them here.
+    Collection getters
     """
+
     def get_users_collection(self) -> Collection:
         return self.__get_collection("users")
 
@@ -96,3 +99,22 @@ class Connector:
 
     def get_file_collection(self) -> Collection:
         return self.__get_collection("file")
+
+    """
+    Files functions
+    """
+
+    async def upload_species_photo(self, species_name: str, file: bytes):
+        """
+        Uploads photo of fish species to the database.
+        :param species_name:
+        :param file:
+        :return:
+        """
+        FISH_SPECIES_IDENTIFIER_FIELD_NAME = 'species_name'
+        # Check if fish species with this name exists
+        species = self.get_species_collection().find_one({'name': species_name.lower()})
+        if not species:
+            return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+
+        return self.upload_photo(file, FISH_SPECIES_IDENTIFIER_FIELD_NAME, species_name.lower())

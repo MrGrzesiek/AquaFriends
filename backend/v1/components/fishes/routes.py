@@ -1,5 +1,5 @@
-from fastapi import APIRouter, UploadFile
-from fastapi import Depends, HTTPException
+from fastapi import APIRouter, UploadFile, Depends, HTTPException
+from fastapi.responses import FileResponse
 
 import sys
 from os import path
@@ -26,6 +26,11 @@ async def species_photo(species_name, photo: UploadFile = File(...), user: User 
     photo = await photo.read()
     result = await upload_species_photo(species_name, photo)
     return result
+
+@login_required
+@router.get('/species_photo/{species_name}')
+async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse:
+    return get_species_photo(species_name)
 
 
 @login_required
