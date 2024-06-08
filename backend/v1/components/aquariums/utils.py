@@ -1,7 +1,7 @@
 from pymongo.collection import Collection
 from bson import ObjectId
-from ....v1.models import Aquarium
-from ....v1.dependencies.database.database_connector import Connector
+from models import Aquarium
+from dependencies.database.database_connector import Connector
 
 connector = Connector(mongo_uri="your_mongo_uri_here")
 

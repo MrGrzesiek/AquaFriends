@@ -2,9 +2,9 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
 
 from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_aquarium, get_aquarium_by_id
-from ...dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
+from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
-from ...models import User, Aquarium
+from models import User, Aquarium
 
 router = APIRouter(prefix='/aquariums')
 
@@ -30,7 +30,7 @@ router = APIRouter(prefix='/aquariums')
 
 
 @admin_required
-@router.post('/')
+@router.post('/new_type_aquarium')
 async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
     aquarium_id = create_aquarium(aquarium)
     if not aquarium_id:
@@ -39,7 +39,7 @@ async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin
 
 
 @login_required
-@router.get('/')
+@router.get('/all_aquariums')
 async def list_aquariums(user: User = Depends(get_current_user)):
     aquariums = get_all_aquariums()
     return aquariums
@@ -55,7 +55,7 @@ async def read_aquarium(aquarium_id: str, user: User = Depends(get_current_user)
 
 
 @admin_required
-@router.put('/')
+@router.put('/update/{aquarium_id}')
 async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
     success = update_aquarium(aquarium)
     if not success:
@@ -64,7 +64,7 @@ async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_
 
 
 @admin_required
-@router.delete('/')
+@router.delete('/delete/{aquarium_id}')
 async def delete_existing_aquarium(aquarium_id: str, user: User = Depends(get_admin_user)):
     success = delete_aquarium(ObjectId(aquarium_id))
     if not success:
