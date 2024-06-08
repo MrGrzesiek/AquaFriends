@@ -39,6 +39,10 @@ def load_user(email: str, session_provider):
     return get_user(email)
 
 
+def __new_token(username: str):
+    return manager.create_access_token(data=dict(sub=username))
+
+
 def login(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
@@ -46,8 +50,11 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
     if not user or user.password_hash != password or user.username != username:
         raise HTTPException(status_code=400, detail=f'Invalid credentials.')
 
-    access_token = manager.create_access_token(data=dict(sub=username))
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    return {'access_token': __new_token(username), 'token_type': 'bearer'}
+
+# TODO: Implement token blacklisting
+def refresh_token(user: User):
+    return {'access_token': __new_token(user.username), 'token_type': 'bearer'}
 
 
 def register(user: UserCreate):
