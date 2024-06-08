@@ -26,40 +26,39 @@ def secret(user: User = Depends(get_admin_user)):
     return "Secret text for admins"
 
 
-router = APIRouter(prefix='/aquariums')
+router = APIRouter(prefix='/Aquariums')
 
 
-@admin_required
-@router.post('/new_type_aquarium')
+@login_required
+@router.post('/new_aquarium')
 async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
-    aquarium_id = create_aquarium(aquarium)
-    if not aquarium_id:
-        raise HTTPException(status_code=500, detail="Failed to create aquarium")
-    return {"aquarium_id": str(aquarium_id)}
+    Aquarium_id = create_aquarium(aquarium)
+    if not Aquarium_id:
+        raise HTTPException(status_code=500, detail="Failed to create Aquarium")
+    return {"Aquarium_id": str(Aquarium_id)}
 
 
 @login_required
 @router.get('/all_aquariums')
 async def list_aquariums(user: User = Depends(get_current_user)):
-    aquariums = get_all_aquariums()
-    return aquariums
+    Aquariums = get_all_aquariums()
+    return Aquariums
 
 
 @login_required
 @router.get('/{aquarium_id}')
 async def read_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
-    aquarium = get_aquarium_by_id(ObjectId(aquarium_id))
-    if not aquarium:
+    Aquarium = get_aquarium_by_id(ObjectId(aquarium_id))
+    if not Aquarium:
         raise HTTPException(status_code=404, detail="Aquarium not found")
-    return aquarium
-
+    return Aquarium
 
 @admin_required
 @router.put('/update/{aquarium_id}')
 async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
     success = update_aquarium(aquarium)
     if not success:
-        raise HTTPException(status_code=500, detail="Failed to update aquarium")
+        raise HTTPException(status_code=500, detail="Failed to update Aquarium")
     return {"message": "Aquarium updated successfully"}
 
 
@@ -68,5 +67,5 @@ async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_
 async def delete_existing_aquarium(aquarium_id: str, user: User = Depends(get_admin_user)):
     success = delete_aquarium(ObjectId(aquarium_id))
     if not success:
-        raise HTTPException(status_code=500, detail="Failed to delete aquarium")
+        raise HTTPException(status_code=500, detail="Failed to delete Aquarium")
     return {"message": "Aquarium deleted successfully"}

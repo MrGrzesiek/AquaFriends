@@ -9,7 +9,7 @@ connector = Connector(mongo_uri="your_mongo_uri_here")
 def create_aquarium(aquarium_data: Aquarium):
     collection = connector.get_aquariums_collection()
     if collection:
-        result = collection.insert_one(aquarium_data.dict(by_alias=True))
+        result = collection.insert_one(aquarium_data.model_dump(by_alias=True))
         return result.inserted_id
     return None
 
@@ -31,7 +31,7 @@ def get_aquarium_by_id(aquarium_id: ObjectId):
 def update_aquarium(aquarium_data: Aquarium):
     collection = connector.get_aquariums_collection()
     if collection:
-        result = collection.update_one({"_id": aquarium_data.id}, {"$set": aquarium_data.dict(by_alias=True)})
+        result = collection.update_one({"_id": aquarium_data.id}, {"$set": aquarium_data.model_dump(by_alias=True)})
         return result.modified_count > 0
     return False
 

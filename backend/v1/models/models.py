@@ -14,24 +14,29 @@ class ActiveSession(BaseModel):
 
 class Aquarium(BaseModel):
     """
-    Class used to represent an aquarium in the database
+    Class used to create a new Aquarium
     """
     id: int
+    user_id: int
     name: str
-    dimensions: Dict[str, float]  # {'length': float, 'width': float, 'height': float}
-    components: List[Dict[str, str]]  # [{'component_type': str, 'details': str}]
-    fish_species: List[Dict[str, int]]  # [{'fish_name: str', 'quantity': int}]`
-
-
-class Water(BaseModel):
-    """
-    Class used to represent a water in the aquarium
-    """
-    quantity: float
+    height: float
+    width: float
+    length: float
+    substrate: str
+    plants: List[str]
+    decorations: List[str]
     temperature: float
     salinity: float
     ph: float
-
+    N02: float
+    NO3: float
+    GH: float
+    KH: float
+    pump: Dict[str, int]
+    heater: Dict[str, int]
+    luminance: Dict[str, int]
+    accessories: List[Dict[str, str]]
+    fish_species_list_id: int
 
 class User(BaseModel):
     """
