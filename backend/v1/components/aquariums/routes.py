@@ -32,26 +32,27 @@ router = APIRouter(prefix='/Aquariums')
 @login_required
 @router.post('/new_aquarium')
 async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
-    Aquarium_id = create_aquarium(aquarium)
-    if not Aquarium_id:
+    aquarium_id = create_aquarium(aquarium)
+    if not aquarium_id:
         raise HTTPException(status_code=500, detail="Failed to create Aquarium")
-    return {"Aquarium_id": str(Aquarium_id)}
+    return {"Aquarium_id": str(aquarium_id)}
 
 
 @login_required
 @router.get('/all_aquariums')
 async def list_aquariums(user: User = Depends(get_current_user)):
-    Aquariums = get_all_aquariums()
-    return Aquariums
+    aquariums = get_all_aquariums()
+    return aquariums
 
 
 @login_required
 @router.get('/{aquarium_id}')
 async def read_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
-    Aquarium = get_aquarium_by_id(ObjectId(aquarium_id))
-    if not Aquarium:
+    aquarium = get_aquarium_by_id(ObjectId(aquarium_id))
+    if not aquarium:
         raise HTTPException(status_code=404, detail="Aquarium not found")
-    return Aquarium
+    return aquarium
+
 
 @admin_required
 @router.put('/update/{aquarium_id}')
