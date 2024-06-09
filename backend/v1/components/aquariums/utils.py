@@ -3,7 +3,7 @@ from bson import ObjectId
 from models import Aquarium
 from dependencies.database.database_connector import Connector
 
-connector = Connector(mongo_uri="your_mongo_uri_here")
+connector = Connector()
 
 
 def create_aquarium(aquarium_data: Aquarium):
