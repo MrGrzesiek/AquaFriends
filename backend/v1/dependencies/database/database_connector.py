@@ -13,6 +13,8 @@ class Connector:
 
     FISH_SPECIES_IDENTIFIER_FIELD_NAME = 'species_name'
 
+    AQUARIUMS_COLLECTION = 'aquariums'
+
     _instance = None
     _lock: Lock = Lock()
 
@@ -106,6 +108,8 @@ class Connector:
     def get_file_collection(self) -> Collection:
         return self.__get_collection("file")
 
+    def get_aquariums_collection(self) -> Collection:
+        return self.__get_collection("aquariums")
 
     """
     Files functions
@@ -132,3 +136,10 @@ class Connector:
         :return:
         """
         return self.get_photo(self.FISH_SPECIES_IDENTIFIER_FIELD_NAME, species_name.lower())
+
+    # async def upload_aquarium_photo(self, aquarium_id: int, file: bytes):
+    #     self.get_aquariums_collection().find_one({'id': aquarium_id})
+    #     if not aquarium_id:
+    #         return {'code': 404, 'message': f'Aquarium id: {aquarium_id} not found'}
+    #
+    #     return self.upload_photo(file, self.AQUARIUMS_COLLECTION, aquarium_id)

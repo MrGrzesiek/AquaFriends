@@ -14,14 +14,29 @@ class ActiveSession(BaseModel):
 
 class Aquarium(BaseModel):
     """
-    Class used to represent an aquarium in the database
+    Class used to create a new Aquarium
     """
     id: int
+    user_id: int
     name: str
-    dimensions: Dict[str, int]  # {'length': int, 'width': int, 'height': int}
-    components: List[Dict[str, str]]  # [{'component_type': str, 'details': str}]
-    fish_species: List[int]  # List of fish species IDs
-
+    height: float
+    width: float
+    length: float
+    substrate: str
+    plants: List[str]
+    decorations: List[str]
+    temperature: float
+    salinity: float
+    ph: float
+    N02: float
+    NO3: float
+    GH: float
+    KH: float
+    pump: Dict[str, int]
+    heater: Dict[str, int]
+    luminance: Dict[str, int]
+    accessories: List[Dict[str, str]]
+    fish_species_list_id: int
 
 class User(BaseModel):
     """
@@ -72,4 +87,4 @@ class FishSpecies(NewFishSpecies):
     Class used to represent a fish species in the database
     Photos need to be uploaded to the database separately
     """
-    disliked_species: List[int] # List of fish species IDs that this species does not get along with
+    disliked_species: List[int]  # List of fish species IDs that this species does not get along with
