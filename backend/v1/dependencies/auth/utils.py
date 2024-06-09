@@ -58,6 +58,7 @@ def refresh_token(user: User):
 
 
 def register(user: UserCreate):
+    # TODO: Implement check for existing user
     scopes = None
     if '@aquafriends.com' in user.email:
         scopes = ['admin']

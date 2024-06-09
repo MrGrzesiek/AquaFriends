@@ -28,6 +28,7 @@ class User(BaseModel):
     Class used for authentication purposes with login manager
     """
     email: str
+    username: str
     scopes: List[str]
 
 
