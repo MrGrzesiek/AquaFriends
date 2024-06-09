@@ -7,7 +7,7 @@ def validate_aquarium(func):
         if None in aquarium.dict().values():
             raise HTTPException(status_code=400, detail="Missing aquarium data")
 
-        if aquarium.aquarium is None:
+        if aquarium.name is None:
             raise HTTPException(status_code=400, detail="Missing aquarium name")
 
         if aquarium.temperature < 0 or aquarium.temperature > 100:
