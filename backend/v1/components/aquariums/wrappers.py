@@ -25,10 +25,10 @@ def validate_aquarium(func):
         if aquarium.ph >= 8 or aquarium.ph <= 2:
             raise HTTPException(status_code=400, detail="pH cannot be more than 8 and less than 4")
 
-        if aquarium.N02 <= 0:
+        if aquarium.No2 <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
-        if aquarium.N03 <= 0:
+        if aquarium.No3 <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
         if aquarium.GH <= 0:
