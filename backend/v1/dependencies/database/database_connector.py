@@ -145,7 +145,5 @@ class Connector:
     """
     def log_aquarium(self, aquarium_data: Aquarium):
         collection = self.get_aquarium_logs_collection()
-        if collection:
-            result = collection.insert_one(aquarium_data.dict())
-            return result.inserted_id
-        return None
+        result = collection.insert_one(aquarium_data.dict())
+        return result
