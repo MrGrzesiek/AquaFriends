@@ -1,8 +1,10 @@
 from pymongo.collection import Collection
 from bson import ObjectId
 from models import Aquarium
-from dependencies.database.database_connector import Connector
+from dependencies.database import Connector, log_aquarium_history
 from fastapi.responses import JSONResponse
+
+from .wrappers import validate_aquarium
 
 connector = Connector()
 
@@ -23,6 +25,8 @@ Additional modules that can use these functions: Aqua Monitor, AquaLife
 """
 
 
+@validate_aquarium
+@log_aquarium_history
 def create_aquarium(aquarium: Aquarium):
     try:
         connector.get_aquariums_collection().insert_one(aquarium.model_dump())
@@ -44,6 +48,8 @@ def get_all_aquariums():
         content={'code': 200, 'message': 'Aquariums retrieved successfully', 'species': aquariums})
 
 
+@validate_aquarium
+@log_aquarium_history
 def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
     if not connector.get_aquariums_collection().find_one:
         return {'code': 404, 'message': f'Aquarium {aquarium_id} not found'}
