@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pymongo.collection import Collection
 from pymongo.mongo_client import MongoClient
 from threading import Lock
@@ -145,5 +147,8 @@ class Connector:
     """
     def log_aquarium(self, aquarium_data: Aquarium):
         collection = self.get_aquarium_logs_collection()
-        result = collection.insert_one(aquarium_data.dict())
+
+        aquarium_dict = aquarium_data.dict()
+        aquarium_dict['date'] = datetime.now()
+        result = collection.insert_one(aquarium_dict)
         return result
