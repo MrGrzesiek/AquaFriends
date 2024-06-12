@@ -10,31 +10,31 @@ def validate_aquarium(func):
         if aquarium.name is None:
             raise HTTPException(status_code=400, detail="Missing aquarium name")
 
-        if aquarium.temperature < 0 or aquarium.temperature > 100:
+        if aquarium.temperature <= 0 or aquarium.temperature >= 100:
             raise HTTPException(status_code=400, detail="Temperature must be between 0 and 100 degrees Celsius")
 
-        if aquarium.width < 0:
+        if aquarium.width <= 0.05:
             raise HTTPException(status_code=400, detail="Width is negative")
 
-        if aquarium.height < 0:
+        if aquarium.height <= 0.05:
             raise HTTPException(status_code=400, detail="Height is negative")
 
-        if aquarium.length < 0:
+        if aquarium.length <= 0.05:
             raise HTTPException(status_code=400, detail="Length is negative")
 
-        if aquarium.ph > 8 or aquarium.ph < 4:
+        if aquarium.ph >= 8 or aquarium.ph <= 2:
             raise HTTPException(status_code=400, detail="pH cannot be more than 8 and less than 4")
 
-        if aquarium.N02 < 0:
+        if aquarium.N02 <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
-        if aquarium.N03 < 0:
+        if aquarium.N03 <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
-        if aquarium.GH < 0:
+        if aquarium.GH <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
-        if aquarium.KH < 0:
+        if aquarium.KH <= 0:
             raise HTTPException(status_code=400, detail="N02 cannot be negative")
 
         return func(*args, **kwargs)

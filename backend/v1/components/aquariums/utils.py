@@ -16,6 +16,13 @@ def convert_mongo_id(document):
     return document
 
 
+"""
+All functions below this comment implement basic API calls 
+to modify create and delete aquariums primarily used in AquaMaker and AquaDecorator
+Additional modules that can use these functions: Aqua Monitor, AquaLife
+"""
+
+
 def create_aquarium(aquarium: Aquarium):
     try:
         connector.get_aquariums_collection().insert_one(aquarium.model_dump())
@@ -43,7 +50,7 @@ def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
 
     id = ObjectId(aquarium_id)
     connector.get_aquariums_collection().find_one_and_update({'_id': id},
-                                                           {'$set': aquarium_data.model_dump()})
+                                                             {'$set': aquarium_data.model_dump()})
     return {'code': 200,
             'message': f'{aquarium_id} updated successfully'}
 
@@ -58,37 +65,42 @@ def delete_aquarium(aquarium_id: str):
     return {'code': 200, 'message': f'{aquarium_id} deleted successfully'}
 
 
-# {
-#     "username": "test",
-#     "name": "testaq1",
-#     "height": 10,
-#     "width": 10,
-#     "length": 10,
-#     "substrate": "stone",
-#     "plants": {
-#         "vine": 1
-#     },
-#     "decorations": {
-#     },
-#     "temperature": 0,
-#     "ph": 0.2,
-#     "N02": 0.3,
-#     "NO3": 0.4,
-#     "GH": 0.5,
-#     "KH": 0.6,
-#     "pump": {
-#
-#     },
-#     "heater": {
-#
-#     },
-#     "luminance": {
-#
-#     },
-#     "accessories": {
-#
-#     },
-#     "fish_species": {
-#
-#     }
-# }
+"""
+model of test aquarium for easier testing
+
+{
+    "username": "test",
+    "name": "testaq1",
+    "height": 10,
+    "width": 10,
+    "length": 10,
+    "substrate": "stone",
+    "plants": {
+        "vine": 1
+    },
+    "decorations": {
+    },
+    "temperature": 0,
+    "ph": 0.2,
+    "N02": 0.3,
+    "NO3": 0.4,
+    "GH": 0.5,
+    "KH": 0.6,
+    "pump": {
+
+    },
+    "heater": {
+
+    },
+    "luminance": {
+
+    },
+    "accessories": {
+
+    },
+    "fish_species": {
+
+    }
+}
+
+"""
