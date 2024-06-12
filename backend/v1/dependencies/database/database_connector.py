@@ -10,10 +10,8 @@ from models import Aquarium
 class Connector:
     DB_NAME = 'database'
     USERS_COLLECTION = 'users'
-
-    FISH_SPECIES_IDENTIFIER_FIELD_NAME = 'species_name'
-
     AQUARIUMS_COLLECTION = 'aquariums'
+    FISH_SPECIES_IDENTIFIER_FIELD_NAME = 'species_name'
 
     _instance = None
     _lock: Lock = Lock()

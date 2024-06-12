@@ -16,17 +16,15 @@ class Aquarium(BaseModel):
     """
     Class used to create a new Aquarium
     """
-    id: int
-    user_id: int
+    username: str
     name: str
     height: float
     width: float
     length: float
     substrate: str
-    plants: List[str]
-    decorations: List[str]
+    plants: Dict[str, int]
+    decorations: Dict[str, int]
     temperature: float
-    salinity: float
     ph: float
     N02: float
     NO3: float
@@ -35,8 +33,9 @@ class Aquarium(BaseModel):
     pump: Dict[str, int]
     heater: Dict[str, int]
     luminance: Dict[str, int]
-    accessories: List[Dict[str, str]]
-    fish_species_list_id: int
+    accessories: Dict[str, str]
+    fish_species: Dict[str, int]
+
 
 class User(BaseModel):
     """
