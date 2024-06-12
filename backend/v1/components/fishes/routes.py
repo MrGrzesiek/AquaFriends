@@ -13,16 +13,23 @@ from .utils import create_species, get_species, update_species, delete_species, 
 
 router = APIRouter(prefix='/fishes')
 
+tags_metadata = [
+    {
+        'name': 'Fish species creator',
+        'description': 'Admin permission required.',
+    }
+]
+
 
 @admin_required
-@router.post('/species')
+@router.post('/species', tags=['Fish species creator'])
 async def species(species: NewFishSpecies, user: User = Depends(get_admin_user)):
     result = await create_species(species)
     return result
 
 
 @admin_required
-@router.post('/species_photo/{species_name}')
+@router.post('/species_photo/{species_name}', tags=['Fish species creator'])
 async def species_photo(species_name, photo: UploadFile = File(...), user: User = Depends(get_admin_user)):
     photo.filename = f'{species_name}.{photo.filename.split(".")[-1]}'  # Rename photo to species_name.extension
     photo = await photo.read()
@@ -31,28 +38,28 @@ async def species_photo(species_name, photo: UploadFile = File(...), user: User 
 
 
 @login_required
-@router.get('/species_photo/{species_name}')
+@router.get('/species_photo/{species_name}', tags=['Fish species creator'])
 async def species_photo(species_name: str, user: User = Depends(get_current_user)) -> FileResponse:
     result = await get_species_photo(species_name)
     return result
 
 
 @login_required
-@router.get('/species')
+@router.get('/species', tags=['Fish species creator'])
 async def species(user: User = Depends(get_current_user)):
     result = await get_species()
     return result
 
 
 @admin_required
-@router.put('/species')
+@router.put('/species', tags=['Fish species creator'])
 async def species(species: FishSpecies, user: User = Depends(get_admin_user)):
     result = await update_species(species)
     return result
 
 
 @admin_required
-@router.delete('/species')
+@router.delete('/species', tags=['Fish species creator'])
 async def species(species_name: str, user: User = Depends(get_admin_user)):
     result = await delete_species(species_name)
     return result
