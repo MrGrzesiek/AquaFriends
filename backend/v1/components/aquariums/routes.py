@@ -49,7 +49,7 @@ AquaMaker, AquaDecorator
 
 @admin_required
 @router.put('/update/{aquarium_id}')
-async def update_existing_aquarium(aquarium: Aquarium, aquarium_id, user: User = Depends(get_admin_user)):
+async def update_existing_aquarium(aquarium: Aquarium, aquarium_id, user: User = Depends(get_current_user)):
     result = update_aquarium(aquarium, aquarium_id)
     return result
 

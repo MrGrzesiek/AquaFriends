@@ -33,8 +33,8 @@ def create_aquarium(aquarium: Aquarium):
     except Exception as e:
         print(e)
         print(f'Failed to create fish species: {aquarium.model_dump()}')
-        return {'code': 500, 'message': 'Failed to create fish species'}
-    return JSONResponse(content={'code': 200, 'message': 'Fish species created successfully'})
+        return {'code': 500, 'message': 'Failed to create aquarium'}
+    return JSONResponse(content={'code': 200, 'message': 'Aquarium created successfully'})
 
 
 def get_all_aquariums():
@@ -86,10 +86,10 @@ model of test aquarium for easier testing
     },
     "decorations": {
     },
-    "temperature": 0,
-    "ph": 0.2,
-    "N02": 0.3,
-    "NO3": 0.4,
+    "temperature": 21,
+    "ph": 6.9,
+    "No2": 0.3,
+    "No3": 0.4,
     "GH": 0.5,
     "KH": 0.6,
     "pump": {
