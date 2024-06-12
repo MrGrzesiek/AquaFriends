@@ -9,25 +9,6 @@ from models import User, Aquarium
 router = APIRouter(prefix='/aquariums')
 
 
-@router.get('/public')
-def public():
-    return "Public text"
-
-
-@login_required
-@router.get('/secret-user')
-def secret(user: User = Depends(get_current_active_user)):
-    return "Secret text for users or admins"
-
-
-@admin_required
-@router.get('/secret-admin')
-def secret(user: User = Depends(get_admin_user)):
-    return "Secret text for admins"
-
-
-router = APIRouter(prefix='/aquariums')
-
 """
 All routes implement basic API calls 
 to modify create and delete aquariums primarily used in AquaMaker and AquaDecorator
