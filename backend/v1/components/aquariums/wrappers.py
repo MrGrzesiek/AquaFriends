@@ -13,13 +13,13 @@ def validate_aquarium(func):
         if aquarium.temperature <= 0 or aquarium.temperature >= 100:
             raise HTTPException(status_code=400, detail="Temperature must be between 0 and 100 degrees Celsius")
 
-        if aquarium.width <= 0.05:
+        if aquarium.width <= 5:
             raise HTTPException(status_code=400, detail="Width is negative")
 
-        if aquarium.height <= 0.05:
+        if aquarium.height <= 5:
             raise HTTPException(status_code=400, detail="Height is negative")
 
-        if aquarium.length <= 0.05:
+        if aquarium.length <= 5:
             raise HTTPException(status_code=400, detail="Length is negative")
 
         if aquarium.ph >= 8 or aquarium.ph <= 2:
