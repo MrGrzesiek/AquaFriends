@@ -30,7 +30,7 @@ def create_aquarium(aquarium: Aquarium):
         print(e)
         print(f'Failed to create fish species: {aquarium.model_dump()}')
         return {'code': 500, 'message': 'Failed to create fish species'}
-    return JSONResponse(content={'code': 200, 'message': 'Fish species created successfully'})
+    return JSONResponse(content={'code': 200, 'message': 'Aquarium created successfully'})
 
 
 def get_all_aquariums():
@@ -41,7 +41,7 @@ def get_all_aquariums():
         s = convert_mongo_id(s)
         aquariums.append(s)
     return JSONResponse(
-        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'species': aquariums})
+        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'Aquariums': aquariums})
 
 
 def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):

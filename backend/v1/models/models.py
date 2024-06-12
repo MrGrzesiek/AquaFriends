@@ -26,7 +26,7 @@ class Aquarium(BaseModel):
     decorations: Dict[str, int]
     temperature: float
     ph: float
-    N02: float
+    NO2: float
     NO3: float
     GH: float
     KH: float
