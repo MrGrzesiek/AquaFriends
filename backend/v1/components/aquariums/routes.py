@@ -23,7 +23,7 @@ AquaMaker, AquaDecorator
 
 @login_required
 @router.post('/new_aquarium')
-async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_admin_user)):
+async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_current_user)):
     result = create_aquarium(aquarium)
     return result
 
