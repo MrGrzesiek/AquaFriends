@@ -5,7 +5,6 @@ from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_a
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
 from models import User, Aquarium
-from wrappers import validate_aquarium
 
 router = APIRouter(prefix='/aquariums')
 
@@ -22,7 +21,6 @@ AquaMaker, AquaDecorator
 """
 
 
-@validate_aquarium
 @login_required
 @router.post('/new_aquarium')
 async def create_new_aquarium(aquarium: Aquarium, user: User = Depends(get_current_user)):
@@ -49,7 +47,6 @@ AquaMaker, AquaDecorator
 """
 
 
-@validate_aquarium
 @login_required
 @router.put('/update/{aquarium_id}')
 async def update_existing_aquarium(aquarium: Aquarium, aquarium_id, user: User = Depends(get_current_user)):
