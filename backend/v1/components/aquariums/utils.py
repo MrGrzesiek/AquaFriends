@@ -1,8 +1,10 @@
 from pymongo.collection import Collection
 from bson import ObjectId
 from models import Aquarium
-from dependencies.database.database_connector import Connector
+from dependencies.database import Connector, log_aquarium_history
 from fastapi.responses import JSONResponse
+
+from .wrappers import validate_aquarium
 
 connector = Connector()
 
@@ -23,13 +25,15 @@ Additional modules that can use these functions: Aqua Monitor, AquaLife
 """
 
 
+@validate_aquarium
+@log_aquarium_history
 def create_aquarium(aquarium: Aquarium):
     try:
         connector.get_aquariums_collection().insert_one(aquarium.model_dump())
     except Exception as e:
         print(e)
         print(f'Failed to create fish species: {aquarium.model_dump()}')
-        return {'code': 500, 'message': 'Failed to create fish species'}
+        return {'code': 500, 'message': 'Failed to create aquarium'}
     return JSONResponse(content={'code': 200, 'message': 'Aquarium created successfully'})
 
 
@@ -44,6 +48,8 @@ def get_all_aquariums():
         content={'code': 200, 'message': 'Aquariums retrieved successfully', 'Aquariums': aquariums})
 
 
+@validate_aquarium
+@log_aquarium_history
 def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
     if not connector.get_aquariums_collection().find_one:
         return {'code': 404, 'message': f'Aquarium {aquarium_id} not found'}
@@ -80,10 +86,10 @@ model of test aquarium for easier testing
     },
     "decorations": {
     },
-    "temperature": 0,
-    "ph": 0.2,
-    "N02": 0.3,
-    "NO3": 0.4,
+    "temperature": 21,
+    "ph": 6.9,
+    "No2": 0.3,
+    "No3": 0.4,
     "GH": 0.5,
     "KH": 0.6,
     "pump": {

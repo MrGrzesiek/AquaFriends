@@ -26,8 +26,8 @@ class Aquarium(BaseModel):
     decorations: Dict[str, int]
     temperature: float
     ph: float
-    NO2: float
-    NO3: float
+    No2: float
+    No3: float
     GH: float
     KH: float
     pump: Dict[str, int]
@@ -42,6 +42,7 @@ class User(BaseModel):
     Class used for authentication purposes with login manager
     """
     email: str
+    username: str
     scopes: List[str]
 
 

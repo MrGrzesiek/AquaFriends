@@ -1,9 +1,11 @@
+from datetime import datetime
 
 from pymongo.collection import Collection
 from pymongo.mongo_client import MongoClient
 from threading import Lock
 
 from dependencies.database.file_handler import FileHandler
+from models import Aquarium
 
 
 # Used to obtain mongoDB connection
@@ -97,6 +99,7 @@ class Connector:
     """
     If you need more collection getters, you can add them here.
     """
+
     def get_users_collection(self) -> Collection:
         return self.__get_collection("users")
 
@@ -108,6 +111,9 @@ class Connector:
 
     def get_aquariums_collection(self) -> Collection:
         return self.__get_collection("aquariums")
+
+    def get_aquarium_logs_collection(self) -> Collection:
+        return self.__get_collection("aquarium_logs")
 
     """
     Files functions
@@ -135,9 +141,14 @@ class Connector:
         """
         return self.get_photo(self.FISH_SPECIES_IDENTIFIER_FIELD_NAME, species_name.lower())
 
-    # async def upload_aquarium_photo(self, aquarium_id: int, file: bytes):
-    #     self.get_aquariums_collection().find_one({'id': aquarium_id})
-    #     if not aquarium_id:
-    #         return {'code': 404, 'message': f'Aquarium id: {aquarium_id} not found'}
-    #
-    #     return self.upload_photo(file, self.AQUARIUMS_COLLECTION, aquarium_id)
+
+    """
+    Logging functions
+    """
+    def log_aquarium(self, aquarium_data: Aquarium):
+        collection = self.get_aquarium_logs_collection()
+
+        aquarium_dict = aquarium_data.dict()
+        aquarium_dict['date'] = datetime.now()
+        result = collection.insert_one(aquarium_dict)
+        return result
