@@ -115,6 +115,9 @@ class Connector:
     def get_aquarium_logs_collection(self) -> Collection:
         return self.__get_collection("aquarium_logs")
 
+    def get_devices_collection(self) -> Collection:
+        return self.__get_collection("devices")
+
     """
     Files functions
     """
