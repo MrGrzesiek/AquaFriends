@@ -45,7 +45,7 @@ def get_all_aquariums():
         s = convert_mongo_id(s)
         aquariums.append(s)
     return JSONResponse(
-        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'species': aquariums})
+        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'Aquariums': aquariums})
 
 
 @validate_aquarium
