@@ -99,6 +99,7 @@ class Device(BaseModel):
     maxV: float
     efficiency: float
     description: str
+    type: str
 
 
 #   price: float    just an idea :D
@@ -114,8 +115,8 @@ class Light(Device):
 
 
 class Filter(Device):
-    type: str
-    Flow_max: float
+    filter_type: str
+    flow_max: float
 
 
 class Heater(Device):

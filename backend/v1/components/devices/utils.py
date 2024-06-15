@@ -2,6 +2,7 @@ from pymongo.collection import Collection
 from bson import ObjectId
 from models import Device, Pump, Light, Filter, Heater
 from dependencies.database import Connector, log_aquarium_history
+from dependencies.auth import admin_required, login_required
 from fastapi.responses import JSONResponse
 
 from .wrappers import validate_device
@@ -23,10 +24,10 @@ All functions below this comment implement basic API calls
 to modify create and delete devices primarily used in AquaMaker and AquaDecorator
 Additional modules that can use these functions: Aqua Monitor, AquaLife
 """
-
+#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzE4NDU3MzEzfQ.1Hi1FkeGOZR2e0d1IVLZxgP3ZcBF0tGYQe08KsXjl7M
 
 @validate_device
-def create_device(device: Device):
+def create_device(device: Pump | Light | Filter | Heater):
     try:
         connector.get_devices_collection().insert_one(device.model_dump())
     except Exception as e:
@@ -34,39 +35,6 @@ def create_device(device: Device):
         print(f'Failed to create device: {device.model_dump()}')
         return {'code': 500, 'message': 'Failed to create device.'}
     return JSONResponse(content={'code': 200, 'message': 'Device created successfully'})
-
-
-@validate_device
-def create_device_pump(pump: Pump):
-    try:
-        connector.get_devices_collection().insert_one(pump.model_dump())
-    except Exception as e:
-        print(e)
-        print(f'Failed to create fish species: {pump.model_dump()}')
-        return {'code': 500, 'message': 'Failed to create pump'}
-    return JSONResponse(content={'code': 200, 'message': 'Pump created successfully'})
-
-
-@validate_device
-def create_device(light: Light):
-    try:
-        connector.get_devices_collection().insert_one(light.model_dump())
-    except Exception as e:
-        print(e)
-        print(f'Failed to create fish species: {light.model_dump()}')
-        return {'code': 500, 'message': 'Failed to create light'}
-    return JSONResponse(content={'code': 200, 'message': 'Light created successfully'})
-
-
-@validate_device
-def create_device(heater: Heater):
-    try:
-        connector.get_devices_collection().insert_one(heater.model_dump())
-    except Exception as e:
-        print(e)
-        print(f'Failed to create fish species: {heater.model_dump()}')
-        return {'code': 500, 'message': 'Failed to create heater'}
-    return JSONResponse(content={'code': 200, 'message': 'Heater created successfully'})
 
 
 def get_all_devices():
@@ -77,7 +45,7 @@ def get_all_devices():
         s = convert_mongo_id(s)
         aquariums.append(s)
     return JSONResponse(
-        content={'code': 200, 'message': 'Devices retrieved successfully', 'Aquariums': aquariums})
+        content={'code': 200, 'message': 'Devices retrieved successfully', 'Devices': aquariums})
 
 
 @validate_device
@@ -92,102 +60,13 @@ def update_device(device: Device, device_id: str):
             'message': f'Device {device_id} updated successfully'}
 
 
-@validate_device
-def update_pump(pump: Pump, pump_id: str):
-    if not connector.get_devices_collection().find_one:
-        return {'code': 404, 'message': f'Pump {pump_id} not found'}
-
-    id = ObjectId(pump_id)
-    connector.get_devices_collection().find_one_and_update({'_id': id},
-                                                             {'$set': pump.model_dump()})
-    return {'code': 200,
-            'message': f'Pump {pump_id} updated successfully'}
-
-
-@validate_device
-def update_light(light: Light, light_id: str):
-    if not connector.get_devices_collection().find_one:
-        return {'code': 404, 'message': f'Light {light_id} not found'}
-
-    id = ObjectId(light_id)
-    connector.get_devices_collection().find_one_and_update({'_id': id},
-                                                             {'$set': light.model_dump()})
-    return {'code': 200,
-            'message': f'Light {light_id} updated successfully'}
-
-
-@validate_device
-def update_filter(filter: Filter, filter_id: str):
-    if not connector.get_devices_collection().find_one:
-        return {'code': 404, 'message': f'Filter {filter_id} not found'}
-
-    id = ObjectId(filter_id)
-    connector.get_devices_collection().find_one_and_update({'_id': id},
-                                                             {'$set': filter.model_dump()})
-    return {'code': 200,
-            'message': f'Filter {filter_id} updated successfully'}
-
-
-@validate_device
-def update_heater(heater: Heater, heater_id: str):
-    if not connector.get_devices_collection().find_one:
-        return {'code': 404, 'message': f'Heater {heater_id} not found'}
-
-    id = ObjectId(heater_id)
-    connector.get_devices_collection().find_one_and_update({'_id': id},
-                                                             {'$set': heater.model_dump()})
-    return {'code': 200,
-            'message': f'Heater{heater_id} updated successfully'}
-
-
 def delete_device(device_id: str):
     id = ObjectId(device_id)
     if not connector.get_devices_collection().find_one({'_id': id}):
         return {'code': 404, 'message': f'Device {device_id} not found'}
 
-    # Delete the fish species
     connector.get_devices_collection().delete_one({'_id': id})
     return {'code': 200, 'message': f'Device {device_id} deleted successfully'}
-
-
-def delete_pump(pump_id: str):
-    id = ObjectId(pump_id)
-    if not connector.get_devices_collection().find_one({'_id': id}):
-        return {'code': 404, 'message': f'Pump  {pump_id} not found'}
-
-    # Delete the fish species
-    connector.get_aquariums_collection().delete_one({'_id': id})
-    return {'code': 200, 'message': f'Pump  {pump_id} deleted successfully'}
-
-
-def delete_light(light_id: str):
-    id = ObjectId(light_id)
-    if not connector.get_devices_collection().find_one({'_id': id}):
-        return {'code': 404, 'message': f'Light  {light_id} not found'}
-
-    # Delete the fish species
-    connector.get_aquariums_collection().delete_one({'_id': id})
-    return {'code': 200, 'message': f'Light {light_id} deleted successfully'}
-
-
-def delete_filter(filter_id: str):
-    id = ObjectId(filter_id)
-    if not connector.get_devices_collection().find_one({'_id': id}):
-        return {'code': 404, 'message': f'Filter {filter_id} not found'}
-
-    # Delete the fish species
-    connector.get_devices_collection().delete_one({'_id': id})
-    return {'code': 200, 'message': f'Filter {filter_id} deleted successfully'}
-
-
-def delete_heater(heater_id: str):
-    id = ObjectId(heater_id)
-    if not connector.get_aquariums_collection().find_one({'_id': id}):
-        return {'code': 404, 'message': f'Heater {heater_id} not found'}
-
-    # Delete the fish species
-    connector.get_aquariums_collection().delete_one({'_id': id})
-    return {'code': 200, 'message': f'Heater {heater_id} deleted successfully'}
 
 
 """
