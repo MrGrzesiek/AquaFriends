@@ -1,9 +1,10 @@
 from bson import ObjectId
 
-from models import FishSpecies, NewFishSpecies
+from models import FishSpecies, NewFishSpecies, User, Aquarium
 from dependencies.database import Connector
 from fastapi.responses import JSONResponse, FileResponse, Response
 from .wrappers import validate_species
+from ..aquariums.utils import update_aquarium
 
 db_connector = Connector()
 
@@ -86,3 +87,42 @@ async def get_species_photo(species_name: str):
     photo = await db_connector.get_species_photo(species_name.lower())
 
     return Response(content=bytes(photo['photo']), media_type="image/png")
+
+
+def get_aquarium_fishes(aquarium_name: str, user: User):
+    aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+
+    return {'code': 200, 'message': f'Fishes in {aquarium_name} retrieved successfully',
+            'fishes': aquarium['fish_species']}
+
+
+def add_fishes_to_aquarium(aquarium_name: str, user, species_name: str, specimen_amount: int):
+    aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+
+    species = db_connector.get_species_collection().find_one({'name': species_name.lower()})
+    if not species:
+        return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+
+    if specimen_amount < 0:
+        return {'code': 400, 'message': 'Specimen amount must be greater than 0'}
+
+    new_aqarium = Aquarium(**aquarium)
+    if species_name.lower() in new_aqarium.fish_species.keys() is not None and specimen_amount == 0:
+        del new_aqarium.fish_species[species_name.lower()]
+    else:
+        new_aqarium.fish_species[species_name.lower()] = specimen_amount
+    return update_aquarium(new_aqarium, aquarium['_id'])
+
+
+def get_aquariums(user: User):
+    aquariums = db_connector.get_aquariums_collection().find({'username': user.username})
+    aquariums_list = []
+    for a in aquariums:
+        a = convert_mongo_id(a)
+        aquariums_list.append(a)
+    return JSONResponse(
+        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'aquariums': aquariums_list})

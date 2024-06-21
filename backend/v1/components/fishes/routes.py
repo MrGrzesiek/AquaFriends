@@ -9,14 +9,19 @@ from fastapi.params import File
 sys.path.append(path.join(path.dirname(__file__), '...'))
 from models import User, FishSpecies, NewFishSpecies
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required
-from .utils import create_species, get_species, update_species, delete_species, upload_species_photo, get_species_photo
+from .utils import create_species, get_species, update_species, delete_species, upload_species_photo, get_species_photo, \
+    get_aquarium_fishes, add_fishes_to_aquarium
 
 router = APIRouter(prefix='/fishes')
 
 tags_metadata = [
     {
         'name': 'Fish species creator',
-        'description': 'Admin permission required.',
+        'description': 'Admin permission required.'
+    },
+    {
+        'name': 'Aquarium fishes',
+        'description': 'User permission required.'
     }
 ]
 
@@ -63,3 +68,15 @@ async def species(species: FishSpecies, user: User = Depends(get_admin_user)):
 async def species(species_name: str, user: User = Depends(get_admin_user)):
     result = await delete_species(species_name)
     return result
+
+
+@login_required
+@router.get('/aquarium/{aquarium_name}', tags=['Aquarium fishes'])
+def get_fishes_in_aquarium(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_aquarium_fishes(aquarium_name, user)
+
+
+@login_required
+@router.post('/aquarium/{aquarium_name}/{species_name}/{specimen_amount}', tags=['Aquarium fishes'])
+async def add_fish_to_aquarium(aquarium_name: str, species_name: str, specimen_amount: int, user: User = Depends(get_current_user)):
+    return add_fishes_to_aquarium(aquarium_name, user, species_name, specimen_amount)
