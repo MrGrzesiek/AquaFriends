@@ -89,15 +89,13 @@ async def get_species_photo(species_name: str):
     return Response(content=bytes(photo['photo']), media_type="image/png")
 
 
-
-
-
 def get_aquarium_fishes(aquarium_name: str, user: User):
     aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
     if not aquarium:
         return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
 
-    return {'code': 200, 'message': f'Fishes in {aquarium_name} retrieved successfully', 'fishes': aquarium['fishes']}
+    return {'code': 200, 'message': f'Fishes in {aquarium_name} retrieved successfully',
+            'fishes': aquarium['fish_species']}
 
 
 def add_fishes_to_aquarium(aquarium_name: str, user, species_name: str, specimen_amount: int):
@@ -105,37 +103,18 @@ def add_fishes_to_aquarium(aquarium_name: str, user, species_name: str, specimen
     if not aquarium:
         return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
 
-    new_aqarium = Aquarium(**aquarium)
-    new_aqarium.fish_species[species_name] = specimen_amount
-    return update_aquarium(new_aqarium, aquarium['_id'])
+    species = db_connector.get_species_collection().find_one({'name': species_name.lower()})
+    if not species:
+        return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
 
-
-def remove_fishes_from_aquarium(aquarium_name: str, user, species_name: str, specimen_amount: int):
-    aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
-    if not aquarium:
-        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+    if specimen_amount < 0:
+        return {'code': 400, 'message': 'Specimen amount must be greater than 0'}
 
     new_aqarium = Aquarium(**aquarium)
-    if species_name not in new_aqarium.fish_species:
-        return {'code': 404, 'message': f'Fish species {species_name} not found in {aquarium_name}'}
-
-    new_aqarium.fish_species[species_name] -= specimen_amount
-    if new_aqarium.fish_species[species_name] <= 0:
-        del new_aqarium.fish_species[species_name]
-
-    return update_aquarium(new_aqarium, aquarium['_id'])
-
-
-def update_fish_species_in_aquarium(aquarium_name: str, user, species_name: str, new_species_name: str):
-    aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
-    if not aquarium:
-        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
-
-    new_aqarium = Aquarium(**aquarium)
-    if species_name not in new_aqarium.fish_species:
-        return {'code': 404, 'message': f'Fish species {species_name} not found in {aquarium_name}'}
-
-    new_aqarium.fish_species[new_species_name] = new_aqarium.fish_species.pop(species_name)
+    if species_name.lower() in new_aqarium.fish_species.keys() is not None and specimen_amount == 0:
+        del new_aqarium.fish_species[species_name.lower()]
+    else:
+        new_aqarium.fish_species[species_name.lower()] = specimen_amount
     return update_aquarium(new_aqarium, aquarium['_id'])
 
 

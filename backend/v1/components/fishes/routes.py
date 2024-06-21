@@ -20,7 +20,7 @@ tags_metadata = [
         'description': 'Admin permission required.'
     },
     {
-        'name': 'Aquarium fish CRUD',
+        'name': 'Aquarium fishes',
         'description': 'User permission required.'
     }
 ]
@@ -71,19 +71,12 @@ async def species(species_name: str, user: User = Depends(get_admin_user)):
 
 
 @login_required
-@router.get('/aquarium/{aquarium_name}', tags=['Aquarium fish CRUD'])
-async def get_fishes_in_aquarium(aquarium_name: str, user: User = Depends(get_current_user)):
-    result = await get_aquarium_fishes(aquarium_name, user)
-    return result
+@router.get('/aquarium/{aquarium_name}', tags=['Aquarium fishes'])
+def get_fishes_in_aquarium(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_aquarium_fishes(aquarium_name, user)
 
 
 @login_required
-@router.post('/aquarium/{aquarium_name}/{species_name}/{specimen_amount}', tags=['Aquarium fish CRUD'])
-async def add_fish_to_aquarium(aquarium_name: str, species_name: str, specimen_amount, user: User = Depends(get_current_user)):
+@router.post('/aquarium/{aquarium_name}/{species_name}/{specimen_amount}', tags=['Aquarium fishes'])
+async def add_fish_to_aquarium(aquarium_name: str, species_name: str, specimen_amount: int, user: User = Depends(get_current_user)):
     return add_fishes_to_aquarium(aquarium_name, user, species_name, specimen_amount)
-
-
-@login_required
-@router.put('/aquarium/{aquarium_name}/{species_name}/{new_species_name}', tags=['Aquarium fish CRUD'])
-async def update_fish_species_in_aquarium(aquarium_name: str, species_name: str, new_species_name: str, user: User = Depends(get_current_user)):
-    return update_fish_species_in_aquarium(aquarium_name, user, species_name, new_species_name)
