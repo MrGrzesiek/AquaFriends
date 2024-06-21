@@ -87,3 +87,38 @@ class FishSpecies(NewFishSpecies):
     Photos need to be uploaded to the database separately
     """
     disliked_species: List[int]  # List of fish species IDs that this species does not get along with
+
+
+class Device(BaseModel):
+    """
+    Class used to represent a device in the database
+    """
+    name: str
+    power: int
+    minV: float
+    maxV: float
+    efficiency: float
+    description: str
+    type: str
+
+
+#   price: float    just an idea :D
+
+class Pump(Device):
+    flow: float
+
+
+class Light(Device):
+    luminance: float
+    brightness: float
+    color: str
+
+
+class Filter(Device):
+    filter_type: str
+    flow_max: float
+
+
+class Heater(Device):
+    min_temp: float
+    max_temp: float
