@@ -24,7 +24,6 @@ All functions below this comment implement basic API calls
 to modify create and delete devices primarily used in AquaMaker and AquaDecorator
 Additional modules that can use these functions: Aqua Monitor, AquaLife
 """
-#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzE4NDU3MzEzfQ.1Hi1FkeGOZR2e0d1IVLZxgP3ZcBF0tGYQe08KsXjl7M
 
 @validate_device
 def create_device(device: Pump | Light | Filter | Heater):
