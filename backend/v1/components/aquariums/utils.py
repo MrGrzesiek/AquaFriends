@@ -81,7 +81,7 @@ def get_events(aquarium_name: str, user: User):
         return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
 
     events = connector.get_events_collection().find({'aquarium_name': aquarium_name, 'username': user.username})
-    if not events:
+    if not events or len(list(events)) == 0:
         return {'code': 404, 'message': f'No events found for aquarium {aquarium_name}'}
 
     e = []
