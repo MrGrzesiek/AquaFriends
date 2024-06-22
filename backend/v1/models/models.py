@@ -122,3 +122,13 @@ class Filter(Device):
 class Heater(Device):
     min_temp: float
     max_temp: float
+
+
+class Event(BaseModel):
+    """
+    Class used to represent an event in the database
+    """
+    aquarium_name: str
+    event_type: str
+    event_time: datetime.datetime
+    event_description: str

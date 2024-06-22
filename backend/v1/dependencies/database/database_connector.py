@@ -118,6 +118,9 @@ class Connector:
     def get_devices_collection(self) -> Collection:
         return self.__get_collection("devices")
 
+    def get_events_collection(self) -> Collection:
+        return self.__get_collection("events")
+
     """
     Files functions
     """

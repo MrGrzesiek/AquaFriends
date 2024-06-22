@@ -1,10 +1,10 @@
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
 
-from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_aquarium
+from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_aquarium, get_events, add_event
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
-from models import User, Aquarium
+from models import User, Aquarium, Event
 
 router = APIRouter(prefix='/aquariums')
 
@@ -65,3 +65,20 @@ Delete an aquarium with given id associated to user
 async def delete_existing_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
     result = delete_aquarium(aquarium_id)
     return result
+
+
+"""
+Events
+"""
+
+
+@login_required
+@router.get('/events/{aquarium_name}')
+async def get_aquarium_events(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_events(aquarium_name, user)
+
+
+@login_required
+@router.post('/event')
+async def add_aquarium_event(event: Event, user: User = Depends(get_current_user)):
+    return add_event(event, user)
