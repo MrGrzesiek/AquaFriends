@@ -1,6 +1,6 @@
 from pymongo.collection import Collection
 from bson import ObjectId
-from models import Aquarium
+from models import Aquarium, User, Event
 from dependencies.database import Connector, log_aquarium_history
 from fastapi.responses import JSONResponse
 
@@ -70,6 +70,40 @@ def delete_aquarium(aquarium_id: str):
     connector.get_aquariums_collection().delete_one({'_id': id})
     return {'code': 200, 'message': f'{aquarium_id} deleted successfully'}
 
+
+
+def get_events(aquarium_name: str, user: User):
+    """
+    Get all events associated with an aquarium
+    """
+    aquarium = connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+
+    events = connector.get_events_collection().find({'aquarium_name': aquarium_name, 'username': user.username})
+    if not events or len(list(events)) == 0:
+        return {'code': 404, 'message': f'No events found for aquarium {aquarium_name}'}
+
+    e = []
+    for event in events:
+        event = convert_mongo_id(event)
+        e.append(event)
+
+    return {'code': 200, 'message': f'Events retrieved successfully', 'events': e}
+
+
+def add_event(event: Event, user: User):
+    """
+    Add an event to the aquarium
+    """
+    aquarium = connector.get_aquariums_collection().find_one({'name': event.aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {event.aquarium_name} not found for user {user.username}'}
+
+    event = event.dict()
+    event['username'] = user.username
+    connector.get_events_collection().insert_one(event)
+    return {'code': 200, 'message': 'Event added successfully'}
 
 """
 model of test aquarium for easier testing
