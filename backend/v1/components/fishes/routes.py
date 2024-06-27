@@ -7,7 +7,7 @@ from os import path
 from fastapi.params import File
 
 sys.path.append(path.join(path.dirname(__file__), '...'))
-from models import User, FishSpecies, NewFishSpecies
+from models import User, FishSpecies, NewFishSpecies, FishInAquarium
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required
 from .utils import create_species, get_species, update_species, delete_species, upload_species_photo, get_species_photo, \
     get_aquarium_fishes, add_fishes_to_aquarium
@@ -77,6 +77,6 @@ def get_fishes_in_aquarium(aquarium_name: str, user: User = Depends(get_current_
 
 
 @login_required
-@router.post('/aquarium/{aquarium_name}/{species_name}/{specimen_amount}', tags=['Aquarium fishes'])
-async def add_fish_to_aquarium(aquarium_name: str, species_name: str, specimen_amount: int, user: User = Depends(get_current_user)):
-    return add_fishes_to_aquarium(aquarium_name, user, species_name, specimen_amount)
+@router.post('/aquarium/fish', tags=['Aquarium fishes'])
+async def add_fish_to_aquarium(fish: FishInAquarium, user: User = Depends(get_current_user)):
+    return add_fishes_to_aquarium(fish, user)
