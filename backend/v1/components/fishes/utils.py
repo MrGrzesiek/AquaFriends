@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from bson import ObjectId
 
-from models import FishSpecies, NewFishSpecies, User, Aquarium, FishInAquarium
+from models import FishSpecies, NewFishSpecies, User, Aquarium, FishInAquarium, FishRemoval
 from dependencies.database import Connector
 from fastapi.responses import JSONResponse, FileResponse, Response
 from .wrappers import validate_species
@@ -126,6 +126,22 @@ def add_fishes_to_aquarium(fish: FishInAquarium, user: User):
     aquarium.fishes.append(fish_dict)
     print(aquarium.dict())
     return update_aquarium(aquarium, id)
+
+
+def delete_fish_from_aquarium(fish: FishRemoval, user: User):
+    aquarium = db_connector.get_aquariums_collection().find_one({'name': fish.aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {fish.aquarium_name} not found for user {user.username}'}
+
+    print(aquarium['fishes'])
+    for f in aquarium['fishes']:
+        if f and f['fish_name'] == fish.fish_name:
+            aquarium['fishes'].remove(f)
+            id = ObjectId(aquarium['_id'])
+            aquarium = Aquarium(**aquarium)
+            return update_aquarium(aquarium, id)
+
+    return {'code': 404, 'message': f'Fish {fish.fish_name} not found in {fish.aquarium_name}'}
 
 
 def get_aquariums(user: User):

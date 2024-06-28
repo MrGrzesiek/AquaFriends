@@ -142,3 +142,11 @@ class FishInAquarium(BaseModel):
     fish_name: str
     species_name: str
     months_of_age: int
+
+
+class FishRemoval(BaseModel):
+    """
+    Class used to represent an fish in the aquarium
+    """
+    aquarium_name: str
+    fish_name: str
