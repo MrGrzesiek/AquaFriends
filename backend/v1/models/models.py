@@ -1,4 +1,4 @@
-from typing import List, Dict, Annotated
+from typing import List, Dict, Annotated, Any
 
 from bson import ObjectId
 from fastapi import UploadFile
@@ -34,7 +34,7 @@ class Aquarium(BaseModel):
     heater: Dict[str, int]
     luminance: Dict[str, int]
     accessories: Dict[str, str]
-    fish_species: Dict[str, int]
+    fishes: List[Dict[str, Any]]
 
 
 class User(BaseModel):
@@ -132,3 +132,21 @@ class Event(BaseModel):
     event_type: str
     event_time: datetime.datetime
     event_description: str
+
+
+class FishInAquarium(BaseModel):
+    """
+    Class used to represent an fish in the aquarium
+    """
+    aquarium_name: str
+    fish_name: str
+    species_name: str
+    months_of_age: int
+
+
+class FishRemoval(BaseModel):
+    """
+    Class used to represent an fish in the aquarium
+    """
+    aquarium_name: str
+    fish_name: str

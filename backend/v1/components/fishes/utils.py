@@ -1,6 +1,8 @@
+from datetime import timedelta, datetime
+
 from bson import ObjectId
 
-from models import FishSpecies, NewFishSpecies, User, Aquarium
+from models import FishSpecies, NewFishSpecies, User, Aquarium, FishInAquarium, FishRemoval
 from dependencies.database import Connector
 from fastapi.responses import JSONResponse, FileResponse, Response
 from .wrappers import validate_species
@@ -95,27 +97,51 @@ def get_aquarium_fishes(aquarium_name: str, user: User):
         return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
 
     return {'code': 200, 'message': f'Fishes in {aquarium_name} retrieved successfully',
-            'fishes': aquarium['fish_species']}
+            'fishes': aquarium['fishes']}
 
 
-def add_fishes_to_aquarium(aquarium_name: str, user, species_name: str, specimen_amount: int):
-    aquarium = db_connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
+def add_fishes_to_aquarium(fish: FishInAquarium, user: User):
+    aquarium = db_connector.get_aquariums_collection().find_one({'name': fish.aquarium_name, 'username': user.username})
     if not aquarium:
-        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+        return {'code': 404, 'message': f'Aquarium {fish.aquarium_name} not found for user {user.username}'}
 
-    species = db_connector.get_species_collection().find_one({'name': species_name.lower()})
+    species = db_connector.get_species_collection().find_one({'name': fish.species_name.lower()})
     if not species:
-        return {'code': 404, 'message': f'Fish species {species_name.lower()} not found'}
+        return {'code': 404, 'message': f'Fish species {fish.species_name.lower()} not found'}
+    elif fish.months_of_age < 0:
+        return {'code': 400, 'message': 'Specimen age must be greater or equal 0'}
+    elif fish.fish_name in aquarium['fishes']:
+        return {'code': 400, 'message': f'Fish named {fish.fish_name} already exists in {fish.aquarium_name}'}
 
-    if specimen_amount < 0:
-        return {'code': 400, 'message': 'Specimen amount must be greater than 0'}
+    date_of_birth = datetime.now() - timedelta(days=fish.months_of_age * 30)
+    fish_dict = fish.dict()
+    fish_dict['date_of_birth'] = date_of_birth
+    del fish_dict['months_of_age']
 
-    new_aqarium = Aquarium(**aquarium)
-    if species_name.lower() in new_aqarium.fish_species.keys() is not None and specimen_amount == 0:
-        del new_aqarium.fish_species[species_name.lower()]
-    else:
-        new_aqarium.fish_species[species_name.lower()] = specimen_amount
-    return update_aquarium(new_aqarium, aquarium['_id'])
+    # Create an Aquarium instance from the data
+    id = ObjectId(aquarium['_id'])
+    aquarium = Aquarium(**aquarium)
+
+    # Append the new fish to the fishes list
+    aquarium.fishes.append(fish_dict)
+    print(aquarium.dict())
+    return update_aquarium(aquarium, id)
+
+
+def delete_fish_from_aquarium(fish: FishRemoval, user: User):
+    aquarium = db_connector.get_aquariums_collection().find_one({'name': fish.aquarium_name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {fish.aquarium_name} not found for user {user.username}'}
+
+    print(aquarium['fishes'])
+    for f in aquarium['fishes']:
+        if f and f['fish_name'] == fish.fish_name:
+            aquarium['fishes'].remove(f)
+            id = ObjectId(aquarium['_id'])
+            aquarium = Aquarium(**aquarium)
+            return update_aquarium(aquarium, id)
+
+    return {'code': 404, 'message': f'Fish {fish.fish_name} not found in {fish.aquarium_name}'}
 
 
 def get_aquariums(user: User):
