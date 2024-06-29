@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser, faHome, faPlus, faFish, faPalette, faBinoculars, faClockRotateLeft, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import AquariumsList from "../../pages/user/AquaMonitor";
 library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRotateLeft, faArrowRightFromBracket);
 
-function CustomSideNav({ onLogout }) {
+function CustomSideNav({ onLogout, onSelect  }) {
   const styles = {
     background: "#2469A6"
   };
@@ -19,6 +20,9 @@ function CustomSideNav({ onLogout }) {
           if(selected === 'Logout') {
             // Call the onLogout function when 'Logout' is selected
             onLogout();
+          }
+          else{
+            onSelect(selected);
           }
         }}
       >

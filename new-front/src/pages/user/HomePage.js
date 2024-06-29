@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomSideNav from "../../components/nav/SideNav";
 import Header from "../../components/nav/Header";
 import "../../CSS/styles.css";
+import AquariumsList from "./AquaMonitor";
 
 const HomePage = ({ onLogout }) => {
+  const [selectedItem, setSelectedItem] = useState('home');
   useEffect(() => {
     console.log("Użytkownik przekierowany do strony domowej.");
 
@@ -66,15 +68,30 @@ const HomePage = ({ onLogout }) => {
     }
   };
 
+  const renderContent = () => {
+    switch (selectedItem) {
+      case 'home':
+        return (
+            <>
+              <Header />
+              <h1>Home Page</h1>
+              <button onClick={handleClick} style={{ padding: '10px 20px', fontSize: '16px' }}>
+                Kliknij mnie
+              </button>
+            </>
+        );
+      case 'AquaMonitor':
+        return <AquariumsList />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div>
-      <CustomSideNav onLogout={onLogout} />
-      <Header />
-      <h1>Home Page</h1>
-      <button onClick={handleClick} style={{ padding: '10px 20px', fontSize: '16px' }}>
-        Kliknij mnie
-      </button>
-    </div>
+      <div>
+        <CustomSideNav onLogout={onLogout} onSelect={setSelectedItem} />
+        {renderContent()}
+      </div>
   );
 };
 
