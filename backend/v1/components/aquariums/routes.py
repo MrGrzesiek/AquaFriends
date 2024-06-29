@@ -1,7 +1,8 @@
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
 
-from .utils import create_aquarium, get_all_aquariums, update_aquarium, delete_aquarium, get_events, add_event
+from .utils import create_aquarium, get_user_aquariums, update_aquarium, delete_aquarium, get_events, add_event, \
+    get_user_aquariums
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
 from models import User, Aquarium, Event
@@ -34,9 +35,9 @@ Fetch all aquariums associated to user
 
 
 @login_required
-@router.get('/all_aquariums')
+@router.get('/user_aquariums')
 async def list_aquariums(user: User = Depends(get_current_user)):
-    aquariums = get_all_aquariums()
+    aquariums = get_user_aquariums(user)
     return aquariums
 
 

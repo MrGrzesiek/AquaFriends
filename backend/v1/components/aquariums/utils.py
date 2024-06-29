@@ -37,15 +37,23 @@ def create_aquarium(aquarium: Aquarium):
     return JSONResponse(content={'code': 200, 'message': 'Aquarium created successfully'})
 
 
-def get_all_aquariums():
-    aquariums = connector.get_aquariums_collection().find()
-    aquariums = []
+def get_user_aquariums(user: User):
+    aquariums = connector.get_aquariums_collection().find({'username': user.username})
+    ret_aquariums = []
     for s in aquariums:
         print(s)
+
+        # convert date of birth to string
+        for fish in s['fishes']:
+            if fish:
+                fish['date_of_birth'] = fish['date_of_birth'].strftime('%Y-%m-%d')
+            else:
+                del fish  # Remove empty fish
         s = convert_mongo_id(s)
-        aquariums.append(s)
+        ret_aquariums.append(s)
+
     return JSONResponse(
-        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'Aquariums': aquariums})
+        content={'code': 200, 'message': 'Aquariums retrieved successfully', 'Aquariums': ret_aquariums})
 
 
 @validate_aquarium
