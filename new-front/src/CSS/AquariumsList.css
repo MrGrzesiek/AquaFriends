@@ -9,15 +9,15 @@ h1 {
 }
 
 /* Style for loading and error messages */
-div.loading,
-div.error {
+.loading,
+.error {
     text-align: center;
     font-size: 1.2em;
     color: #ff0000;
 }
 
 /* Container for the aquarium list */
-div.aquarium-container {
+.aquarium-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -26,41 +26,39 @@ div.aquarium-container {
 }
 
 /* Style for each aquarium box */
-div.aquarium-box {
+.aquarium-box {
     border: 1px solid #000;
     padding: 20px;
     width: 300px;
     box-sizing: border-box;
     background-color: #f9f9f9;
     border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+
+.aquarium-box:hover {
+    transform: scale(1.05);
+}
+
+/* Style for the aquarium image */
+.aquarium-image {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #000;
+    margin-bottom: 10px;
 }
 
 /* Style for the aquarium name */
-div.aquarium-box h2 {
-    margin-top: 0;
+.aquarium-box h2 {
+    margin: 10px 0;
     font-size: 1.5em;
     color: #333;
 }
 
 /* Style for the aquarium description */
-div.aquarium-box p {
+.aquarium-box p {
     font-size: 1em;
     color: #666;
-}
-
-/* Style for the navigation button */
-div.aquarium-box button {
-    display: block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    font-size: 1em;
-    color: #fff;
-    background-color: #2469A6;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-div.aquarium-box button:hover {
-    background-color: #1f5a91;
 }
