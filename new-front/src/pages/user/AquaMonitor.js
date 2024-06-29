@@ -53,7 +53,7 @@ const AquariumsList = () => {
     return (
         <div>
             <Header />
-            <h1>Akwarium</h1>
+            <h1>Twoje akwaria:</h1>
             <div className="aquarium-container">
                 {aquariums.map((aquarium, index) => (
                     <div
