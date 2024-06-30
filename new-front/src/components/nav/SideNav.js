@@ -9,7 +9,17 @@ library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRot
 
 function CustomSideNav({ onLogout, onSelect  }) {
   const styles = {
-    background: "#2469A6"
+    background: "#2469A6",
+    position: "fixed",
+    top: 0,
+    height: "100vh",
+    zIndex: 1000,
+    color: "#fff",
+  };
+
+  const iconStyles = {
+    color: "#fff",
+    fontSize: "1.5rem"
   };
   return (
     <div> 
@@ -31,49 +41,49 @@ function CustomSideNav({ onLogout, onSelect  }) {
         <SideNav.Nav defaultSelected="home">
           <NavItem eventKey="home">
             <NavIcon>
-              <FontAwesomeIcon icon={faHome} />
+              <FontAwesomeIcon icon={faHome} style={iconStyles} />
             </NavIcon>
             <NavText>Home</NavText>
           </NavItem>
           <NavItem eventKey="AquaAccount">
             <NavIcon>
-              <FontAwesomeIcon icon={faUser} />
+              <FontAwesomeIcon icon={faUser} style={iconStyles} />
             </NavIcon>
             <NavText>AquaAccount</NavText>
           </NavItem>
           <NavItem eventKey="AquaMaker">
             <NavIcon>
-              <FontAwesomeIcon icon={faPlus} />
+              <FontAwesomeIcon icon={faPlus} style={iconStyles} />
             </NavIcon>
             <NavText>AquaMaker</NavText>
           </NavItem>
           <NavItem eventKey="AquaLife">
             <NavIcon>
-              <FontAwesomeIcon icon={faFish} />
+              <FontAwesomeIcon icon={faFish} style={iconStyles} />
             </NavIcon>
             <NavText>AquaLife</NavText>
           </NavItem>
           <NavItem eventKey="AquaDecorator">
             <NavIcon>
-              <FontAwesomeIcon icon={faPalette} />
+              <FontAwesomeIcon icon={faPalette} style={iconStyles} />
             </NavIcon>
             <NavText>AquaDecorator</NavText>
           </NavItem>
           <NavItem eventKey="AquaMonitor">
             <NavIcon>
-              <FontAwesomeIcon icon={faBinoculars} />
+              <FontAwesomeIcon icon={faBinoculars} style={iconStyles} />
             </NavIcon>
             <NavText>AquaMonitor</NavText>
           </NavItem>
           <NavItem eventKey="AquaHistory">
             <NavIcon>
-              <FontAwesomeIcon icon={faClockRotateLeft} />
+              <FontAwesomeIcon icon={faClockRotateLeft} style={iconStyles} />
             </NavIcon>
             <NavText>AquaHistory</NavText>
           </NavItem>
           <NavItem eventKey="Logout">
             <NavIcon>
-              <FontAwesomeIcon icon={faArrowRightFromBracket} />
+              <FontAwesomeIcon icon={faArrowRightFromBracket} style={iconStyles} />
             </NavIcon>
             <NavText>Wyloguj</NavText>
           </NavItem>

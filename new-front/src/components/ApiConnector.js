@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const submitSpeciesData = async (data) => {
+export const submitSpeciesData = async (data,method) => {
   try {
     const tokenString = localStorage.getItem("authToken");
     const tokenObj = JSON.parse(tokenString);
@@ -17,7 +17,7 @@ export const submitSpeciesData = async (data) => {
     };
 
     const response = await fetch("http://localhost:8000/fishes/species?token="+tokenObj.access_token, {
-      method: "POST",
+      method: method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${tokenObj.access_token}`
@@ -105,3 +105,25 @@ export const submitSpeciesData = async (data) => {
       console.log(error)
     }
   }
+  
+export const deleteSpecies = async (speciesName) => {
+  try {
+    console.log(speciesName)
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+
+    const response = await fetch(`http://localhost:8000/fishes/species?species_name=${speciesName}&token=${tokenObj.access_token}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete species: ${response.statusText}`);
+    }
+
+    return { message: "Species deleted successfully", status: response.status };
+
+  } catch (error) {
+    console.error("Error deleting species:", error);
+    throw error;
+  }
+};

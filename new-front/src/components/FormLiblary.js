@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import "../CSS/DataForm.css"; // Importing the CSS file
-import "./ApiConnector"
+import "../CSS/DataForm.css";
 import { submitSpeciesData, uploadSpeciesImage } from "./ApiConnector";
-import FishGallery from "./SpeciesGallery"; // Import FishGallery component
 
 const NewFishSpecies = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -14,10 +12,10 @@ const NewFishSpecies = ({ onSubmit }) => {
     max_ph: "",
     min_salinity: "",
     max_salinity: "",
-    image: null // Add image to formData
+    image: null
   });
 
-  const [imagePreview, setImagePreview] = useState(null); // State for image preview
+  const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -61,9 +59,9 @@ const NewFishSpecies = ({ onSubmit }) => {
       newErrors.min_salinity = "Zasolenie minimalne nie może być ujemne.";
       newErrors.max_salinity = "Zasolenie maksymalne nie może być ujemne.";
     }
-    if (parseFloat(formData.min_temp) < 0 || 0 > parseFloat(formData.max_temp)) {
+    if (parseFloat(formData.min_temp) < 0 || parseFloat(formData.max_temp) < 0) {
       newErrors.min_temp = "Temperatura minimalna nie może być ujemna.";
-      newErrors.max_temp = "Temperatura maksymalna nie może być ujmena";
+      newErrors.max_temp = "Temperatura maksymalna nie może być ujemna";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -72,28 +70,27 @@ const NewFishSpecies = ({ onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
-      const res = await submitSpeciesData(formData);
-      console.log(res.code);
-  
-      if (res.code === 200) {
-        let successMessage = "Pomyślnie dodano gatunek";
-        if (formData.image) {
-          const res2 = await uploadSpeciesImage(formData.name, formData.image);
-          console.log(res2.code);
-          if (res2.code === 200) {
-            successMessage += " z obrazkiem";
+      try {
+        const res = await submitSpeciesData(formData,"POST");
+        if (res.code === 200) {
+          let successMessage = "Pomyślnie dodano gatunek";
+          if (formData.image) {
+            const res2 = await uploadSpeciesImage(formData.name, formData.image);
+            if (res2.code === 200) {
+              successMessage += " z obrazkiem";
+            }
           }
+          alert(successMessage);
+          onSubmit(); // Call the refresh method after adding the new species
+        } else if (res.code === 400) {
+          alert("Taki gatunek już istnieje.");
         }
-        alert(successMessage);
-        FishGallery.fetchData();
-      } else if (res.code === 400) {
-        alert("Taki gatunek już istnieje.");
+      } catch (error) {
+        console.error("Error adding species:", error);
+        alert("Wystąpił błąd podczas dodawania gatunku.");
       }
     }
   };
-  
-  
 
   return (
     <form className="data-form" onSubmit={handleSubmit}>
