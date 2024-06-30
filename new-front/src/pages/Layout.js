@@ -7,16 +7,7 @@ import {useNavigate} from "react-router-dom";
 
 const Layout = ({ onLogout, onSelect, children }) => {
     const navigate = useNavigate();
-    /*document.body.style.backgroundColor = "white";
-    document.body.style.backgroundImage = "url(' ')";
-    document.body.style.height = "auto";
-    document.body.style.alignItems = "normal";*/
 
-    /*return () => {
-        document.body.style.backgroundColor = "";
-        document.body.style.backgroundImage = "";
-        document.body.style.height = "";
-    };*/
     const handleSelect = (selected) => {
         onSelect(selected);
         switch (selected) {
@@ -24,22 +15,7 @@ const Layout = ({ onLogout, onSelect, children }) => {
                 navigate('/');
                 break;
             case 'AquaMonitor':
-                navigate('/aquamonitor');
-                break;
-            case 'AquaAccount':
-                navigate('/account');
-                break;
-            case 'AquaMaker':
-                navigate('/maker');
-                break;
-            case 'AquaLife':
-                navigate('/life');
-                break;
-            case 'AquaDecorator':
-                navigate('/decorator');
-                break;
-            case 'AquaHistory':
-                navigate('/history');
+                navigate('/aquariums', { state: { origin: 'AquaMonitor' } });
                 break;
             case 'Logout':
                 onLogout();
