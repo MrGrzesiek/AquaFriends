@@ -2,6 +2,8 @@ import React from "react";
 import { fetchUserAquariums } from "../../components/ApiConnector";
 import Header from "../../components/nav/Header";
 import "../../CSS/AquariumsList.css";
+import {useLocation, useNavigate} from "react-router-dom";
+import logo from "../../components/nav/Logo";
 
 const aquariumImages = [
     "https://t4.ftcdn.net/jpg/08/55/11/41/240_F_855114111_T2vF7DTpQRywn2zTXbR8rxoljorBRS7M.jpg",
@@ -18,6 +20,8 @@ const AquariumsList = () => {
     const [aquariums, setAquariums] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -34,10 +38,17 @@ const AquariumsList = () => {
         fetchData();
     }, []);
 
-    const handleBoxClick = (aquariumId) => {
-        // Navigate to the aquarium's details page
-        // Assuming you have a router set up for aquarium details
-        window.location.href = `/aquarium/${aquariumId}`;
+    const handleAquariumClick = (aquariumId) => {
+        const origin = location.state?.origin;
+        let targetPath = '/';
+        if (origin === 'AquaMonitor') {
+            targetPath = `/aquamonitor/${aquariumId}`;
+        } else if (origin === 'AquaDecorator') {
+            targetPath = `/aquadecorator/${aquariumId}`;
+        } else if (origin === 'AquaHistory') {
+            targetPath = `/aquahistory/${aquariumId}`;
+        }
+        navigate(targetPath);
     };
 
     if (loading) {
@@ -50,6 +61,7 @@ const AquariumsList = () => {
 
     // return list of boxes with aquariums. Each box should contain aquarium name, description and a button to navigate to the aquarium details page, as well as have a thin black outline
     // boxes should be stacked horizontally, and if width of the page is too small, they should wrap to the next line
+    aquariums.map((aquarium, index) => (console.log(aquarium.name, aquarium._id)));
     return (
         <div>
             <Header />
@@ -57,9 +69,9 @@ const AquariumsList = () => {
             <div className="aquarium-container">
                 {aquariums.map((aquarium, index) => (
                     <div
-                        key={aquarium.id}
+                        key={aquarium._id}
                         className="aquarium-box"
-                        onClick={() => handleBoxClick(aquarium.id)}
+                        onClick={() => handleAquariumClick(aquarium._id)}
                     >
                         <img
                             src={aquariumImages[index % aquariumImages.length]}

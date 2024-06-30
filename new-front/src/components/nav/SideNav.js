@@ -16,13 +16,14 @@ function CustomSideNav({ onLogout, onSelect  }) {
       {/* SideNav */}
       <SideNav style={styles}
         onSelect={(selected) => {
-          console.log(selected);
-          if(selected === 'Logout') {
-            // Call the onLogout function when 'Logout' is selected
+          console.log("Selected: " + selected);
+          if (selected === 'Logout') {
             onLogout();
-          }
-          else{
+          } else if (['AquaMonitor', 'AquaDecorator', 'AquaHistory'].includes(selected)) {
+            console.log("CustomSideNav: selected: " + selected);
             onSelect(selected);
+          } else {
+            onSelect('home');
           }
         }}
       >

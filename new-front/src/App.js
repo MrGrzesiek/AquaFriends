@@ -6,6 +6,7 @@ import AdminPage from "./pages/admin/AdminPage";
 import {checkBackend} from "./components/auth/SessionManager"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
+import AquaMonitor from "./pages/user/AquaMonitor";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -90,6 +91,12 @@ function App() {
               element={
                 loggedIn ? <AdminPage onLogout={handleLogout} /> : <Navigate to="/" />
               } 
+            />
+            <Route
+                path="/aquamonitor/:aquariumId"
+                element={
+                  loggedIn ? <AquaMonitor /> : <Navigate to="/" />
+                }
             />
           </Routes>
         </div>
