@@ -3,10 +3,12 @@ import "../CSS/styles.css";
 import SignInForm from "../components/auth/SignIn";
 import SignUpForm from "../components/auth/SignUp";
 import Logo from "../components/nav/Logo";
+import {useNavigate} from "react-router-dom";
 
 export default function LoginPage({onLogin}) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [type, setType] = useState("signIn");
+  const navigate = useNavigate();
 
   const handleOnClick = (text) => {
     if (text !== type) {
@@ -19,6 +21,7 @@ export default function LoginPage({onLogin}) {
       setLoggedIn(true);
       console.log("Użytkownik zalogowany.");
       onLogin();
+      navigate('/');
     } else {
       console.log("Nieprawidłowe dane logowania.");
     }

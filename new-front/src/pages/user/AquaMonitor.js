@@ -1,30 +1,23 @@
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import {useParams, useLocation, Route, Routes} from 'react-router-dom';
 import LineChart from "../../components/LineChart";
 import Header from "../../components/nav/Header";
 import AquariumsList from "./AquariumsList";
+import AquariumDetails from "./AquaMonitorDetails";
 
 const AquaMonitor = () => {
     const { aquariumId } = useParams();
     const location = useLocation();
     const origin = location.state?.origin;
 
-    if (!aquariumId) {
-        console.log("aquariumId is null")
-        return <AquariumsList/>;
-    }
-    else {
-        console.log("aquariumId is not null")
-        return (
-            <div>
-                <Header/>
-                <h1>AquaMonitor for Aquarium {aquariumId}</h1>
-                <p>Origin: {origin}</p>
-                {/* Display other relevant details */}
-                <LineChart/>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Routes>
+                <Route path="/" element={<AquariumsList />} />
+                <Route path=":id" element={<AquariumDetails />} />
+            </Routes>
+        </div>
+    );
 };
 
 export default AquaMonitor;

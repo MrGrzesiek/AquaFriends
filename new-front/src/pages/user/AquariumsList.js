@@ -39,7 +39,11 @@ const AquariumsList = () => {
     }, []);
 
     const handleAquariumClick = (aquariumId) => {
+        console.log("aquariumId is: ", aquariumId)
+        console.log("state is: ", location.state)
+        console.log("origin is: ", location.origin)
         const origin = location.state?.origin;
+        console.log("Final origin is: ",origin)
         let targetPath = '/';
         if (origin === 'AquaMonitor') {
             targetPath = `/aquamonitor/${aquariumId}`;
@@ -64,7 +68,6 @@ const AquariumsList = () => {
     aquariums.map((aquarium, index) => (console.log(aquarium.name, aquarium._id)));
     return (
         <div>
-            <Header />
             <h1>Twoje akwaria:</h1>
             <div className="aquarium-container">
                 {aquariums.map((aquarium, index) => (
