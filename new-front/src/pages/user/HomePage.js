@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomSideNav from "../../components/nav/SideNav";
 import Header from "../../components/nav/Header";
 import "../../CSS/styles.css";
-import AquariumsList from "./AquaMonitor";
+import AquariumsList from "./AquariumsList";
 
 const HomePage = ({ onLogout }) => {
   const [selectedItem, setSelectedItem] = useState('home');

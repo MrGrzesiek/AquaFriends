@@ -4,7 +4,7 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser, faHome, faPlus, faFish, faPalette, faBinoculars, faClockRotateLeft, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import AquariumsList from "../../pages/user/AquaMonitor";
+import AquariumsList from "../../pages/user/AquariumsList";
 library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRotateLeft, faArrowRightFromBracket);
 
 function CustomSideNav({ onLogout, onSelect  }) {
