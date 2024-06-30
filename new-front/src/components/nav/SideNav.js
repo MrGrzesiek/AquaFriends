@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser, faHome, faPlus, faFish, faPalette, faBinoculars, faClockRotateLeft, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import AquariumsList from "../../pages/user/AquariumsList";
 library.add(faUser, faHome, faPlus, faFish, faPalette, faBinoculars , faClockRotateLeft, faArrowRightFromBracket);
 
-function CustomSideNav({ onLogout }) {
+function CustomSideNav({ onLogout, onSelect  }) {
   const styles = {
     background: "#2469A6",
     position: "fixed",
@@ -25,10 +26,14 @@ function CustomSideNav({ onLogout }) {
       {/* SideNav */}
       <SideNav style={styles}
         onSelect={(selected) => {
-          console.log(selected);
-          if(selected === 'Logout') {
-            // Call the onLogout function when 'Logout' is selected
+          console.log("Selected: " + selected);
+          if (selected === 'Logout') {
             onLogout();
+          } else if (['AquaMonitor', 'AquaDecorator', 'AquaHistory'].includes(selected)) {
+            console.log("CustomSideNav: selected: " + selected);
+            onSelect(selected);
+          } else {
+            onSelect('home');
           }
         }}
       >

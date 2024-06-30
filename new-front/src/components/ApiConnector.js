@@ -88,6 +88,24 @@ export const submitSpeciesData = async (data,method) => {
         throw error;
     }
 };
+
+  export const fetchUserAquariums = async (user) => {
+    try {
+      const tokenString = localStorage.getItem("authToken");
+      const tokenObj = JSON.parse(tokenString);
+      const response = await axios.get(`http://localhost:8000/aquariums/user_aquariums?token=`+tokenObj.access_token);
+      if (response.data.code!==200) {
+        throw new Error('Failed to fetch user aquariums');
+      }
+      else{
+        console.log(response.data.Aquariums)
+        return response.data.Aquariums;
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
 export const deleteSpecies = async (speciesName) => {
   try {
     console.log(speciesName)

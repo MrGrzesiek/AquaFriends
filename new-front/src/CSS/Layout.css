@@ -1,0 +1,13 @@
+body {
+    background-color: white;
+    background-image: url(' ');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: normal; /* Changed from center to normal */
+    flex-direction: column;
+    font-family: "Montserrat", sans-serif;
+    height: auto; /* Changed from 100vh to auto */
+    margin: 0px 0 0px;
+}

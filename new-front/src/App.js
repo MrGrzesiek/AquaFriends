@@ -6,11 +6,15 @@ import AdminPage from "./pages/admin/AdminPage";
 import {checkBackend} from "./components/auth/SessionManager"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
+import AquaMonitor from "./pages/user/AquaMonitor";
+import AquariumsList from "./pages/user/AquariumsList";
+import Layout from "./pages/Layout";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [backendAvailable, setBackendAvailable] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('home');
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -69,28 +73,11 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route 
-              path="/" 
-              element={
-                loggedIn ? (
-                  isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
-                ) : (
-                  <LoginPage onLogin={handleLogin} />
-                )
-              } 
-            />
-            <Route 
-              path="/home" 
-              element={
-                loggedIn ? <HomePage onLogout={handleLogout} /> : <Navigate to="/" />
-              } 
-            />
-            <Route 
-              path="/admin" 
-              element={
-                loggedIn ? <AdminPage onLogout={handleLogout} /> : <Navigate to="/" />
-              } 
-            />
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/login" />} />
+            <Route path="/"                        element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><HomePage /></Layout> : <Navigate to="/login" />} />
+            <Route path="/aquariums"       element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquariumsList /></Layout> : <Navigate to="/login" />} />
+            <Route path="/aquamonitor/*" element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquaMonitor /></Layout> : <Navigate to="/login" />} />
           </Routes>
         </div>
       </Router>
