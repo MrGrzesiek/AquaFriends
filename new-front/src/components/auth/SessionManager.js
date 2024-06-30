@@ -3,7 +3,8 @@ const handleResponse = async (response) => {
   try {
     const token = await response.json();
     localStorage.setItem("authToken", JSON.stringify(token));
-    renewToken(44 * 60 * 1000);
+    renewToken(1000*60*44);
+    console.log("odnowiono")
     await checkIdentity(token)
   } catch (error) {
     console.error("Error processing response:", error);
@@ -14,16 +15,9 @@ const renewToken = (delay) => {
     setTimeout(async () => {
       const tokenString = localStorage.getItem("authToken");
       const tokenObj = JSON.parse(tokenString);
-      const responseIdentity = await checkIdentity(tokenObj);
-      const meData = await responseIdentity.json();
 
-      const formData = new FormData();
-      formData.append("username", meData.username);
-      formData.append("password", meData.password_hash);
-
-      const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        body: formData,
+      const response = await fetch(`http://localhost:8000/auth/refresh_token?token=${tokenObj.access_token}`, {
+        method: "GET",
       });
       await handleResponse(response);
     }, delay);

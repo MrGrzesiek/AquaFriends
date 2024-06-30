@@ -48,11 +48,11 @@ function AdminSideNav({ onLogout, onSelect }) {
           </NavIcon>
           <NavText>Kreator gatunków</NavText>
         </NavItem>
-        <NavItem eventKey="AquaAccount">
+        <NavItem eventKey="AquaDevice">
           <NavIcon>
             <FontAwesomeIcon icon={faUser} style={iconStyles} />
           </NavIcon>
-          <NavText>AquaAccount</NavText>
+          <NavText>Kreator urządzeń</NavText>
         </NavItem>
         <NavItem eventKey="Logout">
           <NavIcon>
