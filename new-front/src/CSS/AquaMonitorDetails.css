@@ -1,12 +1,16 @@
+.aquamonitor {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .aquamonitor-details {
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 80%;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    gap: 20px; /* Optional: Adds space between elements */
-    justify-content: center;
-    align-items: center;
+    gap: 20px;
     margin: auto;
 }
 
@@ -15,6 +19,26 @@
 .aquamonitor-details button {
     max-width: fit-content;
 }
+
 .aquamonitor-details .line-chart {
     width: 100%;
+}
+
+.aquamonitor-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.aquamonitor-controls button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.aquamonitor-controls button:hover {
+    background-color: #0056b3;
 }

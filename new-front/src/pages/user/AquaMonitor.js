@@ -6,7 +6,7 @@ import AquariumsList from "./AquariumsList";
 import AquariumDetails from "./AquaMonitorDetails";
 
 const AquaMonitor = () => {
-    const { aquariumId } = useParams();
+    const { aquariumName } = useParams();
     const location = useLocation();
     const origin = location.state?.origin;
 
@@ -14,7 +14,7 @@ const AquaMonitor = () => {
         <div>
             <Routes>
                 <Route path="/" element={<AquariumsList />} />
-                <Route path=":id" element={<AquariumDetails />} />
+                <Route path=":aquariumName" element={<AquariumDetails />} />
             </Routes>
         </div>
     );

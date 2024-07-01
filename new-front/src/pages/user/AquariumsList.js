@@ -38,15 +38,12 @@ const AquariumsList = () => {
         fetchData();
     }, []);
 
-    const handleAquariumClick = (aquariumId) => {
-        console.log("aquariumId is: ", aquariumId)
-        console.log("state is: ", location.state)
-        console.log("origin is: ", location.origin)
+    const handleAquariumClick = (aquariumId, aquariumName) => {
+        console.log("handleAquariumClick " + aquariumId + aquariumName)
         const origin = location.state?.origin;
-        console.log("Final origin is: ",origin)
         let targetPath = '/';
         if (origin === 'AquaMonitor') {
-            targetPath = `/aquamonitor/${aquariumId}`;
+            targetPath = `/aquamonitor/${aquariumName}`;
         } else if (origin === 'AquaDecorator') {
             targetPath = `/aquadecorator/${aquariumId}`;
         } else if (origin === 'AquaHistory') {
@@ -74,7 +71,7 @@ const AquariumsList = () => {
                     <div
                         key={aquarium._id}
                         className="aquarium-box"
-                        onClick={() => handleAquariumClick(aquarium._id)}
+                        onClick={() => handleAquariumClick(aquarium._id, aquarium.name)}
                     >
                         <img
                             src={aquariumImages[index % aquariumImages.length]}
