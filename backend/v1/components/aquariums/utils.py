@@ -69,6 +69,19 @@ def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
             'message': f'{aquarium_id} updated successfully'}
 
 
+def get_aquarium_history_by_name(aquarium_name: str, user: User):
+    history = connector.get_aquarium_logs_collection().find({'username': user.username, 'name': aquarium_name})
+    h = []
+    for event in history:
+        del event['_id']
+        h.append(event)
+
+    if len(h) == 0:
+        return {'code': 404, 'message': f'No history found for aquarium {aquarium_name}'}
+
+    return {'code': 200, 'message': f'History retrieved successfully', 'history': h}
+
+
 def delete_aquarium(aquarium_id: str):
     id = ObjectId(aquarium_id)
     if not connector.get_aquariums_collection().find_one({'_id': id}):

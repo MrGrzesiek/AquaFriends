@@ -2,7 +2,7 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
 
 from .utils import create_aquarium, get_user_aquariums, update_aquarium, delete_aquarium, get_events, add_event, \
-    get_user_aquariums
+    get_user_aquariums, get_aquarium_history_by_name
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
 from models import User, Aquarium, Event
@@ -83,3 +83,13 @@ async def get_aquarium_events(aquarium_name: str, user: User = Depends(get_curre
 @router.post('/event')
 async def add_aquarium_event(event: Event, user: User = Depends(get_current_user)):
     return add_event(event, user)
+
+
+"""
+History
+"""
+
+@login_required
+@router.get('/history/{aquarium_name}')
+async def get_aquarium_history(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_aquarium_history_by_name(aquarium_name, user)
