@@ -1,0 +1,20 @@
+.aquamonitor-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80%;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    gap: 20px; /* Optional: Adds space between elements */
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.aquamonitor-details h1,
+.aquamonitor-details h2,
+.aquamonitor-details button {
+    max-width: fit-content;
+}
+.aquamonitor-details .line-chart {
+    width: 100%;
+}

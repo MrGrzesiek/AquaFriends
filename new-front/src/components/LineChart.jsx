@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import {
     LineChart,
     Line,
@@ -46,24 +47,24 @@ const salesData = [
 
 const LineChartComponent = () => {
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-                width={500}
-                height={300}
-                data={salesData}
-                margin={{
-                    right: 30,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#3b82f6" />
-                <Line type="monotone" dataKey="profit" stroke="#8b5cf6" />
-            </LineChart>
-        </ResponsiveContainer>
+        <div style={{ width: '100%', height: '400px' }}>
+            <ResponsiveContainer width="100%" height="100%" aspect={2}>
+                <LineChart
+                    data={salesData}
+                    margin={{
+                        right: 30,
+                    }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Line type="monotone" dataKey="revenue" stroke="#3b82f6" />
+                    <Line type="monotone" dataKey="profit" stroke="#8b5cf6" />
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     );
 };
 
@@ -85,7 +86,5 @@ const CustomTooltip = ({ active, payload, label }) => {
             </div>
         );
     }
-    else{
-        <div><h1>Something went wrong... </h1></div>
-    }
+    return null;
 };
