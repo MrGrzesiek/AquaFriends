@@ -128,4 +128,29 @@ export const deleteSpecies = async (speciesName) => {
   }
 };
 
+export const fetchAquariumData = async (aquariumName) => {
+  try {
+    const tokenString = localStorage.getItem("authToken");
+    if (!tokenString) {
+      throw new Error('No auth token found');
+    }
+
+    const tokenObj = JSON.parse(tokenString);
+    if (!tokenObj || !tokenObj.access_token) {
+      throw new Error('Invalid auth token');
+    }
+
+    const response = await fetch(`http://localhost:8000/aquariums/history/${aquariumName}?token=${tokenObj.access_token}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching aquarium data:', error, error.message);
+    return null; // or [] depending on how you handle it in your component
+  }
+};
+
 
