@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LineChartComponent from '../../../components/LineChart';
 import '../../../CSS/AquaMonitorDetails.css';
 import { fetchAquariumData } from '../../../components/ApiConnector';
+import AquariumUpdateChoiceMenu from "./AquaMonitorUpdateAquarium";
 
 const AquariumDetails = () => {
     const { aquariumName } = useParams();
@@ -10,6 +11,15 @@ const AquariumDetails = () => {
     const [aquariumData, setAquariumData] = useState({});
     const [selectedDataset, setSelectedDataset] = useState('temperature');
     const [chartData, setChartData] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const filterData = (data, desiredOutput) => {
         // possible outputs: temperature, ph, No2, No3, GH, KH
@@ -57,7 +67,7 @@ const AquariumDetails = () => {
         <div className="aquamonitor">
             <div className="aquamonitor-details">
                 <h1>AquaMonitor</h1>
-                <h2>Aquarium: {aquariumName}</h2>
+                <h2>Akwarium: {aquariumName}</h2>
                 <button onClick={() => navigate(-1)}>Go Back</button>
                 <LineChartComponent data={chartData} selectedDataset={selectedDataset} />
             </div>
@@ -68,7 +78,8 @@ const AquariumDetails = () => {
                             onClick={() => handleDatasetChange('temperature')}>
                         Temperature
                     </button>
-                    <button className={selectedDataset === 'ph' ? 'selected' : ''} onClick={() => handleDatasetChange('ph')}>
+                    <button className={selectedDataset === 'ph' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('ph')}>
                         PH
                     </button>
                     <button className={selectedDataset === 'No2' ? 'selected' : ''}
@@ -79,14 +90,17 @@ const AquariumDetails = () => {
                             onClick={() => handleDatasetChange('No3')}>
                         No3
                     </button>
-                    <button className={selectedDataset === 'GH' ? 'selected' : ''} onClick={() => handleDatasetChange('GH')}>
+                    <button className={selectedDataset === 'GH' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('GH')}>
                         GH
                     </button>
-                    <button className={selectedDataset === 'KH' ? 'selected' : ''} onClick={() => handleDatasetChange('KH')}>
+                    <button className={selectedDataset === 'KH' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('KH')}>
                         KH
                     </button>
+                    <button className='updateAquariumData' onClick={handleOpen}>Zaktualizuj akwarium</button>
+                    <AquariumUpdateChoiceMenu open={open} onClose={handleClose} aquariumName={aquariumName}/>
                 </div>
-
             </div>
         </div>
     );

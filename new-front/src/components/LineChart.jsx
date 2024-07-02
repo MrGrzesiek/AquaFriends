@@ -11,8 +11,6 @@ import {
 } from 'recharts';
 
 const LineChartComponent = ({ data, selectedDataset }) => {
-    console.log("selectedDataset: ", selectedDataset);
-    console.log("data before processing: ", data);
     switch (selectedDataset) {
         case 'temperature':
             data = data.map((entry) => ({
@@ -64,8 +62,6 @@ const LineChartComponent = ({ data, selectedDataset }) => {
     if (data.length === 0) {
         return <div>No data to display</div>;
     }
-    console.log("data: ", data)
-    console.log("selectedDataset before making chart: ", selectedDataset)
 
     return (
         <div style={{ width: '100%', height: '70vh'}}>
@@ -91,7 +87,6 @@ const LineChartComponent = ({ data, selectedDataset }) => {
 export default LineChartComponent;
 
 const CustomTooltip = ({ active, payload, label, selectedDataset }) => {
-    console.log("Selected dataset: ", selectedDataset)
     let unit = "";
     switch (selectedDataset) {
         case 'temperature':
@@ -115,9 +110,6 @@ const CustomTooltip = ({ active, payload, label, selectedDataset }) => {
         default:
             unit = "unit undefined"
     }
-    console.log("Label: ", label)
-    console.log("Payload: ", payload)
-    console.log("Active: ", active)
     if (active && payload && payload.length) {
         return (
             <div className="p-4 bg-slate-900 flex flex-col gap-4 rounded-md">

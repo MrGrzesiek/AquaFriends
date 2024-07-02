@@ -153,4 +153,33 @@ export const fetchAquariumData = async (aquariumName) => {
   }
 };
 
+export const uploadNewEvent = async (aquariumName, eventType, eventDescription) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
 
+        const requestBody = {
+          aquarium_name: aquariumName,
+          event_type: eventType,
+          event_time: new Date().toISOString(),
+          event_description: eventDescription,
+        };
+
+        const response = await fetch(`http://localhost:8000/aquariums/event?token=${tokenObj.access_token}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) {
+        throw new Error("Failed to upload new event");
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error("Error uploading new event:", error);
+        throw error;
+    }
+}
