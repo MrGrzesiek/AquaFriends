@@ -56,7 +56,7 @@ const AquariumDetails = () => {
     return (
         <div className="aquamonitor">
             <div className="aquamonitor-details">
-                <h1>Aquarium Monitor Details</h1>
+                <h1>AquaMonitor</h1>
                 <h2>Aquarium: {aquariumName}</h2>
                 <button onClick={() => navigate(-1)}>Go Back</button>
                 <LineChartComponent data={chartData} selectedDataset={selectedDataset} />

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 100%;
 }
 
 .aquamonitor-details {
@@ -11,7 +12,8 @@
     max-width: 80%;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     gap: 20px;
-    margin: auto;
+    flex: 1;
+    margin-left: calc(50px + 1vw);
 }
 
 .aquamonitor-details h1,
@@ -21,7 +23,8 @@
 }
 
 .aquamonitor-details .line-chart {
-    width: 100%;
+    width: max-content;
+    height: max-content;
 }
 
 .aquamonitor-controls {
@@ -37,6 +40,7 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    font-size: clamp(14px, 1.5vw, 28px);
 }
 
 .aquamonitor-controls button:hover {
