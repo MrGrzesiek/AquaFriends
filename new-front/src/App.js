@@ -9,6 +9,7 @@ import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 import AquaMonitor from "./pages/user/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
 import Layout from "./pages/Layout";
+import fishImage from './RES/newfish3.jpg'; // Import the image
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -58,6 +59,10 @@ function App() {
   console.log("isAdmin:", isAdmin);
 
   if (!backendAvailable) {
+    document.body.style.backgroundColor = "white";
+    document.body.style.backgroundImage = `url(${fishImage})`;
+    document.body.style.height = "auto";
+    document.body.style.alignItems = "normal";
     return (
       <div style={{ textAlign: 'center',
                     fontSize: "2vw",
@@ -69,6 +74,9 @@ function App() {
     );
   }
   else{
+    document.body.style.backgroundColor = "";
+    document.body.style.backgroundImage = "";
+    document.body.style.height = "";
     return (
       <Router>
         <div className="App">
