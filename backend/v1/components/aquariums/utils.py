@@ -3,6 +3,7 @@ from bson import ObjectId
 from models import Aquarium, User, Event
 from dependencies.database import Connector, log_aquarium_history
 from fastapi.responses import JSONResponse
+import datetime
 
 from .wrappers import validate_aquarium
 
@@ -45,7 +46,11 @@ def get_user_aquariums(user: User):
 
         # convert date of birth to string
         for fish in s['fishes']:
-            if fish:
+            if fish and 'date_of_birth' in fish and fish['date_of_birth']:
+                if isinstance(fish['date_of_birth'], str):
+                    # Parse the string into a datetime object
+                    fish['date_of_birth'] = datetime.datetime.strptime(fish['date_of_birth'], '%Y-%m-%d')
+                # Convert datetime object to string in desired format
                 fish['date_of_birth'] = fish['date_of_birth'].strftime('%Y-%m-%d')
             else:
                 del fish  # Remove empty fish
