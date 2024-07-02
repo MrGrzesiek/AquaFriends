@@ -8,7 +8,7 @@ import AquariumUpdateChoiceMenu from "./AquaMonitorUpdateAquarium";
 const AquariumDetails = () => {
     const { aquariumName } = useParams();
     const navigate = useNavigate();
-    const [aquariumData, setAquariumData] = useState({});
+    const [aquariumData, setAquariumData] = useState(null);
     const [selectedDataset, setSelectedDataset] = useState('temperature');
     const [chartData, setChartData] = useState([]);
     const [open, setOpen] = useState(false);
@@ -60,6 +60,7 @@ const AquariumDetails = () => {
 
     const handleDatasetChange = (dataset) => {
         setSelectedDataset(dataset);
+        console.log("Aquarium data:", aquariumData);
         //setChartData(aquarium[dataset]);
     };
 
@@ -76,7 +77,7 @@ const AquariumDetails = () => {
                     <h3>Control Buttons</h3>
                     <button className={selectedDataset === 'temperature' ? 'selected' : ''}
                             onClick={() => handleDatasetChange('temperature')}>
-                        Temperature
+                        Temperatura
                     </button>
                     <button className={selectedDataset === 'ph' ? 'selected' : ''}
                             onClick={() => handleDatasetChange('ph')}>
@@ -99,7 +100,7 @@ const AquariumDetails = () => {
                         KH
                     </button>
                     <button className='updateAquariumData' onClick={handleOpen}>Zaktualizuj akwarium</button>
-                    <AquariumUpdateChoiceMenu open={open} onClose={handleClose} aquariumName={aquariumName}/>
+                    <AquariumUpdateChoiceMenu open={open} onClose={handleClose} aquariumName={aquariumName} aquariumData={aquariumData?.history?.at(-1) || {}}/>
                 </div>
             </div>
         </div>

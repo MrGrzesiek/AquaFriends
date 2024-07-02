@@ -131,3 +131,42 @@
     width: 50vh;
     height: 50vh;
 }
+
+.all-parameters-box {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto;
+    height: auto;
+    max-width: 80vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.parameter-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.child-modal-box .all-parameters-box .properties-save-button {
+    padding: 10px;
+    background-color: #e1e1e1;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: clamp(14px, 2vw, 35px);
+    transition: background-color 0.3s ease;
+}
+
+.child-modal-box .all-parameters-box .properties-save-button:hover {
+    background-color: #c7f0ff;
+}
