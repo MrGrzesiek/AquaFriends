@@ -6,7 +6,7 @@ import AdminPage from "./pages/admin/AdminPage";
 import {checkBackend} from "./components/auth/SessionManager"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
-import AquaMonitor from "./pages/user/AquaMonitor";
+import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
 import Layout from "./pages/Layout";
 import fishImage from './RES/newfish3.jpg'; // Import the image

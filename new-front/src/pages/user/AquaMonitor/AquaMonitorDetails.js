@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import LineChartComponent from '../../components/LineChart';
-import '../../CSS/AquaMonitorDetails.css';
-import { fetchAquariumData } from '../../components/ApiConnector';
+import LineChartComponent from '../../../components/LineChart';
+import '../../../CSS/AquaMonitorDetails.css';
+import { fetchAquariumData } from '../../../components/ApiConnector';
 
 const AquariumDetails = () => {
     const { aquariumName } = useParams();
