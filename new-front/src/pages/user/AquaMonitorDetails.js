@@ -62,12 +62,31 @@ const AquariumDetails = () => {
                 <LineChartComponent data={chartData} selectedDataset={selectedDataset} />
             </div>
             <div className="aquamonitor-controls">
-                <button onClick={() => handleDatasetChange('temperature')}>Temperature</button>
-                <button onClick={() => handleDatasetChange('ph')}>PH</button>
-                <button onClick={() => handleDatasetChange('No2')}>No2</button>
-                <button onClick={() => handleDatasetChange('No3')}>No3</button>
-                <button onClick={() => handleDatasetChange('GH')}>GH</button>
-                <button onClick={() => handleDatasetChange('KH')}>KH</button>
+                <div className="control-box">
+                    <h3>Control Buttons</h3>
+                    <button className={selectedDataset === 'temperature' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('temperature')}>
+                        Temperature
+                    </button>
+                    <button className={selectedDataset === 'ph' ? 'selected' : ''} onClick={() => handleDatasetChange('ph')}>
+                        PH
+                    </button>
+                    <button className={selectedDataset === 'No2' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('No2')}>
+                        No2
+                    </button>
+                    <button className={selectedDataset === 'No3' ? 'selected' : ''}
+                            onClick={() => handleDatasetChange('No3')}>
+                        No3
+                    </button>
+                    <button className={selectedDataset === 'GH' ? 'selected' : ''} onClick={() => handleDatasetChange('GH')}>
+                        GH
+                    </button>
+                    <button className={selectedDataset === 'KH' ? 'selected' : ''} onClick={() => handleDatasetChange('KH')}>
+                        KH
+                    </button>
+                </div>
+
             </div>
         </div>
     );

@@ -33,6 +33,14 @@
     gap: 10px;
 }
 
+.control-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2vh;
+    margin-right: 2vw
+}
+
 .aquamonitor-controls button {
     padding: 10px;
     background-color: #007bff;
@@ -40,9 +48,14 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
-    font-size: clamp(14px, 1.5vw, 28px);
+    font-size: clamp(14px, 2vw, 35px);
+    transition: background-color 0.3s ease;
 }
 
 .aquamonitor-controls button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker shade on hover */
 }
+.aquamonitor-controls button.selected {
+    background-color: #06b300; /* Different color for selected button */
+}
+
