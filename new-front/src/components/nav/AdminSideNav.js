@@ -6,7 +6,8 @@ import {
   faUser,
   faHome,
   faFish,
-  faArrowRightFromBracket
+  faArrowRightFromBracket,
+  faMicrochip
 } from "@fortawesome/free-solid-svg-icons";
 
 function AdminSideNav({ onLogout, onSelect }) {
@@ -50,7 +51,7 @@ function AdminSideNav({ onLogout, onSelect }) {
         </NavItem>
         <NavItem eventKey="AquaDevice">
           <NavIcon>
-            <FontAwesomeIcon icon={faUser} style={iconStyles} />
+            <FontAwesomeIcon icon={faMicrochip} style={iconStyles} />
           </NavIcon>
           <NavText>Kreator urządzeń</NavText>
         </NavItem>

@@ -29,46 +29,6 @@ const HomePage = ({ onLogout }) => {
   // Funkcja wywołująca zapytania do backendu
   const handleClick = async () => {
     console.log("siema");
-
-
-    try {
-      // Przykładowe wywołanie testowego endpointu
-      const testRes = await fetch('http://localhost:8000/', {
-        method: 'GET'
-      });
-      const testData = await testRes.json();
-      console.log('test response:', testData);
-
-      const tokenString = localStorage.getItem("authToken");
-      const tokenObj = JSON.parse(tokenString);
-
-      console.log(tokenString ? JSON.parse(tokenString) : null);
-      console.log(tokenObj.access_token);
-
-      const meResponse = await fetch('http://localhost:8000/auth/me', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenObj.access_token}`
-        }
-      });
-      const meData = await meResponse.json();
-      console.log('Me response:', meData);
-
-      // Wywołanie nowego endpointu species
-      const speciesResponse = await fetch('http://localhost:8000/fishes/species', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${tokenObj.access_token}`
-        }
-      });
-      const speciesData = await speciesResponse.json();
-      console.log('Species response:', speciesData);
-    } catch (error) {
-      console.error('Error:', error);
-      if (error.message.includes('Unexpected token')) {
-        console.error('This is likely due to the server returning HTML instead of JSON.');
-      }
-    }
   };
 
   const renderContent = () => {

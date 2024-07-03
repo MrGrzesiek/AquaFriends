@@ -33,13 +33,13 @@ def validate_device(func):
                 raise HTTPException(status_code=400, detail="Flow cant be less than 0.1 ")
 
         elif isinstance(device, Heater):
-            if device.min_temperature <= 1:
+            if device.min_temp <= 1:
                 raise HTTPException(status_code=400, detail="Minimum temperature cannot be less than 1")
 
-            if device.max_temperature >= 100:
+            if device.max_temp >= 100:
                 raise HTTPException(status_code=400, detail="Maximum temperature cannot be greater than 100")
 
-            if device.min_temperature > device.max_temperature:
+            if device.min_temp > device.max_temp:
                 raise HTTPException(status_code=400, detail="Minimum temperature exceeds maximum temperature")
 
         else:
