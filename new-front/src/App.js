@@ -81,11 +81,62 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-            <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/login" />} />
-            <Route path="/"                        element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><HomePage /></Layout> : <Navigate to="/login" />} />
-            <Route path="/aquariums"       element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquariumsList /></Layout> : <Navigate to="/login" />} />
-            <Route path="/aquamonitor/*" element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquaMonitor /></Layout> : <Navigate to="/login" />} />
+          <Route 
+        path="/" 
+        element={
+          loggedIn ? (
+            isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
+          ) : (
+            <LoginPage onLogin={handleLogin} />
+          )
+        } 
+      />
+      <Route 
+        path="/home" 
+        element={
+          loggedIn ? (
+            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+              <HomePage />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        } 
+      />
+      <Route 
+        path="/admin" 
+        element={
+          loggedIn ? (
+              <AdminPage />
+          ) : (
+            <Navigate to="/" />
+          )
+        } 
+      />
+      <Route 
+        path="/aquariums" 
+        element={
+          loggedIn ? (
+            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+              <AquariumsList />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        } 
+      />
+      <Route 
+        path="/aquamonitor/*" 
+        element={
+          loggedIn ? (
+            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+              <AquaMonitor />
+            </Layout>
+          ) : (
+            <Navigate to="/" />
+          )
+        } 
+      />
           </Routes>
         </div>
       </Router>

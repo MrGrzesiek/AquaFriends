@@ -128,6 +128,7 @@ export const deleteSpecies = async (speciesName) => {
   }
 };
 
+
 export const fetchAquariumData = async (aquariumName) => {
   try {
     const tokenString = localStorage.getItem("authToken");
@@ -212,3 +213,122 @@ export const  updateAquariumData = async(data) => {
 
         return response.json();
 }
+
+const createRequestBody = (data) => {
+  // Wspólne pola dla wszystkich urządzeń
+  let requestBody = {
+    name: data.name,
+    description: data.description,
+    power: data.power,
+    minV: data.minV,
+    maxV: data.maxV,
+    efficiency: data.efficiency,
+    type: data.type
+  };
+
+  // Dodanie specyficznych pól na podstawie typu urządzenia
+  switch(data.type) {
+    case 'Pump':
+      requestBody = {
+        ...requestBody,
+        flow: data.flow
+      };
+      break;
+      
+    case 'Light':
+      requestBody = {
+        ...requestBody,
+        luminance: data.luminance,
+        brightness: data.brightness,
+        color: data.color
+      };
+      break;
+      
+    case 'Filter':
+      requestBody = {
+        ...requestBody,
+        filter_type: data.filter_type,
+        flow_max: data.flow_max
+      };
+      break;
+      
+    case 'Heater':
+      requestBody = {
+        ...requestBody,
+        min_temp: data.min_temperature,
+        max_temp: data.max_temperature
+      };
+      break;
+
+    default:
+      throw new Error(`Unknown device type: ${data.type}`);
+  }
+
+  return requestBody;
+};
+
+export const submitDeviceData  = async (data) =>{
+  try {
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+    console.log(tokenObj.access_token)
+    const requestBody = createRequestBody(data);
+    console.log(requestBody);
+
+    const response = await fetch(`http://localhost:8000/devices/new_device?token=${tokenObj.access_token}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${tokenObj.access_token}`
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit form data");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error submitting form data:", error);
+    throw error;
+  }
+};
+
+export const getAllDevice  = async () =>{
+  try {
+      const tokenString = localStorage.getItem("authToken");
+      const tokenObj = JSON.parse(tokenString);
+      const response = await axios.get('http://localhost:8000/devices/all_devices?token='+tokenObj.access_token);
+      if (response.data.code!=200) {
+        throw new Error('Failed to fetch species data');
+      }
+      else{
+        return response.data.Devices;
+      }
+  } catch (error) {
+      console.log(error)
+  }
+};
+export const deleteDevice = async (deviceID) => {
+  try {
+    console.log(deviceID)
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+
+    const response = await fetch(`http://localhost:8000/devices/delete/${deviceID}?token=${tokenObj.access_token}`, {
+      method: "DELETE"
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Failed to delete device: ${response.statusText}`);
+    }
+
+    return { message: "Device deleted successfully", status: response.status };
+
+  } catch (error) {
+    console.error("Error deleting device:", error);
+    throw error;
+  }
+};
+

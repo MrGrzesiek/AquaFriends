@@ -1,21 +1,21 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { fetchSpeciesData, fetchSpeciesPhoto, deleteSpecies } from "./ApiConnector";
+import { getAllDevice, deleteDevice } from "./ApiConnector"; // Zmiana nazwy funkcji na bardziej adekwatną
 import "./../CSS/FishGallery.css";
 
-const FishGallery = forwardRef((props, ref) => {
-    const [fishData, setFishData] = useState([]);
-    const [selectedFish, setSelectedFish] = useState(null);
-    const [selectedFishPhoto, setSelectedFishPhoto] = useState(null);
+const DeviceGallery = forwardRef((props, ref) => {
+    const [deviceData, setDeviceData] = useState([]);
+    const [selectedDevice, setSelectedDevice] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedType, setSelectedType] = useState(""); // Nowy stan dla wybranego typu
     const [isDeleting, setIsDeleting] = useState(false);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            const data = await fetchSpeciesData();
-            setFishData(data);
+            const data = await getAllDevice();
+            setDeviceData(data);
             setLoading(false);
         } catch (error) {
             setError(error);
@@ -31,31 +31,22 @@ const FishGallery = forwardRef((props, ref) => {
         fetchData,
     }));
 
-    const handleFishClick = async (fish) => {
-        setSelectedFish(fish);
-        try {
-            const token = localStorage.getItem("authToken");
-            const tokenObj = JSON.parse(token);
-            const photoUrl = await fetchSpeciesPhoto(fish.name, tokenObj.access_token);
-            setSelectedFishPhoto(photoUrl);
-        } catch (error) {
-            console.error("Error fetching species photo:", error);
-            setSelectedFishPhoto(null);
-        }
+    const handleDeviceClick = (device) => {
+        setSelectedDevice(device);
     };
 
     const handleDelete = async () => {
-        if (selectedFish) {
-            const confirmDelete = window.confirm(`Czy na pewno chcesz usunąć gatunek ${selectedFish.name}?`);
+        if (selectedDevice) {
+            const confirmDelete = window.confirm(`Czy na pewno chcesz usunąć urządzenie ${selectedDevice.name}?`);
             if (confirmDelete) {
                 setIsDeleting(true);
                 try {
-                    await deleteSpecies(selectedFish.name);
-                    alert(`Gatunek ${selectedFish.name} został usunięty.`);
-                    fetchData(); // Refresh the list after deletion
+                    await deleteDevice(selectedDevice._id); // Użyjemy ID zamiast nazwy
+                    alert(`Urządzenie ${selectedDevice.name} zostało usunięte.`);
+                    fetchData();
                 } catch (error) {
-                    console.error("Error deleting species:", error);
-                    alert("Wystąpił błąd podczas usuwania gatunku.");
+                    console.error("Error deleting device:", error);
+                    alert("Wystąpił błąd podczas usuwania urządzenia.");
                 } finally {
                     setIsDeleting(false);
                 }
@@ -67,6 +58,10 @@ const FishGallery = forwardRef((props, ref) => {
         setSearchTerm(event.target.value);
     };
 
+    const handleTypeChange = (event) => {
+        setSelectedType(event.target.value);
+    };
+
     if (loading) {
         return <div className="loading">Ładowanie...</div>;
     }
@@ -75,58 +70,97 @@ const FishGallery = forwardRef((props, ref) => {
         return <div className="error">Błąd: {error.message}</div>;
     }
 
-    const filteredFishData = fishData.filter((fish) =>
-        fish.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredDeviceData = deviceData.filter((device) => {
+        const matchesSearchTerm = device.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = selectedType ? device.type === selectedType : true;
+        return matchesSearchTerm && matchesType;
+    });
 
     return (
         <div className="fish-gallery">
             <div className="fish-list">
-                <h2>Lista gatunków</h2>
+                <h2>Lista urządzeń</h2>
                 <input
                     type="text"
-                    placeholder="Szukaj gatunku..."
+                    placeholder="Szukaj urządzenia..."
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
+                <select value={selectedType} onChange={handleTypeChange}>
+                    <option value="">Wszystkie typy</option>
+                    <option value="Pump">Pompa</option>
+                    <option value="Heater">Grzałka</option>
+                    <option value="Filter">Filtr</option>
+                    <option value="Light">Oświetlenie</option>
+                </select>
                 <ul className="species-list">
-                    {filteredFishData.map(fish => (
+                    {filteredDeviceData.map(device => (
                         <li
-                            key={fish._id}
-                            onClick={() => handleFishClick(fish)}
-                            className={selectedFish && selectedFish._id === fish._id ? 'selected' : ''}
+                            key={device._id}
+                            onClick={() => handleDeviceClick(device)}
+                            className={selectedDevice && selectedDevice._id === device._id ? 'selected' : ''}
                         >
-                            {fish.name}
+                            {device.name}
                         </li>
                     ))}
                 </ul>
             </div>
             <div className="fish-details">
-                <h2>Szczegóły gatunku</h2>
-                {selectedFish ? (
+                <h2>Szczegóły urządzenia</h2>
+                {selectedDevice ? (
                     <div className="fish-card">
-                        <h2>{selectedFish.name}</h2>
-                        <p><b>Opis</b></p>
-                        <p>{selectedFish.description}</p>
-                        <p><b>Temperatura: </b>{selectedFish.min_temp}°C - {selectedFish.max_temp}°C</p>
-                        <p><b>pH: </b>{selectedFish.min_ph} - {selectedFish.max_ph}</p>
-                        <p><b>Zasolenie: </b>{selectedFish.min_salinity}% - {selectedFish.max_salinity}%</p>
-                        {selectedFishPhoto ? (
-                            <img src={selectedFishPhoto} alt={`Zdjęcie ${selectedFish.name}`} className="fish-photo"/>
-                        ) : (
-                            <div>Brak zdjęcia dla tego gatunku.</div>
+                        <h2>{selectedDevice.name}</h2>
+                        <p><b>Opis: </b>{selectedDevice.description}</p>
+                        <p><b>Typ: </b>{selectedDevice.type}</p>
+                        <p><b>Moc: </b>{selectedDevice.power} W</p>
+                        <p><b>Minimalna objętość: </b>{selectedDevice.minV} L</p>
+                        <p><b>Maksymalna objętość: </b>{selectedDevice.maxV} L</p>
+                        <p><b>Sprawność: </b>{selectedDevice.efficiency} %</p>
+                        {selectedDevice.type === "Pump" && (
+                            <p><b>Przepływ: </b>{selectedDevice.flow} L/min</p>
                         )}
-                        <br></br>
+                        {selectedDevice.type === "Light" && (
+                            <>
+                                <p><b>Luminancja: </b>{selectedDevice.luminance} lm</p>
+                                <p><b>Jasność: </b>{selectedDevice.brightness} %</p>
+                                <p><b>Kolor: </b>
+                                    <div
+                                        style={{
+                                            display: 'inline-block',
+                                            width: '20px',
+                                            height: '20px',
+                                            backgroundColor: selectedDevice.color,
+                                            border: '1px solid #000',
+                                            verticalAlign: 'middle'
+                                        }}
+                                        title={selectedDevice.color} // Wyświetla wartość koloru jako podpowiedź
+                                    ></div>
+                                </p>
+                            </>
+                        )}
+                        {selectedDevice.type === "Filter" && (
+                            <>
+                                <p><b>Typ filtra: </b>{selectedDevice.filter_type}</p>
+                                <p><b>Maksymalny przepływ: </b>{selectedDevice.flow_max} L/min</p>
+                            </>
+                        )}
+                        {selectedDevice.type === "Heater" && (
+                            <>
+                                <p><b>Minimalna temperatura: </b>{selectedDevice.min_temp} °C</p>
+                                <p><b>Maksymalna temperatura: </b>{selectedDevice.max_temp} °C</p>
+                            </>
+                        )}
+                        <br />
                         <button onClick={handleDelete} disabled={isDeleting} className="delete-button">
-                            {isDeleting ? "Usuwanie..." : "Usuń gatunek"}
+                            {isDeleting ? "Usuwanie..." : "Usuń urządzenie"}
                         </button>
                     </div>
                 ) : (
-                    <div className="no-selection">Wybierz gatunek z listy po lewej stronie, aby zobaczyć szczegóły.</div>
+                    <div className="no-selection">Wybierz urządzenie z listy po lewej stronie, aby zobaczyć szczegóły.</div>
                 )}
             </div>
         </div>
     );
 });
 
-export default FishGallery;
+export default DeviceGallery;
