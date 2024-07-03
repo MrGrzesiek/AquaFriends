@@ -33,13 +33,15 @@ const checkTokenInLocalStorage = () => {
     }
   };
 const checkIdentity = async (tokenObj) =>{
-  const meResponse = await fetch('http://localhost:8000/auth/me', {
+    const token = JSON.parse(localStorage.getItem("authToken"));
+  const meResponse = await fetch(`http://localhost:8000/auth/me?token=${token.access_token}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenObj.access_token}`
         }
       });
   const meData = await meResponse.json();
+    console.log("meData.scopes:", meData.scopes);
     if (meData.scopes.includes('admin')) {
         localStorage.setItem("admin", true);
     }
