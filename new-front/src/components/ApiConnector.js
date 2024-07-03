@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const API_URL = 'http://localhost:8000';
+
 export const submitSpeciesData = async (data,method) => {
   try {
     const tokenString = localStorage.getItem("authToken");
@@ -16,7 +18,7 @@ export const submitSpeciesData = async (data,method) => {
       max_salinity: parseFloat(data.max_salinity),
     };
 
-    const response = await fetch("http://localhost:8000/fishes/species?token="+tokenObj.access_token, {
+    const response = await fetch(`${API_URL}/fishes/species?token=`+tokenObj.access_token, {
       method: method,
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +45,7 @@ export const submitSpeciesData = async (data,method) => {
       const tokenString = localStorage.getItem("authToken");
       const tokenObj = JSON.parse(tokenString);
   
-      const response = await fetch(`http://localhost:8000/fishes/species_photo/${speciesName}?token=`+tokenObj.access_token, {
+      const response = await fetch(`${API_URL}/fishes/species_photo/${speciesName}?token=`+tokenObj.access_token, {
         method: "POST",
         body: formData,
       });
@@ -62,7 +64,7 @@ export const submitSpeciesData = async (data,method) => {
     try {
         const tokenString = localStorage.getItem("authToken");
         const tokenObj = JSON.parse(tokenString);
-        const response = await axios.get('http://localhost:8000/fishes/species?token='+tokenObj.access_token);
+        const response = await axios.get('${API_URL}/fishes/species?token='+tokenObj.access_token);
         if (response.data.code!=200) {
           throw new Error('Failed to fetch species data');
         }
@@ -77,7 +79,7 @@ export const submitSpeciesData = async (data,method) => {
     try {
         const tokenString = localStorage.getItem("authToken");
         const tokenObj = JSON.parse(tokenString);
-        const response = await fetch(`http://localhost:8000/fishes/species_photo/${speciesName}?token=${tokenObj.access_token}`);
+        const response = await fetch(`${API_URL}/fishes/species_photo/${speciesName}?token=${tokenObj.access_token}`);
         if (!response.ok) {
             throw new Error("Failed to fetch species photo");
         }
@@ -93,7 +95,7 @@ export const submitSpeciesData = async (data,method) => {
     try {
       const tokenString = localStorage.getItem("authToken");
       const tokenObj = JSON.parse(tokenString);
-      const response = await axios.get(`http://localhost:8000/aquariums/user_aquariums?token=`+tokenObj.access_token);
+      const response = await axios.get(`${API_URL}/aquariums/user_aquariums?token=`+tokenObj.access_token);
       if (response.data.code!==200) {
         throw new Error('Failed to fetch user aquariums');
       }
@@ -112,7 +114,7 @@ export const deleteSpecies = async (speciesName) => {
     const tokenString = localStorage.getItem("authToken");
     const tokenObj = JSON.parse(tokenString);
 
-    const response = await fetch(`http://localhost:8000/fishes/species?species_name=${speciesName}&token=${tokenObj.access_token}`, {
+    const response = await fetch(`${API_URL}/fishes/species?species_name=${speciesName}&token=${tokenObj.access_token}`, {
       method: "DELETE"
     });
 
@@ -140,7 +142,7 @@ export const fetchAquariumData = async (aquariumName) => {
       throw new Error('Invalid auth token');
     }
 
-    const response = await fetch(`http://localhost:8000/aquariums/history/${aquariumName}?token=${tokenObj.access_token}`);
+    const response = await fetch(`${API_URL}/aquariums/history/${aquariumName}?token=${tokenObj.access_token}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -164,7 +166,7 @@ export const uploadNewEvent = async (aquariumName, eventType, eventDescription) 
           event_description: eventDescription,
         };
 
-        const response = await fetch(`http://localhost:8000/aquariums/event?token=${tokenObj.access_token}`, {
+        const response = await fetch(`${API_URL}/aquariums/event?token=${tokenObj.access_token}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -202,7 +204,7 @@ export const  updateAquariumData = async(data) => {
         }
     console.log(formBody)
 
-        const response = await fetch(`http://localhost:8000/aquariums/update?token=${tokenObj.access_token}`, {
+        const response = await fetch(`${API_URL}/aquariums/update?token=${tokenObj.access_token}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -211,4 +213,43 @@ export const  updateAquariumData = async(data) => {
         });
 
         return response.json();
+}
+
+export const fetchUser = async () => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/auth/me?token=${tokenObj.access_token}`);
+        if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+        }
+        return response.json();
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+    }
+}
+
+export const updateEmail = async (email) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/auth/update_email?email=${email}&token=${tokenObj.access_token}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        // Log response for debugging
+        console.log(response);
+        console.log('Response status:', response.status);
+        const responseBody = await response.json(); // Get the raw response text
+        console.log('Response body:', responseBody);
+
+        // Convert response text to JSON
+        return responseBody;
+    } catch (error) {
+        console.error("Error updating email:", error);
+        throw error;
+    }
 }

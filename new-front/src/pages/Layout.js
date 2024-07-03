@@ -9,6 +9,8 @@ const Layout = ({ onLogout, onSelect, children }) => {
     const navigate = useNavigate();
 
     const handleSelect = (selected) => {
+        const username = localStorage.getItem('username');
+        console.log("HandleSelect: selected: " + selected);
         onSelect(selected);
         switch (selected) {
             case 'home':
@@ -20,6 +22,9 @@ const Layout = ({ onLogout, onSelect, children }) => {
             case 'Logout':
                 onLogout();
                 navigate('/login');
+                break;
+            case 'AquaAccount':
+                navigate('/aquaaccount/' + username, { state: { origin: 'AquaAccount' } });
                 break;
             default:
                 navigate('/');

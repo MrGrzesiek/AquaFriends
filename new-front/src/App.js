@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
+import AquaAccount from "./pages/user/AquaAccount/AquaAccount"
 import Layout from "./pages/Layout";
 import fishImage from './RES/newfish3.jpg'; // Import the image
 
@@ -84,6 +85,7 @@ function App() {
             <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
             <Route path="/admin" element={isAdmin ? <AdminPage /> : <Navigate to="/login" />} />
             <Route path="/"                        element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><HomePage /></Layout> : <Navigate to="/login" />} />
+            <Route path="/aquaaccount/*" element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquaAccount /></Layout> : <Navigate to="/login" />} />
             <Route path="/aquariums"       element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquariumsList /></Layout> : <Navigate to="/login" />} />
             <Route path="/aquamonitor/*" element={loggedIn ? <Layout onLogout={handleLogout} onSelect={setSelectedItem}><AquaMonitor /></Layout> : <Navigate to="/login" />} />
           </Routes>
