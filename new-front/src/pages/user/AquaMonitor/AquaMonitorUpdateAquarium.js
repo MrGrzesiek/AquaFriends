@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import '../../../CSS/AquaMonitorDetails.css';
-import {MenuItem, Select, Slider, Stack, TextField} from "@mui/material";
-import {uploadNewEvent} from "../../../components/ApiConnector";
+import {Alert, MenuItem, Select, Slider, Stack, TextField} from "@mui/material";
+import {updateAquariumData, uploadNewEvent} from "../../../components/ApiConnector";
 import {useEffect} from "react";
 import {ghMarks, khMarks, no2Marks, no3Marks, phMarks, tempMarks} from "./ValuesBrackets";
 
@@ -12,6 +12,9 @@ import {ghMarks, khMarks, no2Marks, no3Marks, phMarks, tempMarks} from "./Values
 function EventsModal({ open, handleClose, aquariumName  }) {
     const [eventType, setEventType] = React.useState('');
     const [descriptionBoxVisible, setDescriptionBoxVisible] = React.useState(false);
+    const [alertVisible, setAlertVisible] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [alertSeverity, setAlertSeverity] = React.useState('error');
 
     React.useEffect(() => {
         // Reset state when modal is closed
@@ -27,13 +30,26 @@ function EventsModal({ open, handleClose, aquariumName  }) {
         setDescriptionBoxVisible(true);
     };
 
-    const handleNewEvent = () => {
+
+    const handleNewEvent = async () => {
         console.log("New event: ", eventType);
         console.log("Description: ", document.querySelector('.description-box').value);
         console.log("Aquarium name: ", aquariumName)
         //export const uploadNewEvent = async (aquariumName, eventType, eventDescription) => {
-        uploadNewEvent(aquariumName, eventType, document.querySelector('.description-box').value);
-        handleClose();
+        const response = await uploadNewEvent(aquariumName, eventType, document.querySelector('.description-box').value);
+        console.log("Response: ", response)
+        console.log("Response code: ", response.code)
+        if (response.code != 200 || isNaN(response.code)) {
+            console.log("Dupaaaaaaaaaaaaaaaaaaaa ", response.code)
+            setAlertVisible(true);
+            setAlertMessage("Nie udało się zaktualizować danych akwarium");
+            setAlertSeverity("error");
+        } else {
+            console.log("Humor gituwa")
+            setAlertVisible(true);
+            setAlertMessage("Dane akwarium zostały zaktualizowane");
+            setAlertSeverity("success");
+        }
     }
 
     return (
@@ -46,6 +62,11 @@ function EventsModal({ open, handleClose, aquariumName  }) {
             <Box className="modal-box events-box">
                 <button className="close-button" onClick={handleClose}>&times;</button>
                 <h2 id="child-modal-title">Wybierz rodzaj zdarzenia</h2>
+                {alertVisible && (
+                    <Alert severity={alertSeverity} onClose={() => setAlertVisible(false)}>
+                        {alertMessage}
+                    </Alert>
+                )}
                 <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
@@ -72,7 +93,9 @@ function ParametersModal({ open, handleClose, AquariumData }) {
     const [No3, setNo3] = React.useState(AquariumData.No3);
     const [GH, setGH] = React.useState(AquariumData.GH);
     const [KH, setKH] = React.useState(AquariumData.KH);
-
+    const [alertVisible, setAlertVisible] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState('');
+    const [alertSeverity, setAlertSeverity] = React.useState('error');
 
     const handleTemperatureChange = (event, newValue) => {
         const value = newValue;
@@ -136,8 +159,33 @@ function ParametersModal({ open, handleClose, AquariumData }) {
         return 0;
     }
 
-    const valueLabelFormat = (value) => {
-        return `${value} ppm`;
+    const handleSave = () => {
+        AquariumData.temperature = temperature;
+        AquariumData.ph = ph;
+        AquariumData.No2 = No2;
+        AquariumData.No3 = No3;
+        AquariumData.GH = GH;
+        AquariumData.KH = KH;
+
+        console.log("All data: ", AquariumData)
+        try {
+            const response = updateAquariumData (AquariumData);
+            console.log("Response: ", response)
+            if (!response.code === 200) {
+                setAlertVisible(true);
+                setAlertMessage("Nie udało się zaktualizować danych akwarium");
+                setAlertSeverity("error");
+            } else {
+                setAlertVisible(true);
+                setAlertMessage("Dane akwarium zostały zaktualizowane");
+                setAlertSeverity("success");
+            }
+        }
+        catch (error) {
+            console.error("Error updating aquarium data:", error);
+            throw error;
+        }
+
     }
 
     useEffect(() => {
@@ -161,6 +209,11 @@ function ParametersModal({ open, handleClose, AquariumData }) {
                 <button className="close-button" onClick={handleClose}>&times;</button>
                 <h2 id="child-modal-title">Podaj parametry akwarium:</h2>
                 <p id="child-modal-description"></p>
+                {alertVisible && (
+                    <Alert severity={alertSeverity} onClose={() => setAlertVisible(false)}>
+                        {alertMessage}
+                    </Alert>
+                )}
                 <h4>Temperatura [°C]</h4>
                 <Box className="parameter-box">
                     <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
@@ -197,7 +250,7 @@ function ParametersModal({ open, handleClose, AquariumData }) {
                         <Slider aria-label="KH" valueLabelDisplay="on" marks={khMarks} step={0.1} min={0} max={10} value={KH} onChange={handleKHChange} />
                     </Stack>
                 </Box>
-                <Button className="child-modal-box all-parameters-box properties-save-button" onClick={handleClose}>Zapisz</Button>
+                <Button className="child-modal-box all-parameters-box properties-save-button" onClick={handleSave}>Zapisz</Button>
             </Box>
         </Modal>
     );

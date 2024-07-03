@@ -19,6 +19,7 @@ const AquariumDetails = () => {
 
     const handleClose = () => {
         setOpen(false);
+        fetchData();
     };
 
     const filterData = (data, desiredOutput) => {
@@ -36,25 +37,25 @@ const AquariumDetails = () => {
     };
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let data = await fetchAquariumData(aquariumName);
-                console.log("Raw data:", data); // Log the raw data
+    const fetchData = async () => {
+        try {
+            let data = await fetchAquariumData(aquariumName);
+            console.log("Raw data:", data); // Log the raw data
 
-                if (data) {
-                    setAquariumData(data);
-                    let filtered_data = filterData(data, selectedDataset);
-                    setChartData(filtered_data);
-                    console.log("Filtered data: ", filtered_data);
-                } else {
-                    console.log("No data retrieved");
-                }
-            } catch (error) {
-                console.error("Error processing aquarium data:", error);
+            if (data) {
+                setAquariumData(data);
+                let filtered_data = filterData(data, selectedDataset);
+                setChartData(filtered_data);
+                console.log("Filtered data: ", filtered_data);
+            } else {
+                console.log("No data retrieved");
             }
-        };
+        } catch (error) {
+            console.error("Error processing aquarium data:", error);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, [aquariumName, selectedDataset]);
 
