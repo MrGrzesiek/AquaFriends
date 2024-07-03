@@ -286,3 +286,12 @@
     background-color: #333;
     overflow: hidden;
   }
+
+  .AquaAccount {
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center horizontally */
+  }

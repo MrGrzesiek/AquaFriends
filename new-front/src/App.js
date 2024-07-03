@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
+import AquaAccount from "./pages/user/AquaAccount/AquaAccount"
 import Layout from "./pages/Layout";
 import fishImage from './RES/newfish3.jpg'; // Import the image
 
@@ -81,62 +82,70 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-          <Route 
-        path="/" 
-        element={
-          loggedIn ? (
-            isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
-          ) : (
-            <LoginPage onLogin={handleLogin} />
-          )
-        } 
-      />
-      <Route 
-        path="/home" 
-        element={
-          loggedIn ? (
-            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-              <HomePage />
-            </Layout>
-          ) : (
-            <Navigate to="/" />
-          )
-        } 
-      />
-      <Route 
-        path="/admin" 
-        element={
-          loggedIn ? (
-              <AdminPage />
-          ) : (
-            <Navigate to="/" />
-          )
-        } 
-      />
-      <Route 
-        path="/aquariums" 
-        element={
-          loggedIn ? (
-            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-              <AquariumsList />
-            </Layout>
-          ) : (
-            <Navigate to="/" />
-          )
-        } 
-      />
-      <Route 
-        path="/aquamonitor/*" 
-        element={
-          loggedIn ? (
-            <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-              <AquaMonitor />
-            </Layout>
-          ) : (
-            <Navigate to="/" />
-          )
-        } 
-      />
+            <Route
+                path="/"
+                element={
+                  loggedIn ? (
+                      isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
+                  ) : (
+                      <LoginPage onLogin={handleLogin} />
+                  )
+                }
+            />
+            <Route
+                path="/home"
+                element={
+                  loggedIn ? (
+                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <HomePage />
+                      </Layout>
+                  ) : (
+                      <Navigate to="/" />
+                  )
+                }
+            />
+            <Route
+                path="/admin"
+                element={
+                  loggedIn ? (
+                      <AdminPage />
+                  ) : (
+                      <Navigate to="/" />
+                  )
+                }
+            />
+            <Route
+                path="/aquariums"
+                element={
+                  loggedIn ? (
+                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <AquariumsList />
+                      </Layout>
+                  ) : (
+                      <Navigate to="/" />
+                  )
+                }
+            />
+            <Route
+                path="/aquamonitor/*"
+                element={
+                  loggedIn ? (
+                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <AquaMonitor />
+                      </Layout>
+                  ) : (
+                      <Navigate to="/" />
+                  )
+                }
+            />
+            <Route
+                path="/aquaaccount/*"
+                element={
+                  loggedIn ? (
+                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <AquaAccount /></Layout>
+                  ) : (
+                      <Navigate to="/login" />)} />
           </Routes>
         </div>
       </Router>

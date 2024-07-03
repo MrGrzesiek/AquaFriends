@@ -1,8 +1,9 @@
 
-const handleResponse = async (response) => {
+const handleResponse = async (response, username) => {
   try {
     const token = await response.json();
     localStorage.setItem("authToken", JSON.stringify(token));
+    localStorage.setItem("username", username);
     renewToken(1000*60*44);
     console.log("odnowiono")
     await checkIdentity(token)

@@ -91,3 +91,27 @@ def get_admin_user(user: User = Depends(get_current_active_user)):
         print(f'User contents: {user.dict()}')
         raise HTTPException(status_code=403, detail="Not enough permissions get_admin_user")
     return user
+
+
+def is_valid_email(email: str):
+    return ('@' in email
+            and '.' in email
+            and len(email) > 5
+            and len(email) < 255
+            and ' ' not in email
+            and email.count('@') == 1)
+
+def update_email_address(email, user: User = Depends(get_current_user)):
+    if not is_valid_email(email):
+        return {'code': 400, 'message': 'Invalid email address'}
+    elif email == user.email:
+        print(f'Email: {email}, user.email: {user.email}')
+        return {'code': 418, 'message': 'Email address is the same as the current one'}
+
+    user_data = db_connector.get_users_collection().find_one({'username': user.username, 'email': user.email})
+    if not user_data:
+        return {'code': 404, 'message': f'User {user.username} not found'}
+
+    db_connector.get_users_collection().find_one_and_update({'username': user.username, 'email': user.email},
+                                                            {'$set': {'email': email}})
+    return {'code': 200, 'message': f'Email updated successfully'}

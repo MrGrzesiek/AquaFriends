@@ -60,7 +60,7 @@ function SignInForm({ onLogin }) {
         throw new Error("Nieprawidłowa nazwa użytkownika lub hasło.");
       }
 
-      await handleResponse(response);
+      await handleResponse(response, username);
 
       onLogin(true);
 

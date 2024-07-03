@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from .schemas import Token
-from .utils import login, manager, register, refresh_token, get_current_user
+from .utils import login, manager, register, refresh_token, get_current_user, update_email_address
 
 import sys
 from os import path
@@ -35,7 +35,7 @@ async def logout_route():
 
 
 @router.get('/me', tags=['Authentication and registration'])
-async def me_route(user=Depends(manager)):
+async def me_route(user: User = Depends(get_current_user)):
     return user
 
 
@@ -43,3 +43,7 @@ async def me_route(user=Depends(manager)):
 @router.get('/refresh_token', tags=['Authentication and registration'])
 async def refresh_token_route(user: User = Depends(get_current_user)):
     return refresh_token(user)
+
+@router.put('/update_email')
+async def update_email(email, user: User = Depends(get_current_user)):
+    return update_email_address(email, user)
