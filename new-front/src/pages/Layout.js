@@ -26,6 +26,9 @@ const Layout = ({ onLogout, onSelect, children }) => {
             case 'AquaAccount':
                 navigate('/aquaaccount/' + username, { state: { origin: 'AquaAccount' } });
                 break;
+            case 'AquaMaker':
+                navigate('/new_aquarium', { state: { origin: 'AquaMaker' } })
+                break;
             default:
                 navigate('/');
         }

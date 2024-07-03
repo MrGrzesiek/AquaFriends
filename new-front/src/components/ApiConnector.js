@@ -217,6 +217,46 @@ export const  updateAquariumData = async(data) => {
 }
 
 
+export const  insertAquarium = async(data) => {
+  console.log(data)
+  const tokenString = localStorage.getItem("authToken");
+  const tokenObj = JSON.parse(tokenString);
+
+  const formBody = {
+      username: data.username,
+      name: data.name,
+      height: parseFloat(data.height),
+      width: parseFloat(data.width),
+      length: parseFloat(data.length),
+      substrate: data.substrate,
+      plants: data.plants,
+      decorations: data.decorations,
+      temperature: parseFloat(data.temperature),
+      ph: parseFloat(data.ph),
+      No2: parseFloat(data.No2),
+      No3: parseFloat(data.No3),
+      GH: parseFloat(data.GH),
+      KH: parseFloat(data.KH),
+      pump: data.pump,
+      heater: data.heater,
+      luminance: data.luminance,
+      accessories: data.accessories,
+      fishes: data.fishes
+  }
+console.log(formBody)
+
+  const response = await fetch(`${API_URL}/aquariums/new_aquarium?token=${tokenObj.access_token}`, {
+  method: "POST",
+  headers: {
+      "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
+  });
+
+  return response.json();
+}
+
+
 export const fetchUser = async () => {
     try {
         const tokenString = localStorage.getItem("authToken");

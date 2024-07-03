@@ -29,7 +29,7 @@ function CustomSideNav({ onLogout, onSelect  }) {
           console.log("Selected: " + selected);
           if (selected === 'Logout') {
             onLogout();
-          } else if (['AquaMonitor', 'AquaDecorator', 'AquaHistory', 'AquaAccount'].includes(selected)) {
+          } else if (['AquaMonitor', 'AquaDecorator', 'AquaHistory', 'AquaAccount', 'AquaMaker'].includes(selected)) {
             console.log("CustomSideNav: selected: " + selected);
             onSelect(selected);
           } else {

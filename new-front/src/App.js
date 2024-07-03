@@ -10,6 +10,7 @@ import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
 import AquaAccount from "./pages/user/AquaAccount/AquaAccount"
 import Layout from "./pages/Layout";
+import AquaMaker from "./pages/user/AquaMaker/AquaMaker"
 import fishImage from './RES/newfish3.jpg'; // Import the image
 
 function App() {
@@ -146,6 +147,14 @@ function App() {
                         <AquaAccount /></Layout>
                   ) : (
                       <Navigate to="/login" />)} />
+            <Route 
+                path="/new_aquarium" 
+                element={
+                  loggedIn ? (
+                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <AquaMaker /></Layout>
+                  ) : (
+                       <Navigate to="/login" />)} />
           </Routes>
         </div>
       </Router>
