@@ -63,15 +63,16 @@ def get_user_aquariums(user: User):
 
 @validate_aquarium
 @log_aquarium_history
-def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
-    if not connector.get_aquariums_collection().find_one:
-        return {'code': 404, 'message': f'Aquarium {aquarium_id} not found'}
+def update_aquarium(aquarium_data: Aquarium, user: User):
+    aquarium = connector.get_aquariums_collection().find_one({'name': aquarium_data.name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {aquarium_data.name} not found for user {user.username}'}
 
-    id = ObjectId(aquarium_id)
-    connector.get_aquariums_collection().find_one_and_update({'_id': id},
+    connector.get_aquariums_collection().find_one_and_update({'name': aquarium_data.name, 'username': user.username},
                                                              {'$set': aquarium_data.model_dump()})
+
     return {'code': 200,
-            'message': f'{aquarium_id} updated successfully'}
+            'message': f'{aquarium_data.name} updated successfully'}
 
 
 def get_aquarium_history_by_name(aquarium_name: str, user: User):
