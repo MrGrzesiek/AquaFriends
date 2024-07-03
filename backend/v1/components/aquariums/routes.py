@@ -1,8 +1,9 @@
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
+from starlette.responses import JSONResponse
 
 from .utils import create_aquarium, get_user_aquariums, update_aquarium, delete_aquarium, get_events, add_event, \
-    get_user_aquariums
+    get_user_aquariums, get_aquarium_history_by_name
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
 from models import User, Aquarium, Event
@@ -49,9 +50,9 @@ AquaMaker, AquaDecorator
 
 
 @login_required
-@router.put('/update/{aquarium_id}')
-async def update_existing_aquarium(aquarium: Aquarium, aquarium_id, user: User = Depends(get_current_user)):
-    result = update_aquarium(aquarium, aquarium_id)
+@router.put('/update')
+async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_current_user)):
+    result = update_aquarium(aquarium, user)
     return result
 
 
@@ -83,3 +84,13 @@ async def get_aquarium_events(aquarium_name: str, user: User = Depends(get_curre
 @router.post('/event')
 async def add_aquarium_event(event: Event, user: User = Depends(get_current_user)):
     return add_event(event, user)
+
+
+"""
+History
+"""
+
+@login_required
+@router.get('/history/{aquarium_name}')
+async def get_aquarium_history(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_aquarium_history_by_name(aquarium_name, user)

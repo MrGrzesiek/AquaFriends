@@ -3,6 +3,7 @@ from bson import ObjectId
 from models import Aquarium, User, Event
 from dependencies.database import Connector, log_aquarium_history
 from fastapi.responses import JSONResponse
+import datetime
 
 from .wrappers import validate_aquarium
 
@@ -45,7 +46,11 @@ def get_user_aquariums(user: User):
 
         # convert date of birth to string
         for fish in s['fishes']:
-            if fish:
+            if fish and 'date_of_birth' in fish and fish['date_of_birth']:
+                if isinstance(fish['date_of_birth'], str):
+                    # Parse the string into a datetime object
+                    fish['date_of_birth'] = datetime.datetime.strptime(fish['date_of_birth'], '%Y-%m-%d')
+                # Convert datetime object to string in desired format
                 fish['date_of_birth'] = fish['date_of_birth'].strftime('%Y-%m-%d')
             else:
                 del fish  # Remove empty fish
@@ -58,15 +63,29 @@ def get_user_aquariums(user: User):
 
 @validate_aquarium
 @log_aquarium_history
-def update_aquarium(aquarium_data: Aquarium, aquarium_id: str):
-    if not connector.get_aquariums_collection().find_one:
-        return {'code': 404, 'message': f'Aquarium {aquarium_id} not found'}
+def update_aquarium(aquarium_data: Aquarium, user: User):
+    aquarium = connector.get_aquariums_collection().find_one({'name': aquarium_data.name, 'username': user.username})
+    if not aquarium:
+        return {'code': 404, 'message': f'Aquarium {aquarium_data.name} not found for user {user.username}'}
 
-    id = ObjectId(aquarium_id)
-    connector.get_aquariums_collection().find_one_and_update({'_id': id},
+    connector.get_aquariums_collection().find_one_and_update({'name': aquarium_data.name, 'username': user.username},
                                                              {'$set': aquarium_data.model_dump()})
+
     return {'code': 200,
-            'message': f'{aquarium_id} updated successfully'}
+            'message': f'{aquarium_data.name} updated successfully'}
+
+
+def get_aquarium_history_by_name(aquarium_name: str, user: User):
+    history = connector.get_aquarium_logs_collection().find({'username': user.username, 'name': aquarium_name})
+    h = []
+    for event in history:
+        del event['_id']
+        h.append(event)
+
+    if len(h) == 0:
+        return {'code': 404, 'message': f'No history found for aquarium {aquarium_name}'}
+
+    return {'code': 200, 'message': f'History retrieved successfully', 'history': h}
 
 
 def delete_aquarium(aquarium_id: str):

@@ -3,7 +3,7 @@ import CustomSideNav from "../../components/nav/SideNav";
 import Header from "../../components/nav/Header";
 import "../../CSS/styles.css";
 import AquariumsList from "./AquariumsList";
-import AquaMonitor from "./AquaMonitor";
+import AquaMonitor from "./AquaMonitor/AquaMonitor";
 import {useNavigate} from "react-router-dom";
 
 const HomePage = ({ onLogout }) => {
