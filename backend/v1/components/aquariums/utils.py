@@ -31,9 +31,11 @@ Additional modules that can use these functions: Aqua Monitor, AquaLife
 def create_aquarium(aquarium: Aquarium):
     try:
         connector.get_aquariums_collection().insert_one(aquarium.model_dump())
+        if not connector.get_aquariums_collection().find_one({'name': aquarium.name}):
+            return {'code': 500, 'message': 'Failed to create aquarium'}
     except Exception as e:
         print(e)
-        print(f'Failed to create fish species: {aquarium.model_dump()}')
+        print(f'Failed to create aquarium: {aquarium.model_dump()}')
         return {'code': 500, 'message': 'Failed to create aquarium'}
     return JSONResponse(content={'code': 200, 'message': 'Aquarium created successfully'})
 
