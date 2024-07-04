@@ -28,9 +28,17 @@
 }
 
 .aquamonitor-controls {
+    background-color: #e1e1e1;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 40vh;
+    height: 95vh    ;
+
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center; /* Center horizontally */
 }
 
 .control-box {
@@ -38,7 +46,56 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 2vh;
-    margin-right: 2vw
+}
+
+.aquamonitor-warnings-and-events {
+    background-color: #76d4ff;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center;
+    display: block;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2vh;
+    height: 50vh;
+    width: 40vh;
+    padding: 10px;
+}
+
+.warning-alert {
+    padding: 10px;
+    gap: 10px;
+}
+
+.event-alert {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    padding: 10px;
+    gap: 10px;
+    margin: 10px;
+    font-size: clamp(1px, 1.5vw, 2px); /* Responsive font size */
+}
+
+.event-alert .event-dismiss {
+    background-color: #91ddff;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: clamp(10px, 1.5vw, 14px); /* Responsive font size */
+    transition: background-color 0.3s ease;
+}
+
+.event-desc {
+    text-align: left;
+}
+
+.aquamonitor-warnings-and-events .tabButton {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-direction: row;
 }
 
 .aquamonitor-controls button {
@@ -59,7 +116,7 @@
     background-color: #06b300; /* Different color for selected button */
 }
 .aquamonitor-controls .updateAquariumData {
-    background-color: #eed828; /* Example different color for the last button */
+    background-color: #f67336; /* Example different color for the last button */
     color: white;
     border: none;
     cursor: pointer;

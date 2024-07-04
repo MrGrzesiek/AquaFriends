@@ -317,7 +317,7 @@ export const submitDeviceData  = async (data) =>{
     const requestBody = createRequestBody(data);
     console.log(requestBody);
 
-    const response = await fetch(`http://localhost:8000/devices/new_device?token=${tokenObj.access_token}`, {
+    const response = await fetch(`${API_URL}/devices/new_device?token=${tokenObj.access_token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -341,7 +341,7 @@ export const getAllDevice  = async () =>{
   try {
       const tokenString = localStorage.getItem("authToken");
       const tokenObj = JSON.parse(tokenString);
-      const response = await axios.get('http://localhost:8000/devices/all_devices?token='+tokenObj.access_token);
+      const response = await axios.get('${API_URL}/devices/all_devices?token='+tokenObj.access_token);
       if (response.data.code!=200) {
         throw new Error('Failed to fetch species data');
       }
@@ -358,7 +358,7 @@ export const deleteDevice = async (deviceID) => {
     const tokenString = localStorage.getItem("authToken");
     const tokenObj = JSON.parse(tokenString);
 
-    const response = await fetch(`http://localhost:8000/devices/delete/${deviceID}?token=${tokenObj.access_token}`, {
+    const response = await fetch(`${API_URL}/devices/delete/${deviceID}?token=${tokenObj.access_token}`, {
       method: "DELETE"
     });
     console.log(response)
@@ -374,3 +374,44 @@ export const deleteDevice = async (deviceID) => {
   }
 };
 
+export const getAquariumWarnings = async (aquariumName) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        //                                                                       http://localhost:8000/warnings/for_aquarium/Loch%20Ness?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNYXRpIiwiZXhwIjoxNzIwMTM0NzczfQ.IMMUN5rbO4Pi38hmjHs01B5Pw65lfoVuj5umqmibIdQ
+        const response = await fetch(`${API_URL}/warnings/for_aquarium/${aquariumName}?token=${tokenObj.access_token}`);
+        if (!response.ok) {
+        throw new Error("Failed to fetch aquarium warnings, response status: ", response.status);
+        }
+        return response.json();
+    } catch (error) {
+        console.error("Error fetching aquarium warnings:", error);
+        throw error;
+    }
+}
+
+export const getAquariumEvents = async (aquariumName) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/aquariums/events/${aquariumName}?token=${tokenObj.access_token}`);
+        return response.json();
+    } catch (error) {
+        console.error("Error fetching aquarium events:", error);
+        throw error;
+    }
+}
+
+export const dismiss_event = async (eventID) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/aquariums/dismiss_event/${eventID}?token=${tokenObj.access_token}`, {
+            method: "DELETE",
+        });
+        return response.json();
+    } catch (error) {
+        console.error("Error dismissing event:", error);
+        throw error;
+    }
+}

@@ -15,7 +15,13 @@ def convert_mongo_id(document):
     Converts MongoDB document _id field from ObjectId to string.
     """
     if "_id" in document and isinstance(document["_id"], ObjectId):
-        document["_id"] = str(document["_id"])
+        try:
+            document["_id"] = str(document["_id"])
+        except Exception as e:
+            try:
+                document[0] = document[0].valueOf()
+            except Exception as e:
+                print(f'Failed to convert _id to string: {e}')
     return document
 
 
@@ -105,18 +111,24 @@ def get_events(aquarium_name: str, user: User):
     """
     aquarium = connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
     if not aquarium:
-        return {'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'}
+        return JSONResponse(content={'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'})
 
-    events = connector.get_events_collection().find({'aquarium_name': aquarium_name, 'username': user.username})
+    events = list(connector.get_events_collection().find({'aquarium_name': aquarium_name, 'username': user.username}))
     if not events or len(list(events)) == 0:
-        return {'code': 404, 'message': f'No events found for aquarium {aquarium_name}'}
+        return JSONResponse(content={'code': 204, 'message': f'No events found for aquarium {aquarium_name}'})
 
     e = []
     for event in events:
         event = convert_mongo_id(event)
+        if event and 'event_time' in event and event['event_time']:
+            if isinstance(event['event_time'], str):
+                # Parse the string into a datetime object
+                event['event_time'] = datetime.datetime.strptime(event['event_time'], '%Y-%m-%d')
+            # Convert datetime object to string in desired format
+            event['event_time'] = event['event_time'].strftime('%Y-%m-%d')
         e.append(event)
 
-    return {'code': 200, 'message': f'Events retrieved successfully', 'events': e}
+    return JSONResponse(content={'code': 200, 'message': f'Events retrieved successfully', 'events': e})
 
 
 def add_event(event: Event, user: User):
@@ -129,8 +141,22 @@ def add_event(event: Event, user: User):
 
     event = event.dict()
     event['username'] = user.username
+    event['active'] = True
     connector.get_events_collection().insert_one(event)
     return {'code': 200, 'message': 'Event added successfully'}
+
+
+def dismiss_event_by_id(event_id: str, user: User):
+    """
+    Dismiss an event by ID
+    """
+    event = connector.get_events_collection().find_one({'_id': ObjectId(event_id), 'username': user.username})
+    if not event:
+        return {'code': 404, 'message': f'Event {event_id} not found'}
+
+    connector.get_events_collection().find_one_and_update({'_id': ObjectId(event_id), 'username': user.username},
+                                                          {'$set': {'active': False}})
+    return {'code': 200, 'message': f'Event {event_id} dismissed successfully'}
 
 """
 model of test aquarium for easier testing
