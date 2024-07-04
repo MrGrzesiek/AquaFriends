@@ -30,6 +30,10 @@ app.add_middleware(
     allow_headers=["*"],  # Ustaw nagłówki, które chcesz zezwolić
 )
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
 # Routers
 app.include_router(auth_router)
 app.include_router(aquariums_router)
