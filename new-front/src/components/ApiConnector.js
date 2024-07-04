@@ -64,7 +64,7 @@ export const submitSpeciesData = async (data,method) => {
     try {
         const tokenString = localStorage.getItem("authToken");
         const tokenObj = JSON.parse(tokenString);
-        const response = await axios.get('${API_URL}/fishes/species?token='+tokenObj.access_token);
+        const response = await axios.get(`${API_URL}/fishes/species?token=`+tokenObj.access_token);
         if (response.data.code!=200) {
           throw new Error('Failed to fetch species data');
         }
@@ -415,3 +415,39 @@ export const dismiss_event = async (eventID) => {
         throw error;
     }
 }
+export const getAllWarning  = async () =>{
+  try {
+      const tokenString = localStorage.getItem("authToken");
+      const tokenObj = JSON.parse(tokenString);
+      const response = await axios.get(`${API_URL}/warnings?token=`+tokenObj.access_token);
+      if (response.status!=200) {
+        throw new Error('Failed to fetch warnings data');
+      }
+      else{
+        return response.data.warnings;
+      }
+  } catch (error) {
+      console.log(error)
+  }
+};
+export const deleteWarning = async (WarningID) => {
+  try {
+    console.log(WarningID)
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+
+    const response = await fetch(`${API_URL}/warnings/${WarningID}?token=${tokenObj.access_token}`, {
+      method: "DELETE"
+    });
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(`Failed to delete warning: ${response.statusText}`);
+    }
+
+    return { message: "Warning deleted successfully", status: response.status };
+
+  } catch (error) {
+    console.error("Error deleting warning:", error);
+    throw error;
+  }
+};

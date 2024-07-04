@@ -7,7 +7,8 @@ import {
   faHome,
   faFish,
   faArrowRightFromBracket,
-  faMicrochip
+  faMicrochip,
+  faExclamation
 } from "@fortawesome/free-solid-svg-icons";
 
 function AdminSideNav({ onLogout, onSelect }) {
@@ -54,6 +55,12 @@ function AdminSideNav({ onLogout, onSelect }) {
             <FontAwesomeIcon icon={faMicrochip} style={iconStyles} />
           </NavIcon>
           <NavText>Kreator urządzeń</NavText>
+        </NavItem>
+        <NavItem eventKey="Warning">
+          <NavIcon>
+            <FontAwesomeIcon icon={faExclamation} style={iconStyles} />
+          </NavIcon>
+          <NavText>Kreator ostrzeżeń</NavText>
         </NavItem>
         <NavItem eventKey="Logout">
           <NavIcon>

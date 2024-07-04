@@ -558,3 +558,134 @@ export const NewDeviceForm = ({ onSubmit }) => {
     </form>
   );
 };
+
+export const NewWarning = ({ onSubmit }) => {
+  const [formData, setFormData] = useState({
+    warning_name: "",
+    warning_description: "",
+    parameter: "",
+    min_value: "",
+    max_value: ""
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const { min_value, max_value } = formData;
+
+    if (parseFloat(min_value) > parseFloat(max_value)) {
+      newErrors.min_value = "Wartość minimalna nie może być większa niż wartość maksymalna.";
+      newErrors.max_value = "Wartość maksymalna nie może być mniejsza niż wartość minimalna.";
+    }
+    if (parseFloat(min_value) < 0 || parseFloat(max_value) < 0) {
+      newErrors.min_value = "Wartość minimalna nie może być ujemna.";
+      newErrors.max_value = "Wartość maksymalna nie może być ujemna.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const res = await submitWarningData(formData, "POST");
+        if (res.code === 200) {
+          alert("Pomyślnie dodano ostrzeżenie");
+          onSubmit(); // Refresh method after adding the new warning
+        } else if (res.code === 400) {
+          alert("Takie ostrzeżenie już istnieje.");
+        }
+      } catch (error) {
+        console.error("Error adding warning:", error);
+        alert("Wystąpił błąd podczas dodawania ostrzeżenia.");
+      }
+    }
+  };
+
+  return (
+    <form className="data-form" onSubmit={handleSubmit}>
+      <h2>Formularz nowego ostrzeżenia</h2>
+      <div className="form-group">
+        <label htmlFor="warning_name">Nazwa ostrzeżenia:</label>
+        <input
+          type="text"
+          id="warning_name"
+          name="warning_name"
+          value={formData.warning_name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="warning_description">Opis:</label>
+        <textarea
+          id="warning_description"
+          name="warning_description"
+          value={formData.warning_description}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="parameter">Parametr:</label>
+        <select
+          id="parameter"
+          name="parameter"
+          value={formData.parameter}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Wybierz parametr</option>
+          <option value="temperature">Temperatura</option>
+          <option value="ph">pH</option>
+          <option value="no2">NO2</option>
+          <option value="no3">NO3</option>
+          <option value="gh">GH</option>
+          <option value="kh">KH</option>
+        </select>
+      </div>
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="min_value">Wartość minimalna:</label>
+          <input
+            type="number"
+            step="0.1"
+            id="min_value"
+            name="min_value"
+            value={formData.min_value}
+            onChange={handleChange}
+            required
+            style={{ borderColor: errors.min_value ? "red" : "" }}
+          />
+          {errors.min_value && <p className="error-message">{errors.min_value}</p>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="max_value">Wartość maksymalna:</label>
+          <input
+            type="number"
+            step="0.1"
+            id="max_value"
+            name="max_value"
+            value={formData.max_value}
+            onChange={handleChange}
+            required
+            style={{ borderColor: errors.max_value ? "red" : "" }}
+          />
+          {errors.max_value && <p className="error-message">{errors.max_value}</p>}
+        </div>
+      </div>
+      <button className="submit-button" type="submit">Dodaj</button>
+    </form>
+  );
+};

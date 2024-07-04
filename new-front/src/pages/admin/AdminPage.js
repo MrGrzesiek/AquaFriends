@@ -5,13 +5,15 @@ import "../../CSS/styles.css";
 import {NewFishSpecies, NewDeviceForm} from "../../components/FormLiblary";
 import FishGallery from "../../components/SpeciesGallery";
 import DeviceGallery from "../../components/DeviceGallery";
-import {getAllDevice} from "../../components/ApiConnector"
+import WarningGallery from "../../components/WarningGallery";
+import {getAllWarning} from "../../components/ApiConnector"
 
 const AdminPage = ({ onLogout }) => {
     const [selectedItem, setSelectedItem] = useState("home");
     const [isComponentVisible, setIsComponentVisible] = useState(false);
     const fishGalleryRef = useRef(null);
     const DeviceGalleryRef = useRef(null);
+    const WarningGalleryRef = useRef(null);
 
     useEffect(() => {
         document.body.style.backgroundColor = "white";
@@ -38,6 +40,11 @@ const AdminPage = ({ onLogout }) => {
             DeviceGalleryRef.current.fetchData();
         }
     };
+    const refreshWarningGallery = () => {
+        if (WarningGalleryRef.current) {
+            WarningGalleryRef.current.fetchData();
+        }
+    };
 
     const toggleComponentVisibility = () => {
         setIsComponentVisible(prevState => !prevState);
@@ -49,7 +56,7 @@ const AdminPage = ({ onLogout }) => {
 
     const handleClick = async () => {
         console.log("siema");
-        console.log(await getAllDevice());
+        console.log(await getAllWarning());
     };
     
 
@@ -83,6 +90,12 @@ const AdminPage = ({ onLogout }) => {
                         {isComponentVisible ? 'Schowaj formularz' : 'Dodaj urządzenie'}
                     </button>
                     {isComponentVisible && <NewDeviceForm onSubmit={refreshDeviceGallery} />}
+                </>
+            )}
+            {selectedItem === "Warning" && (
+                <>
+                    <h1>Bibioteka ostrzeżeń</h1>
+                    <WarningGallery/>
                 </>
             )}
         </div>
