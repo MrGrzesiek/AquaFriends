@@ -19,6 +19,9 @@ def validate_warning(func):
         if warning.parameter not in ['temperature', 'ph', 'No2', 'No3', 'GH', 'KH']:
             raise HTTPException(status_code=400, detail="Parameter must be one of: temperature, ph, No2, No3, GH, KH")
 
+        if warning.min_value == warning.max_value:
+            raise HTTPException(status_code=400, detail="Minimum and maximum values cannot be equal")
+
         match warning.parameter:
             case 'temperature':
                 if warning.min_value < 0 or warning.max_value > 100:
