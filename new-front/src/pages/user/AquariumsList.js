@@ -48,6 +48,8 @@ const AquariumsList = () => {
             targetPath = `/aquadecorator/${aquariumId}`;
         } else if (origin === 'AquaHistory') {
             targetPath = `/aquahistory/${aquariumId}`;
+        } else if (origin === 'AquaLife') {
+            targetPath = `/aqualife/${aquariumName}`;
         }
         navigate(targetPath);
     };

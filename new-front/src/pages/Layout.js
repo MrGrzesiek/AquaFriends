@@ -19,6 +19,9 @@ const Layout = ({ onLogout, onSelect, children }) => {
             case 'AquaMonitor':
                 navigate('/aquariums', { state: { origin: 'AquaMonitor' } });
                 break;
+            case 'AquaLife':
+                navigate('/aquariums', { state: { origin: 'AquaLife' } });
+                break;
             case 'Logout':
                 onLogout();
                 navigate('/login');

@@ -444,6 +444,7 @@ export const getAquariumEvents = async (aquariumName) => {
 
 export const dismiss_event = async (eventID) => {
     try {
+        console.log("Dismissing event with ID:", eventID)
         const tokenString = localStorage.getItem("authToken");
         const tokenObj = JSON.parse(tokenString);
         const response = await fetch(`${API_URL}/aquariums/dismiss_event/${eventID}?token=${tokenObj.access_token}`, {
