@@ -75,7 +75,7 @@ const AquariumDetails = () => {
             </div>
             <div className="aquamonitor-controls">
                 <div className="control-box">
-                    <h3>Control Buttons</h3>
+                    <h3>Sterowanie AquaMonitor:</h3>
                     <button className={selectedDataset === 'temperature' ? 'selected' : ''}
                             onClick={() => handleDatasetChange('temperature')}>
                         Temperatura

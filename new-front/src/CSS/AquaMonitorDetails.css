@@ -28,9 +28,19 @@
 }
 
 .aquamonitor-controls {
+    background-color: #cccccc;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 10px;
+    width: 29.5vh;
+    max-width: 30%;
+    height: fit-content;
+
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center; /* Center horizontally */
 }
 
 .control-box {
@@ -38,7 +48,6 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 2vh;
-    margin-right: 2vw
 }
 
 .aquamonitor-controls button {
