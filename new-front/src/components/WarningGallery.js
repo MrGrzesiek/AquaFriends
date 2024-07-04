@@ -122,7 +122,7 @@ const ParameterGallery = forwardRef((props, ref) => {
                         </button>
                     </div>
                 ) : (
-                    <div className="no-selection">Wybierz parametr z listy po lewej stronie, aby zobaczyć szczegóły.</div>
+                    <div className="no-selection">Wybierz ostrzeżenie z listy po lewej stronie, aby zobaczyć szczegóły.</div>
                 )}
             </div>
         </div>

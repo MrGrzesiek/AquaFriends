@@ -6,7 +6,6 @@ import {NewFishSpecies, NewDeviceForm, NewWarning} from "../../components/FormLi
 import FishGallery from "../../components/SpeciesGallery";
 import DeviceGallery from "../../components/DeviceGallery";
 import WarningGallery from "../../components/WarningGallery";
-import {getAllWarning} from "../../components/ApiConnector"
 
 const AdminPage = ({ onLogout }) => {
     const [selectedItem, setSelectedItem] = useState("home");
@@ -14,6 +13,7 @@ const AdminPage = ({ onLogout }) => {
     const fishGalleryRef = useRef(null);
     const DeviceGalleryRef = useRef(null);
     const WarningGalleryRef = useRef(null);
+    const [username, setUsername] = useState(null);
 
     useEffect(() => {
         document.body.style.backgroundColor = "white";
@@ -54,10 +54,10 @@ const AdminPage = ({ onLogout }) => {
         setIsComponentVisible(false);
     }, [selectedItem]);
 
-    const handleClick = async () => {
-        console.log("siema");
-        console.log(await getAllWarning());
-    };
+    useEffect(() => {
+        const storedUsername = localStorage.getItem('username');
+        setUsername(storedUsername || 'Gość');
+      }, []);
     
 
     return (
@@ -66,10 +66,7 @@ const AdminPage = ({ onLogout }) => {
             <Header />
             {selectedItem === "home" && (
                 <>
-                    <h1>ADMIN</h1>
-                    <button onClick={handleClick} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                         Kliknij mnie
-                    </button>
+                    <h1>Witaj, {username}!</h1>
                 </>
             )}
             {selectedItem === "Species" && (
