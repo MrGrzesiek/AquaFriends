@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Tab, Tabs, TextField, Alert} from "@mui/material";
-import {getAquariumEvents, getAquariumWarnings} from "../../../components/ApiConnector";
+import {dismiss_event, getAquariumEvents, getAquariumWarnings} from "../../../components/ApiConnector";
 import Button from "@mui/material/Button";
 
 function samePageLinkNavigation(event) {
@@ -109,21 +109,36 @@ function EventsWindow({ AquariumName }) {
         };
     }, [AquariumName, events.length]);
 
-    const handleIgnoreEvent = (index) => {
+    const handleIgnoreEvent = async (index) => {
+        // get event id
+        const eventId = events[index]._id;
+        console.log("Ignoring event with id:", eventId);
+        await dismiss_event(eventId);
+        // remove event from the list
+        setEvents(events.filter((event, i) => i !== index));
 
     }
 
     const renderEvents = (events) => {
-        console.log(events)
-        if (events.length === 0 && showNoEvents) {
+        console.log(events);
+
+        /* Filter out inactive events */
+        const activeEvents = events.filter(event => event.active);
+
+        if (activeEvents.length === 0 && showNoEvents) {
             return <Alert className="event-alert" severity="success">Brak zdarzeń</Alert>;
         } else {
-            return events.map((event, index) => (
+            return activeEvents.map((event, index) => (
                 <Alert
                     className="event-alert"
                     key={index}
                     action={
-                        <Button className="event-dismiss" color="inherit" size="small" onClick={() => handleIgnoreEvent(index)}>
+                        <Button
+                            className="event-dismiss"
+                            color="inherit"
+                            size="small"
+                            onClick={() => handleIgnoreEvent(index)}
+                        >
                             Nie pokazuj
                         </Button>
                     }
@@ -135,7 +150,7 @@ function EventsWindow({ AquariumName }) {
                 </Alert>
             ));
         }
-    }
+    };
 
     return (
         <div className="events-container">
@@ -150,7 +165,7 @@ function EventsWindow({ AquariumName }) {
 
 function WarningsAndEvents({AquariumName}) {
     const [eventsActive, setEventsActive] = React.useState(false);
-    const [warningsActive, setWarningsActive] = React.useState(false);
+    const [warningsActive, setWarningsActive] = React.useState(true);
     const [value, setValue] = React.useState(0);
 
     const handleTabChange = (event, newValue) => {

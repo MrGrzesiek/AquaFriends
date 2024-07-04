@@ -401,3 +401,17 @@ export const getAquariumEvents = async (aquariumName) => {
         throw error;
     }
 }
+
+export const dismiss_event = async (eventID) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/aquariums/dismiss_event/${eventID}?token=${tokenObj.access_token}`, {
+            method: "DELETE",
+        });
+        return response.json();
+    } catch (error) {
+        console.error("Error dismissing event:", error);
+        throw error;
+    }
+}
