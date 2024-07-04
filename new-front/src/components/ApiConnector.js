@@ -341,7 +341,7 @@ export const getAllDevice  = async () =>{
   try {
       const tokenString = localStorage.getItem("authToken");
       const tokenObj = JSON.parse(tokenString);
-      const response = await axios.get('${API_URL}/devices/all_devices?token='+tokenObj.access_token);
+      const response = await axios.get(`${API_URL}/devices/all_devices?token=`+tokenObj.access_token);
       if (response.data.code!=200) {
         throw new Error('Failed to fetch species data');
       }

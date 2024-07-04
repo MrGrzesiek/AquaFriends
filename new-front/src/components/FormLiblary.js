@@ -597,7 +597,7 @@ export const NewWarning = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
+    /*if (validateForm()) {
       try {
         const res = await submitWarningData(formData, "POST");
         if (res.code === 200) {
@@ -610,7 +610,7 @@ export const NewWarning = ({ onSubmit }) => {
         console.error("Error adding warning:", error);
         alert("Wystąpił błąd podczas dodawania ostrzeżenia.");
       }
-    }
+    }*/
   };
 
   return (
