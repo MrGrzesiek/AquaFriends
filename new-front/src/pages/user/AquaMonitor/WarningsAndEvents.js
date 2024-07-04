@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Tab, Tabs, TextField, Alert} from "@mui/material";
-import {getAquariumWarnings} from "../../../components/ApiConnector";
+import {getAquariumEvents, getAquariumWarnings} from "../../../components/ApiConnector";
+import Button from "@mui/material/Button";
 
 function samePageLinkNavigation(event) {
     if (
@@ -34,21 +35,34 @@ function LinkTab(props) {
 
 function WarningsWindow({AquariumName}) {
     const [warnings, setWarnings] = useState([]);
+    const [showNoWarnings, setShowNoWarnings] = useState(false);
 
     useEffect(() => {
         let isMounted = true; // track if the component is mounted
-        getAquariumWarnings(AquariumName).then((data) => {
+
+        const fetchWarnings = async () => {
+            const data = await getAquariumWarnings(AquariumName);
             if (isMounted) {
                 setWarnings(data.warnings || []);
             }
-        });
+        };
+
+        fetchWarnings();
+
+        const timer = setTimeout(() => {
+            if (isMounted && warnings.length === 0) {
+                setShowNoWarnings(true);
+            }
+        }, 1000);
+
         return () => {
             isMounted = false; // cleanup on unmount
+            clearTimeout(timer); // clear timeout if component unmounts
         };
-    }, [AquariumName]);
+    }, [AquariumName, warnings.length]);
 
     const renderWarnings = (warnings) => {
-        if (warnings.length === 0) {
+        if (warnings.length === 0 && showNoWarnings) {
             return <Alert className="warning-alert" severity="success" sx={{ padding: '10px', margin: '10px', gap: '10px'}}>Brak ostrzeżeń</Alert>;
         } else {
             return warnings.map((warning, index) => (
@@ -61,6 +75,74 @@ function WarningsWindow({AquariumName}) {
         <div>
             <h3>Ostrzeżenia dla {AquariumName}:</h3>
             {renderWarnings(warnings)}
+        </div>
+    );
+}
+
+
+function EventsWindow({ AquariumName }) {
+    const [events, setEvents] = useState([]);
+    const [showNoEvents, setShowNoEvents] = useState(false);
+
+    useEffect(() => {
+        let isMounted = true; // track if the component is mounted
+
+        const fetchEvents = async () => {
+            const data = await getAquariumEvents(AquariumName);
+            console.log(data)
+            if (isMounted) {
+                setEvents(data.events || []);
+            }
+        };
+
+        fetchEvents();
+
+        const timer = setTimeout(() => {
+            if (isMounted && events.length === 0) {
+                setShowNoEvents(true);
+            }
+        }, 1000);
+
+        return () => {
+            isMounted = false; // cleanup on unmount
+            clearTimeout(timer); // clear timeout if component unmounts
+        };
+    }, [AquariumName, events.length]);
+
+    const handleIgnoreEvent = (index) => {
+
+    }
+
+    const renderEvents = (events) => {
+        console.log(events)
+        if (events.length === 0 && showNoEvents) {
+            return <Alert className="event-alert" severity="success">Brak zdarzeń</Alert>;
+        } else {
+            return events.map((event, index) => (
+                <Alert
+                    className="event-alert"
+                    key={index}
+                    action={
+                        <Button className="event-dismiss" color="inherit" size="small" onClick={() => handleIgnoreEvent(index)}>
+                            Nie pokazuj
+                        </Button>
+                    }
+                    severity="info"
+                >
+                    <div className="event-desc"><b>{event.event_type}</b></div>
+                    <div className="event-desc">{event.event_description}</div>
+                    <div className="event-desc">({event.event_time})</div>
+                </Alert>
+            ));
+        }
+    }
+
+    return (
+        <div className="events-container">
+            <h3>Zdarzenia dla {AquariumName}:</h3>
+            <div className="alerts-container">
+                {renderEvents(events)}
+            </div>
         </div>
     );
 }
@@ -104,7 +186,7 @@ function WarningsAndEvents({AquariumName}) {
         </Tabs>
         <div className="tabContent">
             {warningsActive === true && <WarningsWindow AquariumName={AquariumName}/>}
-            {eventsActive === true && <TextField id="outlined-basic" label="Zdarzenia" variant="outlined" />}
+            {eventsActive === true && <EventsWindow AquariumName={AquariumName} />}
         </div>
     </div>
     );

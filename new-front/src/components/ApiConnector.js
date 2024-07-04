@@ -389,3 +389,15 @@ export const getAquariumWarnings = async (aquariumName) => {
         throw error;
     }
 }
+
+export const getAquariumEvents = async (aquariumName) => {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+        const response = await fetch(`${API_URL}/aquariums/events/${aquariumName}?token=${tokenObj.access_token}`);
+        return response.json();
+    } catch (error) {
+        console.error("Error fetching aquarium events:", error);
+        throw error;
+    }
+}
