@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 const HomePage = ({ onLogout }) => {
   const [selectedItem, setSelectedItem] = useState('home');
+  const [username, setUsername] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     console.log("Użytkownik przekierowany do strony domowej.");
@@ -26,18 +27,15 @@ const HomePage = ({ onLogout }) => {
     };
   }, []);
 
-  // Funkcja wywołująca zapytania do backendu
-  const handleClick = async () => {
-    console.log("siema");
-  };
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername || 'Gość');
+  }, []);
 
   const renderContent = () => {
         return (
             <>
-              <h1>Home Page</h1>
-              <button onClick={handleClick} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                Kliknij mnie
-              </button>
+              <h1>Witaj, {username}!</h1>
             </>
         );
   };

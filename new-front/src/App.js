@@ -64,10 +64,17 @@ function App() {
   console.log("isAdmin:", isAdmin);
 
   if (!backendAvailable) {
-    document.body.style.backgroundColor = "white";
     document.body.style.backgroundImage = `url(${fishImage})`;
-    document.body.style.height = "auto";
+    document.body.style.height = "100vh";
     document.body.style.alignItems = "normal";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.display = "flex";
+    document.body.style.justifyContent = "center";
+    document.body.style.alignItems = "center";
+    document.body.style.flexDirection = "column";
+    document.body.style.fontFamily = "Montserrat, sans-serif";
+    document.body.style.margin = "0px 0 0px";
     return (
       <div style={{ textAlign: 'center', fontSize: "2vw", color: "white" }}>
         <FontAwesomeIcon icon={faSatelliteDish} size="2x" color="white" />

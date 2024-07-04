@@ -53,29 +53,40 @@ const AquariumForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="data-form" onSubmit={handleSubmit}>
+            <h2>Formularz nowego akwarium</h2>
+            <div className="form-group">
             <label>
-                Name:
+                Nazwa:
                 <input type="text" name="name" value={formData.name} onChange={handleChangeText} required />
             </label>
+            </div>
+
+            <div className="form-group">
             <label>
-                Height:
+                Wysokość:
                 <input type="number" name="height" value={formData.height} onChange={handleChangeNumber} required />
             </label>
+            </div>
+
+            <div className="form-group">
             <label>
-                Width:
+                Szerokość:
                 <input type="number" name="width" value={formData.width} onChange={handleChangeNumber} required />
             </label>
+            </div>
             <label>
-                Length:
+                Długość:
                 <input type="number" name="length" value={formData.length} onChange={handleChangeNumber} required />
             </label>
+            <div className="form-group">
             <label>
-                Substrate:
+                Podłoże:
                 <input type="text" name="substrate" value={formData.substrate} onChange={handleChangeText} required />
             </label>
-            {/* Add other fields similarly */}
-            <button type="submit">Create Aquarium</button>
+            </div>
+
+            <button className="submit-button" type="submit">Dodaj</button>
         </form>
     );
 };

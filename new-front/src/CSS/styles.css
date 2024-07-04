@@ -9,8 +9,11 @@
     box-sizing: border-box;
   }
 
-  body {
-    background-image: url('../RES/newfish3.jpg');
+  .logo-container{
+    width: auto;
+  }
+  .loginbackground {
+    background-image: url('../RES/newfish3.jpg'); 
     background-size: cover;
     background-position: center;
     display: flex;
@@ -20,11 +23,13 @@
     font-family: "Montserrat", sans-serif;
     height: 100vh;
     margin: 0px 0 0px;
+    text-align: center;
   }
   
-  h1 {
+  .h1login {
     font-weight: bold;
     margin: 0;
+    color: white;
   }
   
   h2 {
@@ -278,8 +283,9 @@
     text-decoration: none;
   }
   .logo-image{
-    height:10%;
     width: 50%;
+    margin-bottom: 1%;
+    margin-top: 1%;
   }
 
   .topnav {
