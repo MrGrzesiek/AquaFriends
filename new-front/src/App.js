@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/user/HomePage";
 import AdminPage from "./pages/admin/AdminPage";
-import {checkBackend} from "./components/auth/SessionManager"
+import { checkBackend } from "./components/auth/SessionManager";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
 import AquariumsList from "./pages/user/AquariumsList";
-import AquaAccount from "./pages/user/AquaAccount/AquaAccount"
+import AquaAccount from "./pages/user/AquaAccount/AquaAccount";
 import Layout from "./pages/Layout";
 import AquaMaker from "./pages/user/AquaMaker/AquaMaker"
-import fishImage from './RES/newfish3.jpg'; // Import the image
+import fishImage from './RES/newfish3.jpg';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,10 +27,14 @@ function App() {
 
     checkConnection();
     const intervalId = setInterval(checkConnection, 10000);
+
     const token = localStorage.getItem("authToken");
     if (token) {
       setLoggedIn(true);
+      const admin = localStorage.getItem("admin");
+      setIsAdmin(admin === "true");
     }
+
     return () => clearInterval(intervalId);
   }, []);
 
@@ -53,8 +57,7 @@ function App() {
   const handleLogout = () => {
     setLoggedIn(false);
     setIsAdmin(false);
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("admin");
+    localStorage.clear();
   };
 
   console.log("loggedIn:", loggedIn);
@@ -66,16 +69,13 @@ function App() {
     document.body.style.height = "auto";
     document.body.style.alignItems = "normal";
     return (
-      <div style={{ textAlign: 'center',
-                    fontSize: "2vw",
-                    color: "white"}}>
+      <div style={{ textAlign: 'center', fontSize: "2vw", color: "white" }}>
         <FontAwesomeIcon icon={faSatelliteDish} size="2x" color="white" />
         <br />
         Brak połączenia z backendem
       </div>
     );
-  }
-  else{
+  } else {
     document.body.style.backgroundColor = "";
     document.body.style.backgroundImage = "";
     document.body.style.height = "";
@@ -84,60 +84,60 @@ function App() {
         <div className="App">
           <Routes>
             <Route
-                path="/"
-                element={
-                  loggedIn ? (
-                      isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
-                  ) : (
-                      <LoginPage onLogin={handleLogin} />
-                  )
-                }
+              path="/"
+              element={
+                loggedIn ? (
+                  isAdmin ? <Navigate to="/admin" /> : <Navigate to="/home" />
+                ) : (
+                  <LoginPage onLogin={handleLogin} />
+                )
+              }
             />
             <Route
-                path="/home"
-                element={
-                  loggedIn ? (
-                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-                        <HomePage />
-                      </Layout>
-                  ) : (
-                      <Navigate to="/" />
-                  )
-                }
+              path="/home"
+              element={
+                loggedIn ? (
+                  <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                    <HomePage />
+                  </Layout>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
             <Route
-                path="/admin"
-                element={
-                  loggedIn ? (
-                      <AdminPage />
-                  ) : (
-                      <Navigate to="/" />
-                  )
-                }
+              path="/admin"
+              element={
+                loggedIn ? (
+                  <AdminPage onLogout={handleLogout} />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
             <Route
-                path="/aquariums"
-                element={
-                  loggedIn ? (
-                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-                        <AquariumsList />
-                      </Layout>
-                  ) : (
-                      <Navigate to="/" />
-                  )
-                }
+              path="/aquariums"
+              element={
+                loggedIn ? (
+                  <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                    <AquariumsList />
+                  </Layout>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
             <Route
-                path="/aquamonitor/*"
-                element={
-                  loggedIn ? (
-                      <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
-                        <AquaMonitor />
-                      </Layout>
-                  ) : (
-                      <Navigate to="/" />
-                  )
-                }
+              path="/aquamonitor/*"
+              element={
+                loggedIn ? (
+                  <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                    <AquaMonitor />
+                  </Layout>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
             />
             <Route
                 path="/aquaaccount/*"
@@ -146,7 +146,7 @@ function App() {
                       <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
                         <AquaAccount /></Layout>
                   ) : (
-                      <Navigate to="/login" />)} />
+                      <Navigate to="/" />)} />
             <Route 
                 path="/new_aquarium" 
                 element={
@@ -160,7 +160,6 @@ function App() {
       </Router>
     );
   }
-  
 }
 
 export default App;
