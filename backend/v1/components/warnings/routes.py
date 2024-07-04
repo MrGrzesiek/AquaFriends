@@ -6,7 +6,7 @@ from os import path
 
 from fastapi.params import File
 
-from .utils import get_all_warnings, create_new_warning, update_warning, delete_warning
+from .utils import get_all_warnings, create_new_warning, update_warning, delete_warning, get_warnings_for_aquarium
 
 sys.path.append(path.join(path.dirname(__file__), '...'))
 from models import User, Warning
@@ -44,3 +44,9 @@ async def delete_warning_by_id(warning_id: str, user: User = Depends(get_admin_u
 @router.get('', tags=['Warning creator'])
 async def get_warnings(user: User = Depends(get_current_user)):
     return get_all_warnings()
+
+
+@login_required
+@router.get('/for_aquarium/{aquarium_id}', tags=['Warning creator'])
+async def get_warnings_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
+    return get_warnings_for_aquarium(aquarium_id, user)

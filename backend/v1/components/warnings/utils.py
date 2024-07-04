@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from bson import ObjectId
 
-from models import Warning
+from models import Warning, User
 from dependencies.database import Connector
 from fastapi.responses import JSONResponse, FileResponse, Response
 from .wrappers import validate_warning
@@ -56,3 +56,26 @@ def delete_warning(warning_id: str):
 
     db_connector.get_warnings_collection().delete_one({'_id': ObjectId(warning_id)})
     return JSONResponse(content={'message': 'Warning deleted successfully'}, status_code=200)
+
+
+def get_warnings_for_aquarium(aquarium_id: str, user: User):
+    aquarium = db_connector.get_aquariums_collection().find_one({'_id': ObjectId(aquarium_id), 'username': user.username})
+    if not aquarium:
+        return JSONResponse(content={'message': 'Aquarium not found for this user'}, status_code=404)
+
+    warnings = list(db_connector.get_warnings_collection().find({'parameter': {'$in': list(aquarium.keys())}}))
+    if not warnings or len(warnings) == 0:
+        return JSONResponse(content={'message': 'No warnings found for this aquarium'}, status_code=404)
+
+    all_warnings = []
+
+    # Check for active warnings
+    for warning in warnings:
+        if warning['min_value'] <= aquarium[warning['parameter']] <= warning['max_value']:
+            warning = convert_mongo_id(warning)
+            all_warnings.append(warning)
+
+    if len(all_warnings) == 0:
+        return JSONResponse(content={'message': 'No warnings active for this aquarium'}, status_code=204)
+
+    return JSONResponse(content={'warnings': all_warnings}, status_code=200)
