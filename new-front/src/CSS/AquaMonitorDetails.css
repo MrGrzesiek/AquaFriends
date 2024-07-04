@@ -33,9 +33,8 @@
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    width: 29.5vh;
-    max-width: 30%;
-    height: fit-content;
+    width: 40vh;
+    height: 100vh    ;
 
     justify-content: center;
     justify-items: center;
@@ -48,6 +47,33 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 2vh;
+}
+
+.aquamonitor-warnings-and-events {
+    background-color: #76d4ff;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-items: center;
+    display: block;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2vh;
+    height: 50vh;
+    width: 40vh;
+}
+
+.warning-alert {
+    padding: 10px;
+    gap: 10px;
+
+}
+
+.aquamonitor-warnings-and-events .tabButton {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-direction: row;
 }
 
 .aquamonitor-controls button {
@@ -68,7 +94,7 @@
     background-color: #06b300; /* Different color for selected button */
 }
 .aquamonitor-controls .updateAquariumData {
-    background-color: #eed828; /* Example different color for the last button */
+    background-color: #f67336; /* Example different color for the last button */
     color: white;
     border: none;
     cursor: pointer;

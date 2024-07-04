@@ -4,6 +4,7 @@ import LineChartComponent from '../../../components/LineChart';
 import '../../../CSS/AquaMonitorDetails.css';
 import { fetchAquariumData } from '../../../components/ApiConnector';
 import AquariumUpdateChoiceMenu from "./AquaMonitorUpdateAquarium";
+import WarningsAndEvents from "./WarningsAndEvents";
 
 const AquariumDetails = () => {
     const { aquariumName } = useParams();
@@ -12,6 +13,7 @@ const AquariumDetails = () => {
     const [selectedDataset, setSelectedDataset] = useState('temperature');
     const [chartData, setChartData] = useState([]);
     const [open, setOpen] = useState(false);
+
 
     const handleOpen = () => {
         setOpen(true);
@@ -101,8 +103,10 @@ const AquariumDetails = () => {
                         KH
                     </button>
                     <button className='updateAquariumData' onClick={handleOpen}>Zaktualizuj akwarium</button>
-                    <AquariumUpdateChoiceMenu open={open} onClose={handleClose} aquariumName={aquariumName} aquariumData={aquariumData?.history?.at(-1) || {}}/>
+                    <AquariumUpdateChoiceMenu open={open} onClose={handleClose} aquariumName={aquariumName}
+                                              aquariumData={aquariumData?.history?.at(-1) || {}}/>
                 </div>
+                    <WarningsAndEvents AquariumName={aquariumName} />
             </div>
         </div>
     );
