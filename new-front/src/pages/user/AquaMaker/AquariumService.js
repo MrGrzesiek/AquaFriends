@@ -2,13 +2,6 @@ import axios from 'axios';
 import { insertAquarium } from '../../../components/ApiConnector';
 const API_URL = 'http://localhost:8000/aquariums';
 
-// export const createNewAquarium = async (aquariumData) => {
-//     const tokenString = localStorage.getItem("authToken");
-//     console.log(aquariumData)
-//     const response = await axios.post(`${API_URL}/new_aquarium`, aquariumData);
-//     return response.data;
-// };
-
 export const createNewAquarium = async (aquariumData) => {
     try {
        insertAquarium(aquariumData) 

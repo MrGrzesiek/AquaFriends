@@ -13,17 +13,3 @@
     flex: 1;
     padding: 20px;
 }
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav ul li {
-    padding: 10px;
-    cursor: pointer;
-}
-
-nav ul li:hover {
-    background-color: #f0f0f0;
-}

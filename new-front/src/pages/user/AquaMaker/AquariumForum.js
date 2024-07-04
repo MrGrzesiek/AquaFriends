@@ -50,7 +50,6 @@ const AquariumForm = () => {
         const username = localStorage.getItem("username");
         formData.username = username;
         await createNewAquarium(formData);
-        //navigate('/aquariums');
     };
 
     return (
