@@ -132,11 +132,12 @@ class Event(BaseModel):
     event_type: str
     event_time: datetime.datetime
     event_description: str
+    # TODO: Add active boolean field
 
 
 class FishInAquarium(BaseModel):
     """
-    Class used to represent an fish in the aquarium
+    Class used to represent a fish in the aquarium
     """
     aquarium_name: str
     fish_name: str
@@ -146,7 +147,20 @@ class FishInAquarium(BaseModel):
 
 class FishRemoval(BaseModel):
     """
-    Class used to represent an fish in the aquarium
+    Class used to represent a fish in the aquarium
     """
     aquarium_name: str
     fish_name: str
+
+
+class Warning(BaseModel):
+    """
+    Class used to represent a warning in the database
+
+    Warning will be active if min_value <= parameter <= max_value
+    """
+    warning_name: str         # Name of the warning
+    warning_description: str  # Description of the warning
+    parameter: str            # Parameter like temperature, pH, etc.
+    min_value: float          # Minimum value of the parameter to activate the warning
+    max_value: float          # Maximum value of the parameter to activate the warning
