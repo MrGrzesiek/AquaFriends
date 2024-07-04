@@ -10,6 +10,7 @@ from dependencies.auth.routes import router as auth_router
 from components.aquariums import router as aquariums_router
 from components.fishes import router as fishes_routes
 from components.devices import router as devices_routes
+from components.warnings import router as warnings_routes
 from dependencies.database import Connector
 
 app = FastAPI(swagger_ui_parameters={"syntaxHighlight": False})
@@ -34,6 +35,7 @@ app.include_router(auth_router)
 app.include_router(aquariums_router)
 app.include_router(fishes_routes)
 app.include_router(devices_routes)
+app.include_router(warnings_routes)
 
 # DB connection
 config = json.load(open("config.json"))
