@@ -89,7 +89,7 @@ def get_admin_user(user: User = Depends(get_current_active_user)):
     if 'admin' not in user.scopes:
         print(f'User scopes: {user.scopes}')
         print(f'User contents: {user.dict()}')
-        raise HTTPException(status_code=403, detail="Not enough permissions get_admin_user")
+        raise HTTPException(status_code=403, detail="Not enough permissions to access this resource")
     return user
 
 
