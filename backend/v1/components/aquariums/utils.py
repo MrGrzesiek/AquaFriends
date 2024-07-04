@@ -145,6 +145,19 @@ def add_event(event: Event, user: User):
     connector.get_events_collection().insert_one(event)
     return {'code': 200, 'message': 'Event added successfully'}
 
+
+def dismiss_event_by_id(event_id: str, user: User):
+    """
+    Dismiss an event by ID
+    """
+    event = connector.get_events_collection().find_one({'_id': ObjectId(event_id), 'username': user.username})
+    if not event:
+        return {'code': 404, 'message': f'Event {event_id} not found'}
+
+    connector.get_events_collection().find_one_and_update({'_id': ObjectId(event_id), 'username': user.username},
+                                                          {'$set': {'active': False}})
+    return {'code': 200, 'message': f'Event {event_id} dismissed successfully'}
+
 """
 model of test aquarium for easier testing
 
