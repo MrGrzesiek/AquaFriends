@@ -16,16 +16,16 @@ def validate_warning(func):
         if len(warning.warning_description) < 10:
             raise HTTPException(status_code=400, detail="Warning description must be at least 10 characters long")
 
-        if warning.parameter not in ['temperature', 'pH', 'No2', 'No3', 'GH', 'KH']:
-            raise HTTPException(status_code=400, detail="Parameter must be one of: temperature, pH, No2, No3, GH, KH")
+        if warning.parameter not in ['temperature', 'ph', 'No2', 'No3', 'GH', 'KH']:
+            raise HTTPException(status_code=400, detail="Parameter must be one of: temperature, ph, No2, No3, GH, KH")
 
         match warning.parameter:
             case 'temperature':
                 if warning.min_value < 0 or warning.max_value > 100:
                     raise HTTPException(status_code=400, detail="Temperature must be between 0 and 100 degrees Celsius")
-            case 'pH':
+            case 'ph':
                 if warning.min_value < 0 or warning.max_value > 14:
-                    raise HTTPException(status_code=400, detail="pH must be between 0 and 14")
+                    raise HTTPException(status_code=400, detail="ph must be between 0 and 14")
             case 'No2', 'No3', 'GH', 'KH':
                 if warning.min_value < 0:
                     raise HTTPException(status_code=400, detail=f"{warning.parameter} cannot be negative")
