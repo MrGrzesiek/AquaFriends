@@ -10,6 +10,9 @@ def validate_aquarium(func):
         if aquarium.name is None:
             raise HTTPException(status_code=400, detail="Missing aquarium name")
 
+        if aquarium.username is None or aquarium.username == 'undefined':
+            raise HTTPException(status_code=400, detail="Missing username")
+
         if aquarium.temperature <= 0 or aquarium.temperature >= 100:
             raise HTTPException(status_code=400, detail="Temperature must be between 0 and 100 degrees Celsius")
 
