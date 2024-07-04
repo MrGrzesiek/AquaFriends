@@ -45,11 +45,12 @@ const AquariumForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submit:", formData)
         
         const username = localStorage.getItem("username");
         formData.username = username;
         await createNewAquarium(formData);
-        navigate('/aquariums');
+        //navigate('/aquariums');
     };
 
     return (

@@ -154,7 +154,7 @@ function App() {
                       <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
                         <AquaMaker /></Layout>
                   ) : (
-                       <Navigate to="/login" />)} />
+                       <Navigate to="/" />)} />
           </Routes>
         </div>
       </Router>
