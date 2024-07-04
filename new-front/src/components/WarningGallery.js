@@ -37,16 +37,16 @@ const ParameterGallery = forwardRef((props, ref) => {
 
     const handleDelete = async () => {
         if (selectedParameter) {
-            const confirmDelete = window.confirm(`Czy na pewno chcesz usunąć parametr ${selectedParameter.parameter}?`);
+            const confirmDelete = window.confirm(`Czy na pewno chcesz usunąć ostrzeżenie ${selectedParameter.warning_name}?`);
             if (confirmDelete) {
                 setIsDeleting(true);
                 try {
                     await deleteWarning(selectedParameter._id); // Use ID for deletion
-                    alert(`Parametr ${selectedParameter.parameter} został usunięty.`);
+                    alert(`Ostrzeżenie ${selectedParameter.warning_name} zostało usunięte.`);
                     fetchData();
                 } catch (error) {
-                    console.error("Error deleting parameter:", error);
-                    alert("Wystąpił błąd podczas usuwania parametru.");
+                    console.error("Error deleting warning:", error);
+                    alert("Wystąpił błąd podczas usuwania ostrzeżenia.");
                 } finally {
                     setIsDeleting(false);
                 }
@@ -108,7 +108,7 @@ const ParameterGallery = forwardRef((props, ref) => {
                 </ul>
             </div>
             <div className="fish-details">
-                <h2>Szczegóły parametru</h2>
+                <h2>Szczegóły ostrzeżenia</h2>
                 {selectedParameter ? (
                     <div className="fish-card">
                         <h2>{selectedParameter.warning_name}</h2>

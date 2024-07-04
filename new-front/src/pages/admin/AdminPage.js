@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import AdminSideNav from "../../components/nav/AdminSideNav";
 import Header from "../../components/nav/Header";
 import "../../CSS/styles.css";
-import {NewFishSpecies, NewDeviceForm} from "../../components/FormLiblary";
+import {NewFishSpecies, NewDeviceForm, NewWarning} from "../../components/FormLiblary";
 import FishGallery from "../../components/SpeciesGallery";
 import DeviceGallery from "../../components/DeviceGallery";
 import WarningGallery from "../../components/WarningGallery";
@@ -95,7 +95,11 @@ const AdminPage = ({ onLogout }) => {
             {selectedItem === "Warning" && (
                 <>
                     <h1>Bibioteka ostrzeżeń</h1>
-                    <WarningGallery/>
+                    <WarningGallery ref={WarningGalleryRef}/>
+                    <button onClick={toggleComponentVisibility}>
+                        {isComponentVisible ? 'Schowaj formularz' : 'Dodaj ostrzeżenie'}
+                    </button>
+                    {isComponentVisible && <NewWarning onSubmit={refreshWarningGallery} />}
                 </>
             )}
         </div>

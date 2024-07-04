@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../CSS/DataForm.css";
-import { submitSpeciesData, uploadSpeciesImage, submitDeviceData  } from "./ApiConnector";
+import { submitSpeciesData, uploadSpeciesImage, submitDeviceData, submitWarningData  } from "./ApiConnector";
 
 export const NewFishSpecies = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -580,15 +580,54 @@ export const NewWarning = ({ onSubmit }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    const { min_value, max_value } = formData;
+    const { warning_name, warning_description, parameter, min_value, max_value } = formData;
+
+    if (!warning_name || warning_name.length < 5) {
+      newErrors.warning_name = "Nazwa ostrzeżenia musi mieć co najmniej 5 znaków.";
+    }
+
+    if (!warning_description || warning_description.length < 10) {
+      newErrors.warning_description = "Opis ostrzeżenia musi mieć co najmniej 10 znaków.";
+    }
+
+    const validParameters = ['temperature', 'ph', 'No2', 'No3', 'GH', 'KH'];
+    if (!validParameters.includes(parameter)) {
+      newErrors.parameter = "Parametr musi być jednym z: temperatura, ph, No2, No3, GH, KH.";
+    }
 
     if (parseFloat(min_value) > parseFloat(max_value)) {
       newErrors.min_value = "Wartość minimalna nie może być większa niż wartość maksymalna.";
       newErrors.max_value = "Wartość maksymalna nie może być mniejsza niż wartość minimalna.";
     }
+
     if (parseFloat(min_value) < 0 || parseFloat(max_value) < 0) {
       newErrors.min_value = "Wartość minimalna nie może być ujemna.";
       newErrors.max_value = "Wartość maksymalna nie może być ujemna.";
+    }
+
+    switch (parameter) {
+      case 'temperature':
+        if (parseFloat(min_value) < 0 || parseFloat(max_value) > 100) {
+          newErrors.min_value = "Temperatura musi być w zakresie od 0 do 100 stopni Celsjusza.";
+          newErrors.max_value = "Temperatura musi być w zakresie od 0 do 100 stopni Celsjusza.";
+        }
+        break;
+      case 'ph':
+        if (parseFloat(min_value) < 0 || parseFloat(max_value) > 14) {
+          newErrors.min_value = "pH musi być w zakresie od 0 do 14.";
+          newErrors.max_value = "pH musi być w zakresie od 0 do 14.";
+        }
+        break;
+      case 'No2':
+      case 'No3':
+      case 'GH':
+      case 'KH':
+        if (parseFloat(min_value) < 0) {
+          newErrors.min_value = `${parameter} nie może być ujemne.`;
+        }
+        break;
+      default:
+        break;
     }
 
     setErrors(newErrors);
@@ -597,20 +636,21 @@ export const NewWarning = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    /*if (validateForm()) {
+    if (validateForm()) {
       try {
         const res = await submitWarningData(formData, "POST");
-        if (res.code === 200) {
+        console.log(res);
+        if (res.status == "200") {
           alert("Pomyślnie dodano ostrzeżenie");
           onSubmit(); // Refresh method after adding the new warning
-        } else if (res.code === 400) {
+        } else if (res.status == "400") {
           alert("Takie ostrzeżenie już istnieje.");
         }
       } catch (error) {
         console.error("Error adding warning:", error);
         alert("Wystąpił błąd podczas dodawania ostrzeżenia.");
       }
-    }*/
+    }
   };
 
   return (
@@ -625,7 +665,9 @@ export const NewWarning = ({ onSubmit }) => {
           value={formData.warning_name}
           onChange={handleChange}
           required
+          style={{ borderColor: errors.warning_name ? "red" : "" }}
         />
+        {errors.warning_name && <p className="error-message">{errors.warning_name}</p>}
       </div>
       <div className="form-group">
         <label htmlFor="warning_description">Opis:</label>
@@ -635,7 +677,9 @@ export const NewWarning = ({ onSubmit }) => {
           value={formData.warning_description}
           onChange={handleChange}
           required
+          style={{ borderColor: errors.warning_description ? "red" : "" }}
         />
+        {errors.warning_description && <p className="error-message">{errors.warning_description}</p>}
       </div>
       <div className="form-group">
         <label htmlFor="parameter">Parametr:</label>
@@ -645,15 +689,17 @@ export const NewWarning = ({ onSubmit }) => {
           value={formData.parameter}
           onChange={handleChange}
           required
+          style={{ borderColor: errors.parameter ? "red" : "" }}
         >
           <option value="">Wybierz parametr</option>
           <option value="temperature">Temperatura</option>
           <option value="ph">pH</option>
-          <option value="no2">NO2</option>
-          <option value="no3">NO3</option>
-          <option value="gh">GH</option>
-          <option value="kh">KH</option>
+          <option value="No2">NO2</option>
+          <option value="No3">NO3</option>
+          <option value="GH">GH</option>
+          <option value="KH">KH</option>
         </select>
+        {errors.parameter && <p className="error-message">{errors.parameter}</p>}
       </div>
       <div className="form-row">
         <div className="form-group">
@@ -689,3 +735,4 @@ export const NewWarning = ({ onSubmit }) => {
     </form>
   );
 };
+
