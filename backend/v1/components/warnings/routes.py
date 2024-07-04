@@ -47,6 +47,6 @@ async def get_warnings(user: User = Depends(get_current_user)):
 
 
 @login_required
-@router.get('/for_aquarium/{aquarium_id}', tags=['Warning creator'])
-async def get_warnings_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
-    return get_warnings_for_aquarium(aquarium_id, user)
+@router.get('/for_aquarium/{aquarium_name}', tags=['Warning creator'])
+async def get_warnings_aquarium(aquarium_name: str, user: User = Depends(get_current_user)):
+    return get_warnings_for_aquarium(aquarium_name, user)
