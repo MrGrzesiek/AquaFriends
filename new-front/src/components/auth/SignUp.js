@@ -38,11 +38,14 @@ function SignUpForm() {
     if (!password.trim()) {
       newErrors.password = "Pole hasło jest wymagane";
     }
+    if (password.length < 12) {
+      newErrors.password = "Hasło jest za krótkie";
+    }
 
     // Jeśli są jakiekolwiek błędy, ustawiamy je w state errors
     if (Object.keys(newErrors).length > 0) {
+      newErrors.all  ="Proszę wypełnić wszystkie pola formularza."
       setErrors(newErrors);
-      alert("Proszę wypełnić wszystkie pola formularza.");
       return;
     }
 
@@ -90,6 +93,8 @@ function SignUpForm() {
           placeholder="Nazwa"
           style={{ border: errors.name ? "2px solid red" : "" }}
         />
+        {errors.name && <p className="error-message">{errors.name}</p>}
+        
         <input
           type="email"
           name="email"
@@ -98,6 +103,8 @@ function SignUpForm() {
           placeholder="Email"
           style={{ border: errors.email ? "2px solid red" : "" }}
         />
+        {errors.email && <p className="error-message">{errors.email}</p>}
+        
         <input
           type="password"
           name="password"
@@ -106,7 +113,10 @@ function SignUpForm() {
           placeholder="Hasło"
           style={{ border: errors.password ? "2px solid red" : "" }}
         />
+        {errors.password && <p className="error-message">{errors.password}</p>}
+        
         <button>Rejestracja</button>
+        {errors.all && <p className="error-message">{errors.all}</p>}
       </form>
     </div>
   );
