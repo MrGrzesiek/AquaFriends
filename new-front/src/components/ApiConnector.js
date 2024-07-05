@@ -254,6 +254,28 @@ console.log(formBody)
   });
 
   return response.json();
+};
+
+export const deleteAquarium = async(aquarium_id) => {
+    try {
+
+        const tokenString = localStorage.getItem("authToken");
+        const tokenObj = JSON.parse(tokenString);
+
+        const response = await fetch(`${API_URL}/aquariums/delete/${aquarium_id}?token=${tokenObj.access_token}`, {
+            method: "DELETE"
+        });
+        console.log(response)
+        if (!response.ok) {
+            throw new Error(`Failed to delete aquarium: ${response.statusText}`);
+        }
+
+        return { message: "Aquarium deleted successfully", status: response.status };
+
+    }catch (error) {
+        console.error("Error deleting aquarium:", error);
+        throw error;
+    }
 }
 
 

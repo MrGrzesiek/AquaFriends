@@ -13,4 +13,15 @@ export const createNewAquarium = async (aquariumData) => {
     }
 };
 
+export const deleteAquarium = async (aquariumId) => {
+    try{
+      deleteAquarium(aquariumId)
+    }catch(error){
+        if (error.response && error.response.status === 422) {
+            throw new Error('Unprocessable Entity: Please check the data you have entered.');
+        }
+        throw error;
+    }
+}
+
 // Implement other API calls similarly
