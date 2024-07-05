@@ -79,8 +79,9 @@ def update_aquarium(aquarium_data: Aquarium, user: User):
     connector.get_aquariums_collection().find_one_and_update({'name': aquarium_data.name, 'username': user.username},
                                                              {'$set': aquarium_data.model_dump()})
 
-    return {'code': 200,
-            'message': f'{aquarium_data.name} updated successfully'}
+    #return {'code': 200,
+    #        'message': f'{aquarium_data.name} updated successfully'}
+    return JSONResponse(content={'code': 200, 'message': f'{aquarium_data.name} updated successfully'}, status_code=200)
 
 
 def get_aquarium_history_by_name(aquarium_name: str, user: User):

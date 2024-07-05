@@ -68,7 +68,14 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
 
     const handleAddFish = async () => {
         try {
-            await addNewFish(newFish);
+            const response = await addNewFish(newFish);
+            if (response.code !== 200) {
+                console.warn("Error adding new fish:", response);
+                window.alert("Wystąpił błąd podczas dodawania nowej ryby: \n" + response.message);
+                return;
+            } else {
+                window.alert("Ryba została dodana pomyślnie.");
+            }
             // Assuming addNewFish updates the UI automatically upon success
             setIsAddFishModalOpen(false);
             setNewFish({
@@ -76,6 +83,7 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
                 fish_name: '',
                 months_of_age: ''
             });
+
         } catch (error) {
             console.error("Error adding new fish:", error);
             alert("Wystąpił błąd podczas dodawania nowej ryby.");
