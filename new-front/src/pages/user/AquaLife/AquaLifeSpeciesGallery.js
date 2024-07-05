@@ -4,7 +4,7 @@ import "./../../../CSS/AquaLifeFishGallery.css";
 import QuantityInput from "./NumberInput";
 import {useParams} from "react-router-dom";
 
-const AquaLifeSpeciesGallery = forwardRef(({ onQuantityChange, aquariumName }, ref) => {
+const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
     const [fishSpecies, setFishSpecies] = useState([]);
     const [aquariumData, setAquariumData] = useState([]);
     const [loading, setLoading] = useState(true);
