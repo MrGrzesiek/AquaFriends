@@ -110,8 +110,9 @@ def add_fishes_to_aquarium(fish: FishInAquarium, user: User):
         return {'code': 404, 'message': f'Fish species {fish.species_name.lower()} not found'}
     elif fish.months_of_age < 0:
         return {'code': 400, 'message': 'Specimen age must be greater or equal 0'}
-    elif fish.fish_name in aquarium['fishes']:
-        return {'code': 400, 'message': f'Fish named {fish.fish_name} already exists in {fish.aquarium_name}'}
+    for f in aquarium['fishes']:
+        if f and f['fish_name'] == fish.fish_name:
+            return {'code': 400, 'message': f'Fish named {fish.fish_name} already exists in {fish.aquarium_name}'}
 
     date_of_birth = datetime.now() - timedelta(days=fish.months_of_age * 30)
     fish_dict = fish.dict()
@@ -124,7 +125,7 @@ def add_fishes_to_aquarium(fish: FishInAquarium, user: User):
 
     # Append the new fish to the fishes list
     aquarium.fishes.append(fish_dict)
-    print(aquarium.dict())
+    #print(aquarium.dict())
     return update_aquarium(aquarium, user)
 
 
