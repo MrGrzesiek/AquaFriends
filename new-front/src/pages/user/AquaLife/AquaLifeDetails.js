@@ -6,7 +6,7 @@ import {
     fetchAquariumData,
     fetchSpeciesData,
     fetchSpeciesPhoto,
-    updateFishesInAquarium
+    removeFishFromAquarium
 } from "../../../components/ApiConnector";
 import FishesInAquariumGallery from "./FishesInAquariumGallery";
 import Box from "@mui/material/Box";
@@ -59,6 +59,21 @@ const AquaLifeDetails = () => {
         }
     };
 
+    const handleDeleteFish = async (index) => {
+        const updatedFishes = [...aquariumData.fishes];
+        const removedFishName = updatedFishes[index].fish_name;
+        updatedFishes.splice(index, 1); // Remove fish at index
+        try {
+            // Assuming updateFishesInAquarium is a function that updates the aquarium data
+            await removeFishFromAquarium(aquariumName, removedFishName);
+            setAquariumData({ ...aquariumData, fishes: updatedFishes });
+            setIsSaveEnabled(true);
+            fetchData();
+        } catch (error) {
+            console.error("Error deleting fish:", error);
+        }
+    };
+
     const handleCloseModal = async () => {
         setIsModalOpen(false);
         fetchData();
@@ -107,7 +122,7 @@ const AquaLifeDetails = () => {
                     <AquaLifeSpeciesGallery ref={galleryRef} aquariumName={aquariumName}  />
                 </Box>
             </Modal>
-            <FishesInAquariumGallery aquariumName={aquariumName} fishSpecies={fishSpecies} aquariumData={aquariumData} loading={loading} error={error}/>
+            <FishesInAquariumGallery aquariumName={aquariumName} fishSpecies={fishSpecies} aquariumData={aquariumData} loading={loading} error={error} onDeleteFish={handleDeleteFish}/>
         </div>
     );
 };

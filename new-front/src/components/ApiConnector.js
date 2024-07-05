@@ -510,3 +510,25 @@ export const addNewFish = async (newFish) => {
 
     return response.json();
 };
+
+export const removeFishFromAquarium = async (aquariumName, fishName) => {
+    const token = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(token);
+    const body = {
+        aquarium_name: aquariumName,
+        fish_name: fishName
+    }
+    console.log(body)
+    const response = await fetch(`${API_URL}/fishes/aquarium/fish/?token=${tokenObj.access_token}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+
+
+    if (!response.ok || response.status !== 200) {
+        throw new Error("Failed to remove fish from aquarium");
+    }
+}
