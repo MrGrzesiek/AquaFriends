@@ -254,7 +254,7 @@ console.log(formBody)
   });
 
   return response.json();
-};
+}
 
 export const deleteAquarium = async(aquarium_id) => {
     try {

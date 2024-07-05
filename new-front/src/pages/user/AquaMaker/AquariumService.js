@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { insertAquarium } from '../../../components/ApiConnector';
+import { insertAquarium, deleteAquarium } from '../../../components/ApiConnector';
 const API_URL = 'http://localhost:8000/aquariums';
 
 export const createNewAquarium = async (aquariumData) => {
@@ -13,7 +13,7 @@ export const createNewAquarium = async (aquariumData) => {
     }
 };
 
-export const deleteAquarium = async (aquariumId) => {
+export const deleteExistingAquarium = async (aquariumId) => {
     try{
       deleteAquarium(aquariumId)
     }catch(error){
@@ -23,5 +23,7 @@ export const deleteAquarium = async (aquariumId) => {
         throw error;
     }
 }
+
+
 
 // Implement other API calls similarly

@@ -39,9 +39,10 @@ const AquariumForm = () => {
 
     const handleChangeNumber = (e) => {
         const { name, value } = e.target;
+        const parsedValue = parseFloat(value);
         setFormData({
             ...formData,
-            [name]: parseFloat(value)
+            [name]: parsedValue < 0 ? 0 : parsedValue
         });
     };
 
