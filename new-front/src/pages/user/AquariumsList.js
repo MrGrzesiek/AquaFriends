@@ -2,8 +2,7 @@ import React from "react";
 import { fetchUserAquariums } from "../../components/ApiConnector";
 import Header from "../../components/nav/Header";
 import "../../CSS/AquariumsList.css";
-import {useLocation, useNavigate} from "react-router-dom";
-import logo from "../../components/nav/Logo";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const aquariumImages = [
     "https://t4.ftcdn.net/jpg/08/55/11/41/240_F_855114111_T2vF7DTpQRywn2zTXbR8rxoljorBRS7M.jpg",
@@ -20,23 +19,33 @@ const AquariumsList = () => {
     const [aquariums, setAquariums] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [originHeader, setOriginHeader] = React.useState(null); // Corrected spelling from 'orginHeader' to 'originHeader'
     const navigate = useNavigate();
     const location = useLocation();
 
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchUserAquariums();
-                setAquariums(data || []); // Ensure data is an array
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        };
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const data = await fetchUserAquariums();
+            setAquariums(data || []); // Ensure data is an array
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    };
 
-        fetchData();
-    }, []);
+    React.useEffect(() => {
+        const storedOriginHeader = location.state?.origin;
+        setOriginHeader(storedOriginHeader || 'Nw');
+
+        // Check if the refresh flag is set in the state
+        const refreshFlag = location.state?.refresh;
+
+        if (refreshFlag) {
+            fetchData(); // Fetch data if the refresh flag is true
+        }
+    }, [location.state]); // Re-run the effect if the location state changes
 
     const handleAquariumClick = (aquariumId, aquariumName) => {
         console.log("handleAquariumClick " + aquariumId + aquariumName)
@@ -64,9 +73,9 @@ const AquariumsList = () => {
 
     // return list of boxes with aquariums. Each box should contain aquarium name, description and a button to navigate to the aquarium details page, as well as have a thin black outline
     // boxes should be stacked horizontally, and if width of the page is too small, they should wrap to the next line
-    aquariums.map((aquarium, index) => (console.log(aquarium.name, aquarium._id)));
     return (
         <div>
+            <h1>{originHeader}</h1>
             <h1>Twoje akwaria:</h1>
             <div className="aquarium-container">
                 {aquariums.map((aquarium, index) => (

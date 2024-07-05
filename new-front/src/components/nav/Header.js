@@ -1,6 +1,7 @@
 import React from "react";
 import logoImage from '../../RES/logo.png';
 
+
 function Header({ onLogout }) {
   return (
     <div style={styles.header}>
