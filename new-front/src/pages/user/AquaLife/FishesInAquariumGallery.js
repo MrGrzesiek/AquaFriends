@@ -18,7 +18,10 @@ import Button from "@mui/material/Button";
         return fish ? fish.photoUrl : null;
     };
         const handleDeleteClick = (index) => {
-            onDeleteFish(index);
+            const confirmDelete = window.confirm(`Czy na pewno chcesz usunąć rybę?`);
+            if (confirmDelete) {
+                onDeleteFish(index);
+            }
         };
 
 
