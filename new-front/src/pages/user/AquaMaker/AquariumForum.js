@@ -76,13 +76,16 @@ const AquariumForm = () => {
 
         // Check for any errors before submitting
         if (Object.keys(newErrors).length > 0) {
+            console.log("dupa");
             setErrors(newErrors);
             return;
         } else {
+            console.log("dupa");
             setErrors({});
         }
 
         try {
+            console.log("dupa");
             const username = localStorage.getItem("username");
             formData.username = username;
             await createNewAquarium(formData);
