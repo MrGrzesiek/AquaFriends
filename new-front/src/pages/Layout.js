@@ -20,7 +20,7 @@ const Layout = ({ onLogout, onSelect, children }) => {
                 navigate('/aquariums', { state: { origin: 'AquaMonitor', refresh: true } });
                 break;
             case 'AquaLife':
-                navigate('/aquariums', { state: { origin: 'AquaLife' } });
+                navigate('/aquariums', { state: { origin: 'AquaLife', refresh: true } });
                 break;
             case 'Logout':
                 onLogout();
