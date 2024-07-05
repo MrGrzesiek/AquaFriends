@@ -532,3 +532,26 @@ export const removeFishFromAquarium = async (aquariumName, fishName) => {
         throw new Error("Failed to remove fish from aquarium");
     }
 }
+
+export const  submitWarningData = async(data) => {
+  console.log(data)
+  const tokenString = localStorage.getItem("authToken");
+  const tokenObj = JSON.parse(tokenString);
+
+  const formBody = {
+    warning_name: data.warning_name,
+    warning_description: data.warning_description,
+    parameter: data.parameter,
+    min_value: data.min_value,
+    max_value: data.max_value
+  }
+
+  const response = await fetch(`${API_URL}/warnings?token=${tokenObj.access_token}`, {
+  method: "POST",
+  headers: {
+      "Content-Type": "application/json",
+  },
+  body: JSON.stringify(formBody),
+  });
+  return response;
+}
