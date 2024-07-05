@@ -24,3 +24,10 @@
 .quantity-input-container {
     margin-top: auto; /* Pushes the QuantityInput to the bottom */
 }
+
+.plus-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

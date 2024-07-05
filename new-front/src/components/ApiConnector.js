@@ -512,3 +512,20 @@ export const updateFishesInAquarium = async (aquariumName, fishData) => {
     return response.json();
 };
 
+export const addNewFish = async (newFish) => {
+    const token = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(token);
+    const response = await fetch(`/fishes/aquarium/fish?token=${token}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newFish)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to add new fish to aquarium");
+    }
+
+    return response.json();
+};
