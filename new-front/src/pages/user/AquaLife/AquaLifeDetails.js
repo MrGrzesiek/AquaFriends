@@ -1,8 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { useParams } from "react-router-dom";
 import AquaLifeSpeciesGallery from "./AquaLifeSpeciesGallery";
 import Button from "@mui/material/Button";
-import { updateFishesInAquarium } from "../../../components/ApiConnector";
+import {
+    fetchAquariumData,
+    fetchSpeciesData,
+    fetchSpeciesPhoto,
+    updateFishesInAquarium
+} from "../../../components/ApiConnector";
 import FishesInAquariumGallery from "./FishesInAquariumGallery";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -13,17 +18,59 @@ const AquaLifeDetails = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const galleryRef = useRef(null);
 
-    const handleQuantityChange = () => {
-        setIsSaveEnabled(true);
+    /* FishesInAquariumGaller data management */
+    const [fishSpecies, setFishSpecies] = useState([]);
+    const [aquariumData, setAquariumData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const data = await fetchSpeciesData();
+            const fishDataWithPhotos = await Promise.all(data.map(async (fish) => {
+                try {
+                    const token = localStorage.getItem("authToken");
+                    const tokenObj = JSON.parse(token);
+                    const photoUrl = await fetchSpeciesPhoto(fish.name, tokenObj.access_token);
+                    return { ...fish, photoUrl, quantity: 0 }; // Add quantity property
+                } catch (error) {
+                    console.error("Error fetching species photo:", error);
+                    return { ...fish, photoUrl: null, quantity: 0 }; // Add quantity property
+                }
+            }));
+            setFishSpecies(fishDataWithPhotos);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+
+        try {
+            let aquarium = await fetchAquariumData(aquariumName);
+            console.log("Aquarium history in FishesInAquariumGallery: ", aquarium);
+            console.log("History length: ", aquarium.history.length);
+            const debug = aquarium.history[aquarium.history.length - 1];
+            setAquariumData(debug); // The last element of the array is the most recent data
+            console.log("Aquarium data in FishesInAquariumGallery: ", aquariumData);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
     };
 
     const handleCloseModal = async () => {
         setIsModalOpen(false);
+        fetchData();
     };
 
     const handleNewFishesButton = async () => {
         setIsModalOpen(true);
     };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div>
@@ -60,7 +107,7 @@ const AquaLifeDetails = () => {
                     <AquaLifeSpeciesGallery ref={galleryRef} aquariumName={aquariumName}  />
                 </Box>
             </Modal>
-            <FishesInAquariumGallery aquariumName={aquariumName}/>
+            <FishesInAquariumGallery aquariumName={aquariumName} fishSpecies={fishSpecies} aquariumData={aquariumData} loading={loading} error={error}/>
         </div>
     );
 };
