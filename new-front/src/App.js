@@ -13,6 +13,7 @@ import AquaAccount from "./pages/user/AquaAccount/AquaAccount";
 import Layout from "./pages/Layout";
 import AquaMaker from "./pages/user/AquaMaker/AquaMaker"
 import fishImage from './RES/newfish3.jpg';
+import AquaLife from "./pages/user/AquaLife/AquaLife";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -163,6 +164,17 @@ function App() {
                         <AquaMaker /></Layout>
                   ) : (
                        <Navigate to="/" />)} />
+              <Route
+                  path="/aqualife/*"
+                  element={
+                      loggedIn ? (
+                          <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                              <AquaLife/>
+                          </Layout>
+                      ) : (
+                          <Navigate to="/" />)}
+              />
+
              <Route
               path="/aquahistory/*"
               element={
