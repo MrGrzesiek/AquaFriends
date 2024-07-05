@@ -4,6 +4,7 @@ import {fetchUser, updateEmail} from "../../../components/ApiConnector";
 import {Alert, CircularProgress, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import './../../../CSS/styles.css'
+import "./../../../CSS/DataForm.css";
 
 const AquaAccountDetails = () => {
     const { username } = useParams();
@@ -71,9 +72,14 @@ const AquaAccountDetails = () => {
                         {alertMessage}
                     </Alert>
                 )}
+                <div className="data-form">
                 <h3>Wprowadź nowy adres email</h3>
-                <TextField id="email-text-field" label="Email" variant="outlined" defaultValue={email}/>
-                <Button className="svae-new-user-data-button" variant="contained" color="primary" onClick={handleSave}>Zapisz</Button>
+                <div className="form-group">
+                <label htmlFor="email-text-field">Adres email</label>
+                <input className="form-group" id="email-text-field" label="Email" variant="outlined" defaultValue={email}/>
+                <Button className="submit-button" variant="contained" color="primary" onClick={handleSave}>Zapisz</Button>
+                </div>
+                </div>
             </div>
         );
     }
