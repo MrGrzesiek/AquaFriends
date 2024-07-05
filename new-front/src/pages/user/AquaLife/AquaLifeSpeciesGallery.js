@@ -83,16 +83,20 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
     };
 
     const openAddFishModal = (speciesName) => {
-        const fishSpeciesNameElements = document.getElementsByClassName("fish_species_name");
-        // Assuming there's only one element with this class for each fish card
-        if (fishSpeciesNameElements.length > 0) {
-            const speciesNameFromCard = fishSpeciesNameElements[0].innerText;
-            setNewFish({
-                ...newFish,
-                species_name: speciesNameFromCard
-            });
-            setIsAddFishModalOpen(true);
-        }
+        setNewFish({
+            ...newFish,
+            species_name: speciesName
+        });
+        setIsAddFishModalOpen(true);
+    };
+
+    const handleCloseAddFishModal = () => {
+        setIsAddFishModalOpen(false);
+        setNewFish({
+            ...newFish,
+            fish_name: '',
+            months_of_age: ''
+        });
     };
 
     if (loading) {
@@ -122,7 +126,7 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => openAddFishModal(fish.species_name)}
+                            onClick={() => openAddFishModal(/* Pass species name from fish card */ fish.name)}
                             style={{ borderRadius: '50%', width: '60px', height: '60px', minWidth: '60px', margin: '10px auto' }}
                         >
                             +
@@ -132,7 +136,7 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
             ))}
             <Modal
                 open={isAddFishModalOpen}
-                onClose={() => setIsAddFishModalOpen(false)}
+                onClose={handleCloseAddFishModal}
                 aria-labelledby="add-fish-modal-title"
                 aria-describedby="add-fish-modal-description"
             >

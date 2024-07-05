@@ -19,17 +19,6 @@ const AquaLifeDetails = () => {
 
     const handleCloseModal = async () => {
         setIsModalOpen(false);
-        if (galleryRef.current) {
-            const fishData = galleryRef.current.getFishData();
-            try {
-                await updateFishesInAquarium(aquariumName, fishData);
-                alert("Dane ryb zostały zapisane.");
-                setIsSaveEnabled(false);
-            } catch (error) {
-                console.error("Error updating fishes:", error);
-                alert("Wystąpił błąd podczas zapisywania danych ryb.");
-            }
-        }
     };
 
     const handleNewFishesButton = async () => {
