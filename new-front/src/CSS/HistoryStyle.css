@@ -1,0 +1,52 @@
+.history-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.history-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.history-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.history-item {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.history-date {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.change-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.change-item {
+    margin-bottom: 10px;
+}
+
+.nested-change {
+    margin-left: 20px;
+}
+
+.sub-change-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sub-change-item {
+    margin-bottom: 5px;
+}

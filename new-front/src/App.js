@@ -7,6 +7,7 @@ import { checkBackend } from "./components/auth/SessionManager";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSatelliteDish } from '@fortawesome/free-solid-svg-icons';
 import AquaMonitor from "./pages/user/AquaMonitor/AquaMonitor";
+import AquaHistory from "./pages/user/AquaHistory/AquaHistory";
 import AquariumsList from "./pages/user/AquariumsList";
 import AquaAccount from "./pages/user/AquaAccount/AquaAccount";
 import Layout from "./pages/Layout";
@@ -162,6 +163,18 @@ function App() {
                         <AquaMaker /></Layout>
                   ) : (
                        <Navigate to="/" />)} />
+             <Route
+              path="/aquahistory/*"
+              element={
+                loggedIn ? (
+                  <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                    <AquaHistory />
+                  </Layout>
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />          
           </Routes>
         </div>
       </Router>

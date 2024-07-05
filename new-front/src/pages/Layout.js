@@ -17,17 +17,20 @@ const Layout = ({ onLogout, onSelect, children }) => {
                 navigate('/');
                 break;
             case 'AquaMonitor':
-                navigate('/aquariums', { state: { origin: 'AquaMonitor' } });
+                navigate('/aquariums', { state: { origin: 'AquaMonitor', refresh: true } });
                 break;
             case 'Logout':
                 onLogout();
-                navigate('/login');
+                navigate('/');
                 break;
             case 'AquaAccount':
                 navigate('/aquaaccount/' + username, { state: { origin: 'AquaAccount' } });
                 break;
             case 'AquaMaker':
                 navigate('/new_aquarium', { state: { origin: 'AquaMaker' } })
+                break;
+            case 'AquaHistory':
+                navigate('/aquariums', { state: { origin: 'AquaHistory', refresh: true } })
                 break;
             default:
                 navigate('/');

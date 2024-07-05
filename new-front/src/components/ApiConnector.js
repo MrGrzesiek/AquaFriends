@@ -513,3 +513,49 @@ export const  submitWarningData = async(data) => {
   });
   return response;
 }
+
+export const getAquariumHistory = async (aquariumName) => {
+  try {
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+    const response = await fetch(`${API_URL}/aquariums/history/${aquariumName}?token=${tokenObj.access_token}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const contentLength = +response.headers.get('content-length');
+
+    const chunks = [];
+    let receivedLength = 0;
+
+    while (true) {
+      const { done, value } = await reader.read();
+
+      if (done) {
+        break;
+      }
+
+      chunks.push(value);
+      receivedLength += value.length;
+;
+    }
+
+    const chunksArray = new Uint8Array(receivedLength);
+    let position = 0;
+    for (const chunk of chunks) {
+      chunksArray.set(chunk, position);
+      position += chunk.length;
+    }
+
+    const decodedText = new TextDecoder("utf-8").decode(chunksArray);
+
+    const parsedData = JSON.parse(decodedText);
+
+    return parsedData;
+  } catch (error) {
+    console.error("Error fetching aquarium history:", error);
+    throw error;
+  }
+};
