@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const AquariumForm = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        username: localStorage.getItem("username"),
         name: '',
         height: 0,
         width: 0,
@@ -46,6 +46,7 @@ const AquariumForm = () => {
     };
 
     const handleSubmit = async (e) => {
+        console.log("Form data: ", formData);
         e.preventDefault();
         const newErrors = {};
 
@@ -86,7 +87,7 @@ const AquariumForm = () => {
             const username = localStorage.getItem("username");
             formData.username = username;
             await createNewAquarium(formData);
-            navigate('/success'); // Redirect to success page or handle success scenario
+            //navigate('/success'); // Redirect to success page or handle success scenario
         } catch (error) {
             console.error('Error creating aquarium:', error);
             alert('Wystąpił błąd podczas tworzenia akwarium.');
