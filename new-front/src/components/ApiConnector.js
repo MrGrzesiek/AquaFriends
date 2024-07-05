@@ -492,3 +492,23 @@ export const deleteWarning = async (WarningID) => {
     throw error;
   }
 };
+
+export const updateFishesInAquarium = async (aquariumName, fishData) => {
+    const token = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(token);
+    const response = await fetch(`/api/aquarium/${aquariumName}/fishes`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenObj.access_token}`
+        },
+        body: JSON.stringify(fishData)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to update fishes in aquarium");
+    }
+
+    return response.json();
+};
+

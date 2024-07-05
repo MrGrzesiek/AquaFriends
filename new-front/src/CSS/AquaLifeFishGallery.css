@@ -1,0 +1,26 @@
+.fish-gallery {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(30vh, 1fr));
+}
+
+.fish-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.fish-photo {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.quantity-input-container {
+    margin-top: auto; /* Pushes the QuantityInput to the bottom */
+}
