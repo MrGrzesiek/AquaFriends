@@ -91,7 +91,7 @@ function EventsWindow({ AquariumName }) {
             const data = await getAquariumEvents(AquariumName);
             console.log(data)
             if (isMounted) {
-                setEvents(data.events.filter(event => event.active) || []);
+                setEvents(data.events || []);
             }
         };
 
@@ -112,7 +112,7 @@ function EventsWindow({ AquariumName }) {
     const handleIgnoreEvent = async (index) => {
         // get event id
         const eventId = events[index]._id;
-        //console.log("Ignoring event with id:", eventId);
+        console.log("Ignoring event with id:", eventId);
         await dismiss_event(eventId);
         // remove event from the list
         setEvents(events.filter((event, i) => i !== index));

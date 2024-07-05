@@ -125,7 +125,7 @@ def add_fishes_to_aquarium(fish: FishInAquarium, user: User):
     # Append the new fish to the fishes list
     aquarium.fishes.append(fish_dict)
     print(aquarium.dict())
-    return update_aquarium(aquarium, user)
+    return update_aquarium(aquarium, id)
 
 
 def delete_fish_from_aquarium(fish: FishRemoval, user: User):
@@ -139,7 +139,7 @@ def delete_fish_from_aquarium(fish: FishRemoval, user: User):
             aquarium['fishes'].remove(f)
             id = ObjectId(aquarium['_id'])
             aquarium = Aquarium(**aquarium)
-            return update_aquarium(aquarium, user)
+            return update_aquarium(aquarium, id)
 
     return {'code': 404, 'message': f'Fish {fish.fish_name} not found in {fish.aquarium_name}'}
 

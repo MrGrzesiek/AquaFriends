@@ -444,7 +444,6 @@ export const getAquariumEvents = async (aquariumName) => {
 
 export const dismiss_event = async (eventID) => {
     try {
-        console.log("Dismissing event with ID:", eventID)
         const tokenString = localStorage.getItem("authToken");
         const tokenObj = JSON.parse(tokenString);
         const response = await fetch(`${API_URL}/aquariums/dismiss_event/${eventID}?token=${tokenObj.access_token}`, {
@@ -492,47 +491,6 @@ export const deleteWarning = async (WarningID) => {
     throw error;
   }
 };
-
-export const addNewFish = async (newFish) => {
-    const token = localStorage.getItem("authToken");
-    const tokenObj = JSON.parse(token);
-    const response = await fetch(`${API_URL}/fishes/aquarium/fish?token=${tokenObj.access_token}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newFish)
-    });
-
-    if (!response.ok) {
-        throw new Error("Failed to add new fish to aquarium");
-    }
-
-    return response.json();
-};
-
-export const removeFishFromAquarium = async (aquariumName, fishName) => {
-    const token = localStorage.getItem("authToken");
-    const tokenObj = JSON.parse(token);
-    const body = {
-        aquarium_name: aquariumName,
-        fish_name: fishName
-    }
-    console.log(body)
-    const response = await fetch(`${API_URL}/fishes/aquarium/fish/?token=${tokenObj.access_token}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    });
-
-
-    if (!response.ok || response.status !== 200) {
-        throw new Error("Failed to remove fish from aquarium");
-    }
-}
-
 export const  submitWarningData = async(data) => {
   console.log(data)
   const tokenString = localStorage.getItem("authToken");
@@ -601,4 +559,3 @@ export const getAquariumHistory = async (aquariumName) => {
     throw error;
   }
 };
-
