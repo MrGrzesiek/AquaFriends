@@ -75,7 +75,7 @@ def update_aquarium(aquarium_data: Aquarium, user: User):
     connector.get_aquariums_collection().find_one_and_update({'name': aquarium_data.name, 'username': user.username},
                                                              {'$set': aquarium_data.model_dump()})
 
-    #return {'code': 200,
+    # return {'code': 200,
     #        'message': f'{aquarium_data.name} updated successfully'}
     return JSONResponse(content={'code': 200, 'message': f'{aquarium_data.name} updated successfully'}, status_code=200)
 
@@ -103,14 +103,14 @@ def delete_aquarium(aquarium_id: str):
     return {'code': 200, 'message': f'{aquarium_id} deleted successfully'}
 
 
-
 def get_events(aquarium_name: str, user: User):
     """
     Get all events associated with an aquarium
     """
     aquarium = connector.get_aquariums_collection().find_one({'name': aquarium_name, 'username': user.username})
     if not aquarium:
-        return JSONResponse(content={'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'})
+        return JSONResponse(
+            content={'code': 404, 'message': f'Aquarium {aquarium_name} not found for user {user.username}'})
 
     events = list(connector.get_events_collection().find({'aquarium_name': aquarium_name, 'username': user.username}))
     if not events or len(list(events)) == 0:
@@ -156,6 +156,15 @@ def dismiss_event_by_id(event_id: str, user: User):
     connector.get_events_collection().find_one_and_update({'_id': ObjectId(event_id), 'username': user.username},
                                                           {'$set': {'active': False}})
     return {'code': 200, 'message': f'Event {event_id} dismissed successfully'}
+
+
+def get_aquarium(aquarium_id: str):
+    aquarium = connector.get_aquariums_collection().find_one({'id': ObjectId(aquarium_id)})
+    if not aquarium:
+        return JSONResponse(
+            content={'code': 404, 'message': f'Aquarium {aquarium_id} not found'})
+    return aquarium
+
 
 """
 model of test aquarium for easier testing

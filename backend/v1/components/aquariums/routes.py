@@ -50,6 +50,13 @@ AquaMaker, AquaDecorator
 
 
 @login_required
+@router.get('/get_aquarium/{aquarium_id}')
+async def get_aquarium(aquarium_id: str):
+    result = get_aquarium(aquarium_id)
+    return result
+
+
+@login_required
 @router.put('/update')
 async def update_existing_aquarium(aquarium: Aquarium, user: User = Depends(get_current_user)):
     result = update_aquarium(aquarium, user)
@@ -85,6 +92,7 @@ async def get_aquarium_events(aquarium_name: str, user: User = Depends(get_curre
 async def add_aquarium_event(event: Event, user: User = Depends(get_current_user)):
     return add_event(event, user)
 
+
 @login_required
 @router.delete('/dismiss_event/{event_id}')
 async def dismiss_event(event_id: str, user: User = Depends(get_current_user)):
@@ -94,6 +102,7 @@ async def dismiss_event(event_id: str, user: User = Depends(get_current_user)):
 """
 History
 """
+
 
 @login_required
 @router.get('/history/{aquarium_name}')

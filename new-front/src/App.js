@@ -186,7 +186,18 @@ function App() {
                   <Navigate to="/" />
                 )
               }
-            />          
+            />
+            <Route
+            path="/update/:aquarium_id"
+            element={
+                loggedIn ? (
+                    <Layout onLogout={handleLogout} onSelect={setSelectedItem}>
+                        <AquaMaker/>
+                    </Layout>
+                ):(
+                    <Navigate to="/" />
+                )
+            }/>
           </Routes>
         </div>
       </Router>

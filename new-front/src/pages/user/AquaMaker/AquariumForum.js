@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createNewAquarium } from './AquariumService';
-import { useNavigate } from 'react-router-dom';
+import {updateAquariumData} from "../../../components/ApiConnector";
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AquariumForm = () => {
+const AquariumForum = ({ initialData = {}, mode = 'create' }) => {
     const [formData, setFormData] = useState({
         username: localStorage.getItem("username"),
         name: '',
@@ -26,8 +27,14 @@ const AquariumForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (mode === 'edit' && initialData) {
+            setFormData(initialData);
+        }
+    }, [initialData, mode]);
 
     const handleChangeText = (e) => {
         const { name, value } = e.target;
@@ -47,7 +54,6 @@ const AquariumForm = () => {
     };
 
     const handleSubmit = async (e) => {
-        console.log("Form data: ", formData);
         e.preventDefault();
         const newErrors = {};
 
@@ -78,29 +84,32 @@ const AquariumForm = () => {
 
         // Check for any errors before submitting
         if (Object.keys(newErrors).length > 0) {
-            console.log("dupa");
             setErrors(newErrors);
             return;
         } else {
-            console.log("dupa");
             setErrors({});
         }
 
         try {
-            console.log("dupa");
             const username = localStorage.getItem("username");
             formData.username = username;
-            await createNewAquarium(formData);
-            //navigate('/success'); // Redirect to success page or handle success scenario
+
+            if (mode === 'create') {
+                await createNewAquarium(formData);
+                navigate('/'); // Redirect to success page or handle success scenario
+            } else if (mode === 'edit') {
+                await updateAquariumData(id, formData);
+                navigate(`/aquarium/${id}`); // Redirect to the updated aquarium's details page
+            }
         } catch (error) {
-            console.error('Error creating aquarium:', error);
-            alert('Wystąpił błąd podczas tworzenia akwarium.');
+            console.error('Error creating or updating aquarium:', error);
+            alert(`Wystąpił błąd podczas ${mode === 'create' ? 'tworzenia' : 'aktualizacji'} akwarium.`);
         }
     };
 
     return (
         <form className="data-form" onSubmit={handleSubmit}>
-            <h2>Formularz nowego akwarium</h2>
+            <h2>{mode === 'create' ? 'Formularz nowego akwarium' : 'Edytuj akwarium'}</h2>
 
             <div className="form-group">
                 <label>
@@ -142,9 +151,9 @@ const AquariumForm = () => {
                 {errors.substrate && <p className="error-message">{errors.substrate}</p>}
             </div>
 
-            <button className="submit-button" type="submit">Dodaj</button>
+            <button className="submit-button" type="submit">{mode === 'create' ? 'Dodaj' : 'Zapisz zmiany'}</button>
         </form>
     );
 };
 
-export default AquariumForm;
+export default AquariumForum;
