@@ -54,13 +54,9 @@ def get_user_aquariums(user: User):
 
         # convert date of birth to string
         for fish in s['fishes']:
-            if fish and 'date_of_birth' in fish and fish['date_of_birth']:
-                if isinstance(fish['date_of_birth'], str):
-                    # Parse the string into a datetime object
-                    fish['date_of_birth'] = datetime.datetime.strptime(fish['date_of_birth'], '%Y-%m-%d')
-                # Convert datetime object to string in desired format
+            if isinstance(fish['date_of_birth'], datetime.datetime):
                 fish['date_of_birth'] = fish['date_of_birth'].strftime('%Y-%m-%d')
-            else:
+            elif not fish or len(fish) == 0:
                 del fish  # Remove empty fish
         s = convert_mongo_id(s)
         ret_aquariums.append(s)
