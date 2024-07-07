@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { createNewAquarium } from './AquariumService';
+import React, {useEffect, useState} from 'react';
+import {createNewAquarium} from './AquariumService';
 import {updateAquariumData} from "../../../components/ApiConnector";
-import { useNavigate, useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 const AquariumForum = ({ initialData = {}, mode = 'create' }) => {
     const [formData, setFormData] = useState({
@@ -63,6 +63,8 @@ const AquariumForum = ({ initialData = {}, mode = 'create' }) => {
         }
 
         if (!formData.username || formData.username.trim() === 'undefined') {
+            console.log(formData)
+            console.log('username:' + formData.username)
             newErrors.username = 'Nazwa użytkownika jest wymagana.';
         }
 
@@ -91,15 +93,16 @@ const AquariumForum = ({ initialData = {}, mode = 'create' }) => {
         }
 
         try {
-            const username = localStorage.getItem("username");
-            formData.username = username;
+            console.log('dupa')
+            formData.username = localStorage.getItem("username");
 
             if (mode === 'create') {
                 await createNewAquarium(formData);
-                navigate('/'); // Redirect to success page or handle success scenario
+                navigate('/aquariums'); // Redirect to success page or handle success scenario
             } else if (mode === 'edit') {
                 await updateAquariumData(id, formData);
-                navigate(`/aquarium/${id}`); // Redirect to the updated aquarium's details page
+                console.log('edited');
+                navigate(`/aquariums`); // Redirect to the updated aquarium's details page
             }
         } catch (error) {
             console.error('Error creating or updating aquarium:', error);

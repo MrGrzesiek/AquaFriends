@@ -9,7 +9,8 @@ const AquariumPage = () => {
     const [initialData, setInitialData] = useState(null);
     const [loading, setLoading] = useState(true);
     const mode = aquarium_id ? 'edit' : 'create';
-
+    console.log(aquarium_id);
+    console.log(mode);
     useEffect(() => {
         if (mode === 'edit') {
             const fetchData = async () => {
