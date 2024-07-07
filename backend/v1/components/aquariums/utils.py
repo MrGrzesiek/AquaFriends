@@ -93,6 +93,15 @@ def get_aquarium_history_by_name(aquarium_name: str, user: User):
     return {'code': 200, 'message': f'History retrieved successfully', 'history': h}
 
 
+def get_aquarium_by_id(aquarium_id: str):
+    aquarium = connector.get_aquariums_collection().find_one({'_id': ObjectId(aquarium_id)})
+    if not aquarium:
+        return JSONResponse(
+            content={'code': 404, 'message': f'Aquarium {aquarium_id} not found'})
+
+    aquarium = convert_mongo_id(aquarium)
+    return {'code': 200, 'message': f'Aquarium {aquarium_id} retrieved successfully', 'aquarium': aquarium}
+
 def delete_aquarium(aquarium_id: str):
     id = ObjectId(aquarium_id)
     if not connector.get_aquariums_collection().find_one({'_id': id}):

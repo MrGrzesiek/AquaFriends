@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette.responses import JSONResponse
 
 from .utils import create_aquarium, get_user_aquariums, update_aquarium, delete_aquarium, get_events, add_event, \
-    get_user_aquariums, get_aquarium_history_by_name, dismiss_event_by_id
+    get_user_aquariums, get_aquarium_history_by_name, dismiss_event_by_id, get_aquarium_by_id
 from dependencies.auth import get_admin_user, get_current_user, admin_required, login_required, \
     get_current_active_user
 from models import User, Aquarium, Event
@@ -51,8 +51,8 @@ AquaMaker, AquaDecorator
 
 @login_required
 @router.get('/get_aquarium/{aquarium_id}')
-async def get_aquarium(aquarium_id: str):
-    result = get_aquarium(aquarium_id)
+async def get_aquarium(aquarium_id: str, user: User = Depends(get_current_user)):
+    result = get_aquarium_by_id(aquarium_id)
     return result
 
 
