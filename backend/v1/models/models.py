@@ -86,7 +86,7 @@ class FishSpecies(NewFishSpecies):
     Class used to represent a fish species in the database
     Photos need to be uploaded to the database separately
     """
-    disliked_species: List[int]  # List of fish species IDs that this species does not get along with
+    disliked_species: List[str]  # List of fish species IDs that this species does not get along with
 
 
 class Device(BaseModel):
