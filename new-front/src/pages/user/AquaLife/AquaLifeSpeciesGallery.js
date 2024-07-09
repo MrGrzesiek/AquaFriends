@@ -2,14 +2,68 @@ import React, { useState, useEffect, forwardRef, useImperativeHandle } from "rea
 import { fetchSpeciesData, fetchSpeciesPhoto, fetchAquariumData, addNewFish } from "../../../components/ApiConnector";
 import "./../../../CSS/AquaLifeFishGallery.css";
 import { useParams } from "react-router-dom";
+import { Snackbar } from '@mui/base/Snackbar';
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 
-const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
+
+const FishConflictWarning = ({ fishData, aquariumData, allSpecies }) => {
+    const [conflictingFish, setConflictingFish] = useState([]);
+
+    useEffect(() => {
+        console.log("Fish data in FishConflictWarning: ", fishData)
+        console.log("Aquarium data in FishConflictWarning: ", aquariumData)
+        console.log("All species in FishConflictWarning: ", allSpecies)
+        // Get the species object of the current fish in question
+        const currentSpecie = allSpecies.find(species => species.name === fishData.species_name);
+
+        // Check if the current species is found
+        if (!currentSpecie) {
+            console.error(`Species not found: ${fishData.species_name}`);
+            return;
+        }
+        console.log("Current species: ", currentSpecie)
+
+        // Get the IDs of disliked species for the current fish species or an empty array if none
+        const dislikedSpeciesIds = currentSpecie.disliked_species ? currentSpecie.disliked_species : [];
+        console.log("Disliked species IDs: ", dislikedSpeciesIds)
+
+        const dislikedSpeciesNames = dislikedSpeciesIds.map(id => allSpecies.find(species => species._id === id).name);
+
+        for (let i = 0; i < dislikedSpeciesIds.length; i++) {
+            console.log(dislikedSpeciesIds[i] + " == " + "6662016911887fabad09caf3 => " )
+            console.log(dislikedSpeciesIds[i] == "6662016911887fabad09caf3");
+        }
+        // Find the species in the aquarium that are disliked by the current species
+        const conflicts = allSpecies.filter(species => dislikedSpeciesIds.includes(species._id))
+
+        console.log("Conflict: ", conflicts);
+        setConflictingFish(conflicts);
+    }, [fishData, aquariumData, allSpecies]);
+
+    if (conflictingFish.length === 0) {
+        return null;
+    }
+    else {
+        return (
+            <div>
+                <b>Gatunki konfliktujące: </b>
+                <ul>
+                    {conflictingFish.map(fish => (
+                        <li key={fish._id}>{fish.name}</li>
+                    ))}
+                </ul>
+            </div>
+        );
+    }
+
+}
+
+const AquaLifeSpeciesGallery = forwardRef(({ aquariumName, aquarium }, ref) => {
     const [fishSpecies, setFishSpecies] = useState([]);
-    const [aquariumData, setAquariumData] = useState([]);
+    const [aquariumData, setAquariumData] = useState(aquarium);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isAddFishModalOpen, setIsAddFishModalOpen] = useState(false);
@@ -43,7 +97,9 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
 
         try {
             let aquarium = await fetchAquariumData(aquariumName);
-            setAquariumData(aquarium[aquarium.length - 1]); // The last element of the array is the most recent data
+            let aquariumHistory = aquarium.history;
+            let lastEntry = aquariumHistory[aquariumHistory.length - 1];
+            setAquariumData(lastEntry); // The last element of the array is the most recent data
             console.log("Aquarium data in AquaLifeSpeciesGallery: ", aquariumData);
 
             setLoading(false);
@@ -165,6 +221,7 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName }, ref) => {
                 >
                     <h2 id="add-fish-modal-title">Dodaj Nową Rybe</h2>
                     <p>Dodajesz rybę gatunku: {newFish.species_name}</p>
+                    <FishConflictWarning fishData={newFish} aquariumData={aquariumData} allSpecies={fishSpecies}/>
                     <TextField
                         label="Nazwa Ryby"
                         value={newFish.fish_name}

@@ -149,7 +149,7 @@ const AquaLifeDetails = () => {
                         overflow: 'auto', // This ensures that the modal content is scrollable
                     }}
                 >
-                    <AquaLifeSpeciesGallery ref={galleryRef} aquariumName={aquariumName}  />
+                    <AquaLifeSpeciesGallery ref={galleryRef} aquariumName={aquariumName} aquarium={aquariumData} />
                 </Box>
             </Modal>
             <FishesInAquariumGallery aquariumName={aquariumName} fishSpecies={fishSpecies} aquariumData={aquariumData} loading={loading} error={error} onDeleteFish={handleDeleteFish}/>

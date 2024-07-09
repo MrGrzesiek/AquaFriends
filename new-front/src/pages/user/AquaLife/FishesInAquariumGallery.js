@@ -13,7 +13,6 @@ import Button from "@mui/material/Button";
     }));
 
     const getFishPhotoUrl = (speciesName) => {
-        console.log("getFishPhotoUrl: ", speciesName)
         const fish = fishSpecies.find(fish => fish.name === speciesName);
         return fish ? fish.photoUrl : null;
     };
