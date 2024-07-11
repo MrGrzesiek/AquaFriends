@@ -10,7 +10,6 @@ const Layout = ({ onLogout, onSelect, children }) => {
 
     const handleSelect = (selected) => {
         const username = localStorage.getItem('username');
-        console.log("HandleSelect: selected: " + selected);
         onSelect(selected);
         switch (selected) {
             case 'home':
