@@ -11,6 +11,39 @@ import {
 import FishesInAquariumGallery from "./FishesInAquariumGallery";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import Snackbar from '@mui/base/Snackbar';
+import WarningSnackbar from "./WarningsSnackbar";
+
+
+const getConflictingFish = (aquariumData, allSpecies) => {
+    console.log("Aquarium data: ", aquariumData)
+    console.log("All species: ", allSpecies)
+    const conflictingFish = [];
+    if (aquariumData && allSpecies) {
+        const allSpeciesNamesInAquarium = aquariumData.fishes.map(fish => fish.species_name);
+        allSpecies = allSpecies.filter(species => allSpeciesNamesInAquarium.includes(species.name))
+        console.log("Filtered species: ", allSpecies)
+        aquariumData.fishes.forEach(fish => {
+            const currentSpecie = allSpecies.find(species => species.name === fish.species_name);
+            if (currentSpecie) {
+                const dislikedSpeciesIds = currentSpecie.disliked_species ? currentSpecie.disliked_species : [];
+                const conflicts = allSpecies.filter(species => dislikedSpeciesIds.includes(species._id));
+                if (conflicts.length > 0) {
+                    console.log("Conflicts: ", conflicts)
+                }
+                conflicts.forEach(conflict => {
+                    if (!conflictingFish.some(pair => pair.includes(fish.species_name) && pair.includes(conflict.name))) {
+                        console.log("Conflict: ", fish.fish_name, conflict.name)
+                        conflictingFish.push([fish.species_name, conflict.name]);
+                    }
+                });
+            }
+        });
+    }
+    console.log("Final result: ", conflictingFish)
+    return conflictingFish.length > 0 ? conflictingFish : null;
+}
+
 
 const AquaLifeDetails = () => {
     const { aquariumName } = useParams();
@@ -47,11 +80,8 @@ const AquaLifeDetails = () => {
 
         try {
             let aquarium = await fetchAquariumData(aquariumName);
-            console.log("Aquarium history in FishesInAquariumGallery: ", aquarium);
-            console.log("History length: ", aquarium.history.length);
             const debug = aquarium.history[aquarium.history.length - 1];
             setAquariumData(debug); // The last element of the array is the most recent data
-            console.log("Aquarium data in FishesInAquariumGallery: ", aquariumData);
             setLoading(false);
         } catch (error) {
             setError(error);
@@ -123,6 +153,7 @@ const AquaLifeDetails = () => {
                 </Box>
             </Modal>
             <FishesInAquariumGallery aquariumName={aquariumName} fishSpecies={fishSpecies} aquariumData={aquariumData} loading={loading} error={error} onDeleteFish={handleDeleteFish}/>
+            <WarningSnackbar conflictingFishes={getConflictingFish(aquariumData, fishSpecies)}/>
         </div>
     );
 };
