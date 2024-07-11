@@ -90,3 +90,64 @@
     overflow-y: auto; /* Umożliwia pionowe przewijanie */
     max-height: 47vh; /* Maksymalna wysokość listy */
 }
+.multi-select-section{
+    margin-top: 10px;
+}
+.multi-select-two-panel {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .panel {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 45%;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .panelborder{
+    border: 1px solid #ccc;
+  }
+  
+  .panel h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .panel ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .panel ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  
+  .panel ul li button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .panel ul li button:hover {
+    background-color: #0056b3;
+  }
+  
+  .log-button {
+    background-color: #2469A6;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .log-button:hover {
+    background-color: #1d5688;
+  }

@@ -172,9 +172,9 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName, aquarium }, ref) => {
     }
 
     return (
-        <div className="fish-gallery">
+        <div className="fish-gallery2">
             {fishSpecies.map((fish, index) => (
-                <div key={fish._id} className="fish-card">
+                <div key={fish._id} className="fish-card2">
                     <h2 className="fish_species_name">{fish.name}</h2>
                     <p><b>Opis</b></p>
                     <p>{fish.description}</p>
@@ -182,7 +182,7 @@ const AquaLifeSpeciesGallery = forwardRef(({ aquariumName, aquarium }, ref) => {
                     <p><b>pH: </b>{fish.min_ph} - {fish.max_ph}</p>
                     <p><b>Zasolenie: </b>{fish.min_salinity}% - {fish.max_salinity}%</p>
                     {fish.photoUrl ? (
-                        <img src={fish.photoUrl} alt={`Zdjęcie ${fish.name}`} className="fish-photo"/>
+                        <img src={fish.photoUrl} alt={`Zdjęcie ${fish.name}`} className="fish-photo2"/>
                     ) : (
                         <div>Brak zdjęcia dla tego gatunku.</div>
                     )}

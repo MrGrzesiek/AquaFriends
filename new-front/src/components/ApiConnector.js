@@ -38,6 +38,46 @@ export const submitSpeciesData = async (data,method) => {
   }
 };
 
+export const updateSpeciesData = async (data,method) => {
+  try {
+    const tokenString = localStorage.getItem("authToken");
+    const tokenObj = JSON.parse(tokenString);
+
+    // Remove _id from data to avoid sending it to the server
+    const { _id, ...requestData } = data;
+
+    const requestBody = {
+      name: requestData.name,
+      description: requestData.description,
+      min_temp: parseFloat(requestData.min_temp),
+      max_temp: parseFloat(requestData.max_temp),
+      min_ph: parseFloat(requestData.min_ph),
+      max_ph: parseFloat(requestData.max_ph),
+      min_salinity: parseFloat(requestData.min_salinity),
+      max_salinity: parseFloat(requestData.max_salinity),
+      disliked_species: requestData.disliked_species
+    };
+
+    const response = await fetch(`${API_URL}/fishes/species?token=` + tokenObj.access_token, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${tokenObj.access_token}`
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit form data");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error submitting form data:", error);
+    throw error;
+  }
+};
+
   export const uploadSpeciesImage = async (speciesName, image) => {
     try {
       const formData = new FormData();

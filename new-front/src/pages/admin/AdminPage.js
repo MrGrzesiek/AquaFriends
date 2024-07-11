@@ -72,7 +72,7 @@ const AdminPage = ({ onLogout }) => {
             {selectedItem === "Species" && (
                 <>
                     <h1>Biblioteka gatunków</h1>
-                    <FishGallery ref={fishGalleryRef} />
+                    <FishGallery ref={fishGalleryRef} onSubmit={refreshFishData} />
                     <button onClick={toggleComponentVisibility}>
                         {isComponentVisible ? 'Schowaj formularz' : 'Dodaj gatunek'}
                     </button>

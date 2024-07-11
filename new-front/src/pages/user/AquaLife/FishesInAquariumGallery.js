@@ -34,12 +34,12 @@ import Button from "@mui/material/Button";
     }
 
     return (
-        <div className="fish-gallery">
+        <div className="fish-gallery2">
             {aquariumData.fishes.map((fish, index) => (
-                <div key={index} className="fish-card">
+                <div key={index} className="fish-card2">
                     {getFishPhotoUrl(fish.species_name) ? (
                         <img src={getFishPhotoUrl(fish.species_name)} alt={`Zdjęcie ${fish.species_name}`}
-                             className="fish-photo"/>
+                             className="fish-photo2"/>
                     ) : (
                         <div>Brak zdjęcia dla tego gatunku.</div>
                     )}

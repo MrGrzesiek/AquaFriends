@@ -1,8 +1,8 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { fetchSpeciesData, fetchSpeciesPhoto, deleteSpecies } from "./ApiConnector";
+import { fetchSpeciesData, fetchSpeciesPhoto, deleteSpecies, updateSpeciesData } from "./ApiConnector";
 import "./../CSS/FishGallery.css";
 
-const FishGallery = forwardRef((props, ref) => {
+const FishGallery =  forwardRef((props, ref) => {
     const [fishData, setFishData] = useState([]);
     const [selectedFish, setSelectedFish] = useState(null);
     const [selectedFishPhoto, setSelectedFishPhoto] = useState(null);
@@ -67,6 +67,25 @@ const FishGallery = forwardRef((props, ref) => {
         setSearchTerm(event.target.value);
     };
 
+    const handleDislikedSpeciesChange = async (newDislikedSpecies) => {
+        if (selectedFish) {
+            try {
+                const updatedSelectedFish = {
+                    ...selectedFish,
+                    disliked_species: newDislikedSpecies,
+                };
+                console.log(updatedSelectedFish)
+                await updateSpeciesData(updatedSelectedFish, "PUT");
+                setSelectedFish(updatedSelectedFish);
+                alert(`Konflikty dla ${selectedFish.name} zostały zaktualizowane.`);
+                props.onSubmit();
+                console.log("Updated disliked_species:", newDislikedSpecies);
+            } catch (error) {
+                console.error("Error updating disliked_species:", error);
+            }
+        }
+    };
+
     if (loading) {
         return <div className="loading">Ładowanie...</div>;
     }
@@ -120,6 +139,13 @@ const FishGallery = forwardRef((props, ref) => {
                         <button onClick={handleDelete} disabled={isDeleting} className="delete-button">
                             {isDeleting ? "Usuwanie..." : "Usuń gatunek"}
                         </button>
+                        <div className="multi-select-section">
+                            <MultiSelectTwoPanel 
+                                availableItems={filteredFishData} 
+                                selectedFish={selectedFish} 
+                                onDislikedSpeciesChange={handleDislikedSpeciesChange} 
+                            />
+                        </div>
                     </div>
                 ) : (
                     <div className="no-selection">Wybierz gatunek z listy po lewej stronie, aby zobaczyć szczegóły.</div>
@@ -130,3 +156,90 @@ const FishGallery = forwardRef((props, ref) => {
 });
 
 export default FishGallery;
+
+const MultiSelectTwoPanel = ({ availableItems, selectedFish, onDislikedSpeciesChange }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermSelected, setSearchTermSelected] = useState('');
+    const [selectedItems, setSelectedItems] = useState(
+    availableItems.filter(item => selectedFish.disliked_species.includes(item._id))
+  );
+
+  useEffect(() => {
+    setSelectedItems(
+      availableItems.filter(item => selectedFish.disliked_species.includes(item._id))
+    );
+  }, [selectedFish, availableItems]);
+
+  const handleSelectItem = (item) => {
+    const updatedSelectedItems = [...selectedItems, item];
+    setSelectedItems(updatedSelectedItems);
+  };
+
+  const handleDeselectItem = (item) => {
+    const updatedSelectedItems = selectedItems.filter(i => i._id !== item._id);
+    setSelectedItems(updatedSelectedItems);
+  };
+
+  const handleLogDislikedSpecies = async () => {
+    try {
+      const updatedDislikedSpecies = selectedItems.map(item => item._id);
+      await onDislikedSpeciesChange(updatedDislikedSpecies);
+      console.log("Disliked Species IDs:", updatedDislikedSpecies);
+    } catch (error) {
+      console.error("Error logging disliked species:", error);
+    }
+  };
+
+  const filteredAvailableItems = availableItems.filter(item =>
+    !selectedItems.some(selected => selected._id === item._id) &&
+    item._id !== selectedFish._id &&
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredSelectedItems = selectedItems.filter(item =>
+    item.name.toLowerCase().includes(searchTermSelected.toLowerCase())
+  );
+
+  return (
+    <div className="panelborder">
+        <h2>Menadżer konfliktów</h2>
+        <div className="multi-select-two-panel">
+            <div className="panel">
+                <h3>Gatunki neutralne</h3>
+                <input
+                    type="text"
+                    placeholder="Szukaj..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <ul>
+                    {filteredAvailableItems.map(item => (
+                    <li key={item._id}>
+                        <span>{item.name}</span>
+                        <button onClick={() => handleSelectItem(item)}>Wybierz</button>
+                    </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="panel">
+                <h3>Gatunki konfliktowe</h3>
+                <input
+                    type="text"
+                    placeholder="Szukaj..."
+                    value={searchTermSelected}
+                    onChange={(e) => setSearchTermSelected(e.target.value)}
+                />
+                <ul>
+                    {filteredSelectedItems.map(item => (
+                    <li key={item._id}>
+                        <span>{item.name}</span>
+                        <button onClick={() => handleDeselectItem(item)}>Odznacz</button>
+                    </li>
+                    ))}
+                </ul>
+            </div>
+            </div>
+    <button className="log-button" onClick={handleLogDislikedSpecies}>Zapisz</button>
+    </div>
+  );
+};
