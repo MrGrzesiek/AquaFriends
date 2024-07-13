@@ -90,7 +90,7 @@ function EventsWindow({ AquariumName }) {
         const fetchEvents = async () => {
             const data = await getAquariumEvents(AquariumName);
             console.log(data)
-            if (isMounted) {
+            if (isMounted && data.events !== undefined) {
                 setEvents(data.events.filter(event => event.active) || []);
             }
         };
