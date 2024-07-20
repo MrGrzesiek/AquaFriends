@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchUserAquariums } from "../../components/ApiConnector";
+import {deleteAquarium, fetchUserAquariums} from "../../components/ApiConnector";
 import Header from "../../components/nav/Header";
 import "../../CSS/AquariumsList.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -63,6 +63,18 @@ const AquariumsList = () => {
         navigate(targetPath);
     };
 
+    const handleEditClick = (aquariumId) => {
+        // Navigate to edit page
+        console.log("handleEditClick " + aquariumId);
+        navigate(`/update/${aquariumId}`);
+    };
+
+    const handleDeleteClick = (aquariumId) => {
+        deleteAquarium(aquariumId).then(r => fetchData());
+        console.log("handleDeleteClick", aquariumId);
+
+    };
+
     if (loading) {
         return <div className="loading">Ładowanie...</div>;
     }
@@ -71,8 +83,6 @@ const AquariumsList = () => {
         return <div className="error">Błąd: {error.message}</div>;
     }
 
-    // return list of boxes with aquariums. Each box should contain aquarium name, description and a button to navigate to the aquarium details page, as well as have a thin black outline
-    // boxes should be stacked horizontally, and if width of the page is too small, they should wrap to the next line
     return (
         <div>
             <h1>{originHeader}</h1>
@@ -82,15 +92,17 @@ const AquariumsList = () => {
                     <div
                         key={aquarium._id}
                         className="aquarium-box"
-                        onClick={() => handleAquariumClick(aquarium._id, aquarium.name)}
                     >
                         <img
                             src={aquariumImages[index % aquariumImages.length]}
                             alt={aquarium.name}
                             className="aquarium-image"
+                            onClick={() => handleAquariumClick(aquarium._id, aquarium.name)}
                         />
                         <h2>{aquarium.name}</h2>
                         <p>{aquarium.description}</p>
+                        <button onClick={() => handleEditClick(aquarium._id)}>Edytuj</button>
+                        <button onClick={() => handleDeleteClick(aquarium._id)}>Usuń</button>
                     </div>
                 ))}
             </div>
