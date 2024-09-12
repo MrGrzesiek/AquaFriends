@@ -256,6 +256,30 @@ export const  updateAquariumData = async(data) => {
         return response.json();
 }
 
+export const fetchAquariumById = async(id)=> {
+    try {
+        const tokenString = localStorage.getItem("authToken");
+        if (!tokenString) {
+            throw new Error('No auth token found');
+        }
+
+        const tokenObj = JSON.parse(tokenString);
+        if (!tokenObj || !tokenObj.access_token) {
+            throw new Error('Invalid auth token');
+        }
+
+        const response = await fetch(`${API_URL}/aquariums/get_aquarium/${id}?token=${tokenObj.access_token}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching aquarium data:', error, error.message);
+        return null; // or [] depending on how you handle it in your component
+    }
+}
 
 export const  insertAquarium = async(data) => {
   console.log(data)
@@ -294,7 +318,7 @@ console.log(formBody)
   });
 
   return response.json();
-};
+}
 
 export const deleteAquarium = async(aquarium_id) => {
     try {
