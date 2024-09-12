@@ -24,7 +24,8 @@ const AquariumPage = () => {
                 }
             };
 
-            fetchData();
+            fetchData().then(r =>
+            setInitialData(r)).catch(e => console.error(e));
         } else {
             setLoading(false);
         }
